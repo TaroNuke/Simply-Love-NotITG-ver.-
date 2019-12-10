@@ -1,0 +1,7 @@
+<ActorFrame> <children>
+	<BitmapText 
+        Text="Stage 3" 
+        Font="_wendy small" 
+        OnCommand="ShadowLength,0;zoom,0.6"
+    />
+</children> </ActorFrame>

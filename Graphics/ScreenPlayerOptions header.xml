@@ -1,0 +1,9 @@
+<ActorFrame> <children>
+	<Layer File="ScreenWithMenuElements header"/>	
+	<Layer
+		Type="BitmapText"
+		Text="PLAYER OPTIONS"
+		File="_wendy white"
+		OnCommand="diffuse,#FFFFFF;zoom,.4;shadowlength,0;horizalign,left;x,15;y,16"
+	/>
+</children> </ActorFrame>

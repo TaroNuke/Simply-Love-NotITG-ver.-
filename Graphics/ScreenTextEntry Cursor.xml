@@ -1,0 +1,3 @@
+<ActorFrame><children>
+	<Layer Type="Quad" InitCommand="diffuse,0.5,0.5,1,0.7;zoomtowidth,30;zoomtoheight,28;y,13" />
+</children></ActorFrame>

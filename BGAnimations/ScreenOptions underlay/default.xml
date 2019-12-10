@@ -1,0 +1,10 @@
+<ActorFrame> <children>
+
+	<Layer Type="Quad" Command="diffuse,#1E282F66;stretchto,SCREEN_CENTER_X-310,438,SCREEN_CENTER_X+310,388"
+		OffCommand="linear,0.3;diffusealpha,0"
+	/>
+	<Layer File="stuff.png" Command="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y"
+		OffCommand="linear,0.3;diffusealpha,0"
+	/>
+	
+	</children></ActorFrame> 

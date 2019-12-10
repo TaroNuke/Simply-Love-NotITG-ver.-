@@ -1,0 +1,24 @@
+<ActorFrame><children>
+	<ActorFrame UpdateCommand="%DifficultyList" />
+	<Layer Condition="GAMESTATE:IsPlayerEnabled(PLAYER_1)" File="cursor p1" UpdateCommand="y,(listPointerY[1]-1)*19.3" Command="x,-34;zoom,.8;bounce;effectmagnitude,-8,0,0;effectperiod,1.0;effectoffset,0.2;effectclock,bgm" />
+	<Layer Condition="GAMESTATE:IsPlayerEnabled(PLAYER_2)" File="cursor p2" UpdateCommand="y,(listPointerY[2]-1)*19.3" Command="x,233;zoom,.8;bounce;effectmagnitude,8,0,0;effectperiod,1.0;effectoffset,0.2;effectclock,bgm" />
+	<Layer Type="ActorFrame" Command="zoomx,.64" ><children>
+		<Layer File="Difficulty Blank" InitCommand="aux,1;zoomy,feetBaseZoom;zoomx,feetBaseZoom*20;customtexturerect,0,0,20,1;queuecommand,Go" GoCommand="%function(self) DifficultyListCommand(self) end" />
+		<Layer File="Difficulty Blank" InitCommand="aux,2;zoomy,feetBaseZoom;zoomx,feetBaseZoom*20;customtexturerect,0,0,20,1;queuecommand,Go" GoCommand="%function(self) DifficultyListCommand(self) end" />
+		<Layer File="Difficulty Blank" InitCommand="aux,3;zoomy,feetBaseZoom;zoomx,feetBaseZoom*20;customtexturerect,0,0,20,1;queuecommand,Go" GoCommand="%function(self) DifficultyListCommand(self) end" />
+		<Layer File="Difficulty Blank" InitCommand="aux,4;zoomy,feetBaseZoom;zoomx,feetBaseZoom*20;customtexturerect,0,0,20,1;queuecommand,Go" GoCommand="%function(self) DifficultyListCommand(self) end" />
+		<Layer File="Difficulty Blank" InitCommand="aux,5;zoomy,feetBaseZoom;zoomx,feetBaseZoom*20;customtexturerect,0,0,20,1;queuecommand,Go" GoCommand="%function(self) DifficultyListCommand(self) end" />
+
+		
+		<Layer File="@'DifficultyList'..Color()..' 1x8.png'" InitCommand="aux,1" UpdateCommand="%function(self) DifficultyListCommand(self,'feet') end" />
+		<Layer File="@'DifficultyList'..Color()..' 1x8.png'" InitCommand="aux,2" UpdateCommand="%function(self) DifficultyListCommand(self,'feet') end" />
+		<Layer File="@'DifficultyList'..Color()..' 1x8.png'" InitCommand="aux,3" UpdateCommand="%function(self) DifficultyListCommand(self,'feet') end" />
+		<Layer File="@'DifficultyList'..Color()..' 1x8.png'" InitCommand="aux,4" UpdateCommand="%function(self) DifficultyListCommand(self,'feet') end" />
+		<Layer File="@'DifficultyList'..Color()..' 1x8.png'" InitCommand="aux,5" UpdateCommand="%function(self) DifficultyListCommand(self,'feet') end" />
+	</children></Layer>
+	<Layer Font="_wendywhite numbers" Text="" InitCommand="aux,1" UpdateCommand="%function(self) DifficultyListCommand(self,'meter') end" />
+	<Layer Font="_wendywhite numbers" Text="" InitCommand="aux,2" UpdateCommand="%function(self) DifficultyListCommand(self,'meter') end" />
+	<Layer Font="_wendywhite numbers" Text="" InitCommand="aux,3" UpdateCommand="%function(self) DifficultyListCommand(self,'meter') end" />
+	<Layer Font="_wendywhite numbers" Text="" InitCommand="aux,4" UpdateCommand="%function(self) DifficultyListCommand(self,'meter') end" />
+	<Layer Font="_wendywhite numbers" Text="" InitCommand="aux,5" UpdateCommand="%function(self) DifficultyListCommand(self,'meter') end" />
+</children></ActorFrame>

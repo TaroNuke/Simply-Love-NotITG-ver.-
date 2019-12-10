@@ -1,0 +1,10 @@
+<ActorFrame><children>
+	<BitampText
+		Text="special courses with added modifiers"
+		File="_misoreg small"
+		InitCommand="addx,100;zoom,0.5;shadowlength,0"
+		GainFocusCommand="hidden,0;finishtweening;diffusealpha,0;accelerate,0.5;diffusealpha,1"
+		LoseFocusCommand="hidden,1"
+		OffCommand="linear,0.3;diffusealpha,0"
+	/>
+</children></ActorFrame>

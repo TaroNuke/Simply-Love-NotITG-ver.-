@@ -1,0 +1,10 @@
+<ActorFrame> <children>
+	<Layer File="ScreenWithMenuElements header"/>	
+	<Layer
+		Type="BitmapText"
+		Text="TEST LIGHTS"
+		File="_wendy white"
+		OnCommand="diffuse,#FFFFFF;zoom,.4;shadowlength,0;horizalign,left;x,15;y,16"
+		OffCommand="linear,0.2;diffusealpha,0"
+	/>
+</children> </ActorFrame>

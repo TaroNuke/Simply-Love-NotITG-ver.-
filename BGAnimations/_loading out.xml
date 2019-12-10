@@ -1,0 +1,4 @@
+<ActorFrame><children>
+	<Layer File="_Fade Out" /> 
+	<Layer File="_moveon" Command="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;diffusealpha,0;linear,0.1;diffusealpha,1" />
+</children></ActorFrame>

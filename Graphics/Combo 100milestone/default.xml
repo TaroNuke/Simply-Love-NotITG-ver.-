@@ -1,0 +1,22 @@
+<ActorFrame><children>
+	<Actor
+		File="explosion"
+		InitCommand="diffusealpha,0;blend,add"
+		MilestoneCommand="rotationz,0;zoom,2;diffusealpha,0.5;linear,0.5;rotationz,90;zoom,1;diffusealpha,0"
+	/>
+	<Actor
+		File="explosion"
+		InitCommand="diffusealpha,0;blend,add"
+		MilestoneCommand="rotationz,0;zoom,2;diffusealpha,0.5;linear,0.5;rotationz,-90;zoom,1;diffusealpha,0"
+	/>
+		<Actor
+		File="heartsplode"
+		InitCommand="diffusealpha,0;blend,add"
+		MilestoneCommand="@'diffuse,'..DifficultyColor(3)..';rotationz,10;zoom,.25;diffusealpha,0.6;decelerate,0.6;rotationz,0;zoom,2;diffusealpha,0'"
+	/>
+		<Actor
+		File="minisplode"
+		InitCommand="diffusealpha,0;blend,add"
+		MilestoneCommand="@'diffuse,'..DifficultyColor(3)..';rotationz,10;zoom,.25;diffusealpha,1;linear,0.4;rotationz,0;zoom,1.8;diffusealpha,0'"
+	/>	
+</children></ActorFrame>

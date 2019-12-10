@@ -1,0 +1,224 @@
+<ActorFrame><children>
+
+	<Layer
+		File="bg.png"
+		OnCommand="x,320;y,240"
+		Condition="not string.find(string.lower(GAMESTATE:GetCurrentSong():GetDisplayMainTitle()), 'ataraxia') and not string.find(string.lower(GAMESTATE:GetCurrentSong():GetDisplayMainTitle()), 'reverse')"
+	/>
+	<Layer
+		File="finalbg.png"
+		OnCommand="x,320;y,240"
+		Condition="string.find(string.lower(GAMESTATE:GetCurrentSong():GetDisplayMainTitle()), 'ataraxia')"
+	/>
+	<Layer
+		File="endbg.png"
+		OnCommand="x,320;y,240"
+		Condition="string.find(string.lower(GAMESTATE:GetCurrentSong():GetDisplayMainTitle()), 'reverse')"
+	/>
+	
+	<Layer
+		File="songs"
+		OnCommand="%function (self)
+			self:x(352);
+			self:y(84);
+			self:animate(0);
+			self:horizalign('left');
+			if string.find(string.lower(GAMESTATE:GetCurrentSong():GetDisplayMainTitle()), 'undead') then
+				self:setstate(0);
+			elseif string.find(string.lower(GAMESTATE:GetCurrentSong():GetDisplayMainTitle()), 'koneko') then
+				self:setstate(1);
+			elseif string.find(string.lower(GAMESTATE:GetCurrentSong():GetDisplayMainTitle()), 'mawaru') then
+				self:setstate(2);
+			elseif string.find(string.lower(GAMESTATE:GetCurrentSong():GetDisplayMainTitle()), 'saitama') then
+				self:setstate(3);
+			elseif string.find(string.lower(GAMESTATE:GetCurrentSong():GetDisplayMainTitle()), 'ataraxia') then
+				self:setstate(5);
+			else
+				MESSAGEMAN:Broadcast('NotText')
+				self:diffusealpha(0);
+			end
+		end"
+	/>
+	<Layer
+		File="_eurostile outline"
+		Text=""
+		OnCommand="shadowlength,0;zoom,0.9;x,345;y,84;diffuse,1,0.4,0,1;horizalign,left;maxwidth,300/0.9"
+		NotTextMessageCommand="%function (self)
+			if GAMESTATE:GetCurrentCourse() then
+				self:settext(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle());
+			else
+				self:settext(GAMESTATE:GetCurrentSong():GetDisplayMainTitle());
+			end
+		end"
+	/>
+	
+	<Layer Type="ActorFrame" Condition="GAMESTATE:IsHumanPlayer(0)"> <children>
+		<Layer
+			File="_eurostile outline"
+			Text="@GetScoreOfPlayerNoP(PLAYER_1)"
+			OnCommand="shadowlength,0;zoom,1;
+			x,390;y,166;"
+		/>
+		<Layer
+			File="_eurostile outline"
+			Text="@GetNotesFantasticHit(self,PLAYER_1)"
+			OnCommand="shadowlength,0;zoom,0.8;diffuse,1,1,1,1;horizalign,right;
+			x,410;y,234+(21*0);"
+		/>
+		<Layer
+			File="_eurostile outline"
+			Text="@GetNotesExcellentHit(self,PLAYER_1)"
+			OnCommand="shadowlength,0;zoom,0.8;diffuse,1,1,1,1;horizalign,right;
+			x,410;y,234+(21*1);"
+		/>
+		<Layer
+			File="_eurostile outline"
+			Text="@GetNotesGreatHit(self,PLAYER_1)"
+			OnCommand="shadowlength,0;zoom,0.8;diffuse,1,1,1,1;horizalign,right;
+			x,410;y,234+(21*2);"
+		/>
+		<Layer
+			File="_eurostile outline"
+			Text="@GetNotesDecentHit(self,PLAYER_1)"
+			OnCommand="shadowlength,0;zoom,0.8;diffuse,1,1,1,1;horizalign,right;
+			x,410;y,234+(21*3);"
+		/>
+		<Layer
+			File="_eurostile outline"
+			Text="@GetNotesWayOffHit(self,PLAYER_1)"
+			OnCommand="shadowlength,0;zoom,0.8;diffuse,1,1,1,1;horizalign,right;
+			x,410;y,234+(21*4);"
+		/>
+		<Layer
+			File="_eurostile outline"
+			Text="@GetNotesMissed(self,PLAYER_1)"
+			OnCommand="shadowlength,0;zoom,0.8;diffuse,1,1,1,1;horizalign,right;
+			x,410;y,234+(21*5);"
+		/>
+	</children> </Layer>
+	
+	<Layer Type="ActorFrame" Condition="GAMESTATE:IsHumanPlayer(1)"> <children>
+		<Layer
+			File="_eurostile outline"
+			Text="@GetScoreOfPlayerNoP(PLAYER_2)"
+			OnCommand="shadowlength,0;zoom,1;
+			x,560;y,166;"
+		/>
+		<Layer
+			File="_eurostile outline"
+			Text="@GetNotesFantasticHit(self,PLAYER_2)"
+			OnCommand="shadowlength,0;zoom,0.8;diffuse,1,1,1,1;horizalign,left;
+			x,534;y,234+(21*0);"
+		/>
+		<Layer
+			File="_eurostile outline"
+			Text="@GetNotesExcellentHit(self,PLAYER_2)"
+			OnCommand="shadowlength,0;zoom,0.8;diffuse,1,1,1,1;horizalign,left;
+			x,534;y,234+(21*1);"
+		/>
+		<Layer
+			File="_eurostile outline"
+			Text="@GetNotesGreatHit(self,PLAYER_2)"
+			OnCommand="shadowlength,0;zoom,0.8;diffuse,1,1,1,1;horizalign,left;
+			x,534;y,234+(21*2);"
+		/>
+		<Layer
+			File="_eurostile outline"
+			Text="@GetNotesDecentHit(self,PLAYER_2)"
+			OnCommand="shadowlength,0;zoom,0.8;diffuse,1,1,1,1;horizalign,left;
+			x,534;y,234+(21*3);"
+		/>
+		<Layer
+			File="_eurostile outline"
+			Text="@GetNotesWayOffHit(self,PLAYER_2)"
+			OnCommand="shadowlength,0;zoom,0.8;diffuse,1,1,1,1;horizalign,left;
+			x,534;y,234+(21*4);"
+		/>
+		<Layer
+			File="_eurostile outline"
+			Text="@GetNotesMissed(self,PLAYER_2)"
+			OnCommand="shadowlength,0;zoom,0.8;diffuse,1,1,1,1;horizalign,left;
+			x,534;y,234+(21*5);"
+		/>
+	</children> </Layer>
+	
+	<Layer Type="ActorFrame" Condition="string.find(string.lower(GAMESTATE:GetCurrentSong():GetDisplayMainTitle()), 'mawaru') or
+	string.find(string.lower(GAMESTATE:GetCurrentSong():GetDisplayMainTitle()), 'yej') or
+	string.find(string.lower(GAMESTATE:GetCurrentSong():GetDisplayMainTitle()), 'mind of ataraxia')"> <children>
+		<Layer
+			File="bonus"
+			OnCommand="x,472;y,372;animate,0;setstate,0;"
+		/>
+		
+		<Layer Type="ActorFrame" Condition="string.find(string.lower(GAMESTATE:GetCurrentSong():GetDisplayMainTitle()), 'mawaru')"> <children>
+		<Layer
+			Condition="GAMESTATE:IsHumanPlayer(0)"
+			File="_eurostile outline"
+			Text="@(mawaru_P1_mb*5)..'+'..mawaru_P1[6]"
+			OnCommand="shadowlength,0;zoom,0.8;diffuse,1,1,1,1;horizalign,right;
+			x,410;y,372;"
+		/>
+		<Layer
+			Condition="GAMESTATE:IsHumanPlayer(1)"
+			File="_eurostile outline"
+			Text="@(mawaru_P2_mb*5)..'+'..mawaru_P2[6]"
+			OnCommand="shadowlength,0;zoom,0.8;diffuse,1,1,1,1;horizalign,left;
+			x,534;y,372;"
+		/>
+		</children> </Layer>
+		
+		<Layer Type="ActorFrame" Condition="string.find(string.lower(GAMESTATE:GetCurrentSong():GetDisplayMainTitle()), 'yej')"> <children>
+		<Layer
+			Condition="GAMESTATE:IsHumanPlayer(0)"
+			File="_eurostile outline"
+			Text="@yejnej_P1"
+			OnCommand="shadowlength,0;zoom,0.8;diffuse,1,1,1,1;horizalign,right;
+			x,410;y,372;"
+		/>
+		<Layer
+			Condition="GAMESTATE:IsHumanPlayer(1)"
+			File="_eurostile outline"
+			Text="@yejnej_P1"
+			OnCommand="shadowlength,0;zoom,0.8;diffuse,1,1,1,1;horizalign,left;
+			x,534;y,372;"
+		/>
+		</children> </Layer>
+		
+		<Layer Type="ActorFrame" Condition="string.find(string.lower(GAMESTATE:GetCurrentSong():GetDisplayMainTitle()), 'mind of ataraxia')"> <children>
+		<Layer
+			Condition="GAMESTATE:IsHumanPlayer(0)"
+			File="_eurostile outline"
+			Text="@zeru_p1bonus"
+			OnCommand="shadowlength,0;zoom,0.8;diffuse,1,1,1,1;horizalign,right;
+			x,410;y,372;"
+		/>
+		<Layer
+			Condition="GAMESTATE:IsHumanPlayer(1)"
+			File="_eurostile outline"
+			Text="@zeru_p2bonus"
+			OnCommand="shadowlength,0;zoom,0.8;diffuse,1,1,1,1;horizalign,left;
+			x,534;y,372;"
+		/>
+		</children> </Layer>
+		
+		<Layer
+			Type="Quad"
+			OnCommand="zoomtowidth,320;zoomtoheight,42;x,480;y,372;diffuse,0,0,0,1;sleep,5;linear,1;diffusealpha,0;"
+		/>
+		
+	</children> </Layer>
+	
+	<Layer
+		Type="Quad"
+		OnCommand="zoomtowidth,320;zoomtoheight,480;x,160;y,240;diffuse,0,0,0,1;sleep,0.5;linear,1;diffusealpha,0;"
+	/>
+	<Layer
+		Type="Quad"
+		OnCommand="zoomtowidth,320;zoomtoheight,480;x,480;y,240;fadetop,0.1;croptop,-0.1;diffuse,0,0,0,1;sleep,2.5;linear,1.2;croptop,1.1;"
+	/>
+	<Layer
+		Type="Quad"
+		OnCommand="zoomtowidth,320;zoomtoheight,50;x,480;y,168;diffuse,0,0,0,1;sleep,4;linear,1;diffusealpha,0;"
+	/>
+	
+</children></ActorFrame>

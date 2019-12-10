@@ -1,0 +1,1 @@
+<Quad InitCommand="zoomtowidth,SCREEN_WIDTH;zoomtoheight,40;diffusebottomedge,0,0,0,1;queuecommand,GlobalClock" GlobalClockMessageCommand="%function(self) if not GlobalClock then GlobalClock = self; self:effectperiod(1000000) end end" />

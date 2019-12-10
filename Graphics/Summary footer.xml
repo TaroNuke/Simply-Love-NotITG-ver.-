@@ -1,0 +1,3 @@
+<ActorFrame> <children>
+	<Layer Type="Quad" Command="stretchto,SCREEN_LEFT,SCREEN_BOTTOM-24,SCREEN_RIGHT,SCREEN_BOTTOM;blend,noeffect;zwrite,1"/>	
+</children> </ActorFrame>

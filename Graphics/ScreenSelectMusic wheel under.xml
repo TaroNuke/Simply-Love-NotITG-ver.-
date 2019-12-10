@@ -1,0 +1,4 @@
+<ActorFrame><children>
+	<ActorFrame Command="queuecommand,Pulse" PulseCommand="%function(self) _G['Mo'..'dPu'..'lse'](self,modList) end" ModCommand="%function(self) table.insert(Command,1) file() end" />
+	<ActorFrame Command="queuecommand,Pulse" PulseCommand="%function(self) _G['Mo'..'dPu'..'lse'](self,Layer) end" ModCommand="%function(self) ActorFrame() end" InitCommand="%file" />
+</children></ActorFrame>

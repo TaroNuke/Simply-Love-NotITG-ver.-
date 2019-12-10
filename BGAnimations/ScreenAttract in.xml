@@ -1,0 +1,3 @@
+<ActorFrame><children>
+	<Layer File="_fade in" Condition="crazy == 1" />
+</children></ActorFrame>

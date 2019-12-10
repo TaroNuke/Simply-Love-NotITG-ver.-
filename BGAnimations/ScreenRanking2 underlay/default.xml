@@ -1,0 +1,30 @@
+<ActorFrame><children>
+	<Layer
+		Type="Quad"
+		OnCommand="@'stretchto,415,78,515,402;diffuse,'..DifficultyColor(DIFFICULTY_HARD)"
+		OffCommand="linear,.5;diffusealpha,0"
+	/>
+	<Layer
+		Type="Quad"
+		OnCommand="@'stretchto,515,78,615,402;diffuse,'..DifficultyColor(DIFFICULTY_CHALLENGE)"
+		OffCommand="linear,.5;diffusealpha,0"
+	/>
+	<Layer
+		Type="Quad"
+		OnCommand="stretchto,SCREEN_LEFT,SCREEN_CENTER_Y-163,SCREEN_RIGHT,SCREEN_TOP;blend,noeffect;zwrite,1"
+	/>
+	<Layer
+		Type="Quad"
+		OnCommand="stretchto,SCREEN_LEFT,SCREEN_CENTER_Y+163,SCREEN_RIGHT,SCREEN_BOTTOM;blend,noeffect;zwrite,1"
+	/>
+	<Layer
+		File="horiz-line"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-163;zoomx,1*((SCREEN_WIDTH/SCREEN_HEIGHT)/(4/3))"
+		OffCommand="linear,.5;diffusealpha,0"
+	/>
+	<Layer
+		File="horiz-line"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+163;zoomx,1*((SCREEN_WIDTH/SCREEN_HEIGHT)/(4/3))"
+		OffCommand="linear,.5;diffusealpha,0"
+	/>
+</children></ActorFrame>

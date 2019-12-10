@@ -1,0 +1,17 @@
+<ActorFrame> <children>
+	<Layer Type="ActorFrame" OnCommand="x,-70;y,-97"> <children>
+		<Layer Type="BitmapText" Font="_misoreg white" Text="FANTASTIC"	OnCommand="y,27*0;zoom,0.35;horizalign,right;ShadowLength,0" />
+		<Layer Type="BitmapText" Font="_misoreg white" Text="EXCELLENT"	OnCommand="y,27*1;zoom,0.35;horizalign,right;ShadowLength,0" />
+		<Layer Type="BitmapText" Font="_misoreg white" Text="GREAT"		OnCommand="y,27*2;zoom,0.35;horizalign,right;ShadowLength,0" />
+		<Layer Type="BitmapText" Font="_misoreg white" Text="DECENT"	OnCommand="y,27*3;zoom,0.35;horizalign,right;ShadowLength,0" InitCommand="%function(self) if not Decents() then self:diffuse(.5,.5,.5,.5) end end" />
+		<Layer Type="BitmapText" Font="_misoreg white" Text="WAY OFF"	OnCommand="y,27*4;zoom,0.35;horizalign,right;ShadowLength,0" InitCommand="%function(self) if not WayOffs() then self:diffuse(.5,.5,.5,.5) end end" />
+		<Layer Type="BitmapText" Font="_misoreg white" Text="MISS"		OnCommand="y,27*5;zoom,0.35;horizalign,right;ShadowLength,0" />
+	</children> </Layer>
+	<Layer Type="ActorFrame" OnCommand="x,65;y,-97"> <children>
+		<Layer Type="BitmapText" Font="_misoreg white" Text="holds"		OnCommand="y,27*2;zoom,0.35;horizalign,right;ShadowLength,0" />
+		<Layer Type="BitmapText" Font="_misoreg white" Text="mines"		OnCommand="y,27*3;zoom,0.35;horizalign,right;ShadowLength,0" />
+		<Layer Type="BitmapText" Font="_misoreg white" Text="hands"		OnCommand="y,27*4;zoom,0.35;horizalign,right;ShadowLength,0" />
+		<Layer Type="BitmapText" Font="_misoreg white" Text="rolls"		OnCommand="y,27*5;zoom,0.35;horizalign,right;ShadowLength,0" />
+	</children> </Layer>
+</children> </ActorFrame>
+

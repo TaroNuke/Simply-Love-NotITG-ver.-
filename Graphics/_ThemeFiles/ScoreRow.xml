@@ -1,0 +1,39 @@
+<ActorFrame><children>
+	<Layer Type="Quad" InitCommand="stretchto,-300,-43,300,42;diffuse,0,0,0,0.5" />
+
+	<Layer File="../_blank" Type="Sprite" 			SetCommand="%function(self) local path = AllScores[k]['Song']:GetBannerPath() if path then self:Load(path) else self:Load(Path('BGAnimations','ScreenSelectMusic underlay/Banner'..Color()..'.png')) end self:scaletoclipped(125,50) end" />
+    <Layer Font="_misobold small" Text="Song"		InitCommand="zoom,.45;shadowlength,0;y,-38"	SetCommand="%function(self) self:settext(AllScores[k]['Song']:GetDisplayFullTitle()) end"/>
+    <Layer Font="_misobold small" Text="BPMandRate"	InitCommand="zoom,.35;shadowlength,0;y,27"	SetCommand="%function(self) bpm = AllScores[k]['BPM'] local rate = modRate modRate = AllScores[k]['Rate'] local s = AdjustedBPM() .. ' bpm ' .. RateModAppend() modRate = rate s = string.gsub(s,' Music','') self:settext(s) end"/>
+
+	<ActorFrame InitCommand="%function() function CommonEval(self,i) self:zoom(0.15) self:shadowlength(0) self:y(-28+8*i) self:horizalign('right') end end" />
+	<Layer Type="ActorFrame" Condition="GAMESTATE:IsPlayerEnabled(PLAYER_1)" ><children>
+		<Layer Font="_wendy score" 			Text="ScoreP1"	InitCommand="x,-70;horizalign,right;zoom,.33;shadowlength,0;y,-15"	SetCommand="%function(self) self:settext(string.format('%01.2f',AllScores[k]['Score'][1])) if AllScores[k]['Fail'][1] then self:diffuse(1,0,0,1) end end"/>
+		<Layer Font="_wendywhite numbers" 	Text="MeterP1"	InitCommand="x,-70;horizalign,right;zoom,.2;shadowlength,0;y,5"		SetCommand="%function(self) self:settext(AllScores[k]['Steps'][1]:GetMeter()) self:diffuse(DifficultyColorRGB(AllScores[k]['Steps'][1]:GetDifficulty())) end"/>
+		<Layer Font="_misobold small" 		Text="DescrP1"	InitCommand="x,-70;horizalign,right;zoom,.35;shadowlength,0;y,14"	SetCommand="%function(self) self:settext(MaxLength(AllScores[k]['Steps'][1]:GetDescription(),19)) end"/>
+		
+		<ActorFrame SetCommand="%function() judgeIndex = 1; local pn = 1; function JudgeFunction(self) CommonEval(self,judgeIndex) self:x(-185) local s = AllScores[k]['Judge'][pn][judgeIndex] if judgeIndex <= 6 then s = string.gsub(s,' ','') self:diffuse(JudgmentColor(judgeIndex)) else self:diffuse(0.6,0.6,0.6,1) end self:settext(s) judgeIndex = judgeIndex + 1  end end" />
+		<Layer Font="ScreenEvaluation judge" Text="" SetCommand="%function(self) JudgeFunction(self) end" />
+		<Layer Font="ScreenEvaluation judge" Text="" SetCommand="%function(self) JudgeFunction(self) end" />
+		<Layer Font="ScreenEvaluation judge" Text="" SetCommand="%function(self) JudgeFunction(self) end" />
+		<Layer Font="ScreenEvaluation judge" Text="" SetCommand="%function(self) JudgeFunction(self) end" />
+		<Layer Font="ScreenEvaluation judge" Text="" SetCommand="%function(self) JudgeFunction(self) end" />
+		<Layer Font="ScreenEvaluation judge" Text="" SetCommand="%function(self) JudgeFunction(self) end" />
+
+	</children></Layer>
+
+	<Layer Type="ActorFrame" Condition="GAMESTATE:IsPlayerEnabled(PLAYER_2)" ><children>
+		<Layer Font="_wendy score"			Text="ScoreP2"	InitCommand="x,70;horizalign,left;zoom,.33;shadowlength,0;y,-15" 	SetCommand="%function(self) self:settext(string.format('%01.2f',AllScores[k]['Score'][2])) if AllScores[k]['Fail'][2] then self:diffuse(1,0,0,1) end end"/>
+		<Layer Font="_wendywhite numbers"	Text="MeterP2"	InitCommand="x,70;horizalign,left;zoom,.2;shadowlength,0;y,5"		SetCommand="%function(self) self:settext(AllScores[k]['Steps'][2]:GetMeter()) self:diffuse(DifficultyColorRGB(AllScores[k]['Steps'][2]:GetDifficulty())) end"/>
+		<Layer Font="_misobold small"		Text="DescrP2"	InitCommand="x,70;horizalign,left;zoom,.35;shadowlength,0;y,14"		SetCommand="%function(self) self:settext(MaxLength(AllScores[k]['Steps'][2]:GetDescription(),19)) end"/>
+
+		<ActorFrame SetCommand="%function() judgeIndex = 1; local pn = 2; function JudgeFunction(self) CommonEval(self,judgeIndex) self:x(212) local s = AllScores[k]['Judge'][pn][judgeIndex] if judgeIndex <= 6 then s = string.gsub(s,' ','') self:diffuse(JudgmentColor(judgeIndex)) else self:diffuse(0.6,0.6,0.6,1) end self:settext(s) judgeIndex = judgeIndex + 1  end end" />
+		<Layer Font="ScreenEvaluation judge" Text="" SetCommand="%function(self) JudgeFunction(self) end" />
+		<Layer Font="ScreenEvaluation judge" Text="" SetCommand="%function(self) JudgeFunction(self) end" />
+		<Layer Font="ScreenEvaluation judge" Text="" SetCommand="%function(self) JudgeFunction(self) end" />
+		<Layer Font="ScreenEvaluation judge" Text="" SetCommand="%function(self) JudgeFunction(self) end" />
+		<Layer Font="ScreenEvaluation judge" Text="" SetCommand="%function(self) JudgeFunction(self) end" />
+		<Layer Font="ScreenEvaluation judge" Text="" SetCommand="%function(self) JudgeFunction(self) end" />
+		
+	</children></Layer>
+		
+</children></ActorFrame>

@@ -1,0 +1,36 @@
+<ActorFrame><children>
+	<Layer Type="Quad" Command="diffuse,#FFFFFFA0;stretchto,SCREEN_LEFT,SCREEN_BOTTOM-24,SCREEN_RIGHT,SCREEN_BOTTOM;linear,.5;diffuse,#FFFFFF00"/>	
+	<Layer Type="Quad" Command="diffuse,#FFFFFFA0;stretchto,SCREEN_LEFT,SCREEN_TOP+32,SCREEN_RIGHT,SCREEN_TOP;linear,.5;diffuse,#FFFFFF00"/>	
+	<Actor
+		File="../ScreenWithMenuElements underlay"
+	/>
+	<Actor
+		File="../_black"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;ZoomToWidth,SCREEN_WIDTH;ZoomToHeight,SCREEN_HEIGHT;diffusealpha,0;accelerate,0.5;diffusealpha,1"
+	/>
+	<Actor
+		File="heartsplode"
+		InitCommand="diffusealpha,0"
+		OnCommand="@'sleep,.4;diffuse,'..DifficultyColor(3)..';x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;rotationz,10;diffusealpha,0;zoom,0;diffusealpha,0.9;linear,0.6;rotationz,0;zoom,1.1;diffusealpha,0'"
+	/>
+	<Actor
+		File="heartsplode"
+		InitCommand="diffusealpha,0"
+		OnCommand="@'sleep,.4;diffuse,'..DifficultyColor(3)..';x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;rotationy,180;rotationz,-10;diffusealpha,0;zoom,0.2;diffusealpha,0.8;decelerate,0.6;rotationz,0;zoom,1.3;diffusealpha,0'"
+	/>		
+	<Actor
+		File="minisplode"
+		InitCommand="diffusealpha,0"
+		OnCommand="@'sleep,.4;diffuse,'..DifficultyColor(3)..';x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;rotationz,10;diffusealpha,0;zoom,0;diffusealpha,1;decelerate,0.8;rotationz,0;zoom,0.9;diffusealpha,0'"
+	/>
+	<Actor
+		Condition="not GAMESTATE:IsCourseMode()"
+		File="@'../../Graphics/ScreenGameplay stage '..GetStageText()"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;diffusealpha,0;accelerate,0.3;diffusealpha,1;playcommand,FadeIn"
+	/>
+	<Actor
+		Condition="GAMESTATE:IsCourseMode()"
+		File="../../Graphics/ScreenGameplay course song 1"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;diffusealpha,0;accelerate,0.3;diffusealpha,1"
+	/>
+</children></ActorFrame>

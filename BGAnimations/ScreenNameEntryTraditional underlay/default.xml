@@ -1,0 +1,39 @@
+<ActorFrame>
+	<children>
+	<Layer 
+		File="@'../ScreenSelectMusic underlay/Banner'..Color()..'.png'"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-125;scaletoclipped,278,109"
+		OffCommand=""
+	/>		
+
+	<ActorFrame
+Condition="GAMESTATE:IsPlayerEnabled(PLAYER_1)"> 
+	<children>
+		<ActorFrame Command="queuecommand,Color" ColorCommand="%function() s = SCREENMAN:GetTopScreen():GetChild('KeyboardP1') if s then s:GetChild('CursorP1'):diffuse(ColorRGB(1)) end end" />
+		<Layer Type="Quad" Command="diffuse,#1E282F00;stretchto,SCREEN_CENTER_X-310,180,SCREEN_CENTER_X-5,422;linear,.5;diffuse,#1E282F59"/>	
+	
+		<Layer Type="Quad" Command="diffuse,#00000000;stretchto,SCREEN_CENTER_X-310,117,SCREEN_CENTER_X-165,171;linear,.5;diffuse,#00000066"/>	
+		
+		<Layer Type="Quad" Command="diffuse,#00000000;stretchto,SCREEN_CENTER_X-310,236,SCREEN_CENTER_X-5,276;linear,.5;diffuse,#00000066"/>
+
+		<Layer Type="Quad" Command="diffuse,#00000000;stretchto,SCREEN_CENTER_X-310,180,SCREEN_CENTER_X-5,236;linear,.5;diffuse,#00000099"/>		
+		
+		
+	</children></ActorFrame>
+	
+<ActorFrame
+Condition="GAMESTATE:IsPlayerEnabled(PLAYER_2)"> 
+	<children>
+		<ActorFrame Command="queuecommand,Color" ColorCommand="%function() s = SCREENMAN:GetTopScreen():GetChild('KeyboardP2') if s then s:GetChild('CursorP2'):diffuse(ColorRGB(-1)) end end" />
+		<Layer Type="Quad" Command="diffuse,#1E282F00;stretchto,SCREEN_CENTER_X+5,180,SCREEN_CENTER_X+310,422;diffuse,#1E282F59"/>	
+		
+		<Layer Type="Quad" Command="diffuse,#00000000;stretchto,SCREEN_CENTER_X+165,117,SCREEN_CENTER_X+310,171;diffuse,#00000066"/>	
+		
+		<Layer Type="Quad" Command="diffuse,#00000000;stretchto,SCREEN_CENTER_X+5,236,SCREEN_CENTER_X+310,276;diffuse,#00000066"/>	
+		
+		<Layer Type="Quad" Command="diffuse,#00000000;stretchto,SCREEN_CENTER_X+5,180,SCREEN_CENTER_X+310,236;diffuse,#00000099"/>	
+		
+
+	
+	</children></ActorFrame>
+</children></ActorFrame>

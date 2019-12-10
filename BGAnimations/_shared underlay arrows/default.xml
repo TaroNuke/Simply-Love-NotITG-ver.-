@@ -1,0 +1,20 @@
+<ActorFrame><children>
+	<AutoActor
+		File="arrow"
+		InitCommand="x,SCREEN_CENTER_X-270;y,SCREEN_CENTER_Y"
+		MenuLeftP1MessageCommand="playcommand,Blink"
+		MenuLeftP2MessageCommand="playcommand,Blink"
+		BlinkCommand="finishtweening;zoom,1;glow,1,1,1,1;linear,0.2;glow,1,1,1,0;zoom,.8"
+		FinalMessageCommand="accelerate,.5;addx,-SCREEN_WIDTH/2"
+		LoadCommand="addx,-SCREEN_WIDTH/2;decelerate,.5;addx,SCREEN_WIDTH/2"
+	/>
+	<AutoActor
+		File="arrow"
+		InitCommand="x,SCREEN_CENTER_X+270;y,SCREEN_CENTER_Y;RotationZ,180"
+		MenuRightP1MessageCommand="playcommand,Blink"
+		MenuRightP2MessageCommand="playcommand,Blink"
+		BlinkCommand="finishtweening;zoom,1;glow,1,1,1,1;linear,0.2;glow,1,1,1,0;zoom,.8"
+		FinalMessageCommand="accelerate,.5;addx,SCREEN_WIDTH/2"
+		LoadCommand="addx,SCREEN_WIDTH/2;decelerate,.5;addx,-SCREEN_WIDTH/2"
+	/>
+</children></ActorFrame>

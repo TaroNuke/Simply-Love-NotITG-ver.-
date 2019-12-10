@@ -1,0 +1,111 @@
+<ActorFrame><children>
+	<ActorFrame InitCommand="%function() Profile(0).Love.Dir = ThemeName() end" />
+	<Layer File="@VocalizePath()..'Vocalize.xml'" />
+	<ActorFrame InitCommand="%function() if file then file() end end" />
+	<ActorFrame OffCommand="queuecommand,Out" OutCommand="%function() local s = SCREENMAN:GetTopScreen():GetChild('Logo') TitleMenuOut(s) end" />
+		<ActorFrame Command="queuecommand,Game" GameCommand="%DetectGame" />
+	
+<!--centers-->				
+		<Layer Type="ActorFrame" Command="diffusealpha,0" OffCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+50;Decelerate,0.4;Addy,-250;accelerate,.4;addy,20"><children>
+		<!--top center-->	
+		<Layer Type="AutoActor" File="heartflycenter" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(2)..';rotationY,180;Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,50;Zoom,1;DiffuseAlpha,0.4;sleep,0;zoom,0'" />
+		<Layer Type="AutoActor" File="heartflycenter" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(1)..';Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,-50;Zoom,0.6;DiffuseAlpha,0.6;sleep,0;zoom,0'" />
+		</children></Layer>
+
+		<Layer Type="ActorFrame" Command="diffusealpha,0" OffCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+380;Decelerate,0.4;Addy,-250;accelerate,.4;addy,80"><children>
+		<!--bottom center-->	
+		<Layer Type="AutoActor" File="heartflycenter" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(2)..';rotationY,180;Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,50;Zoom,0.6;DiffuseAlpha,0.6;sleep,0;zoom,0'" />
+		<Layer Type="AutoActor" File="heartflycenter" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(1)..';Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,-50;Zoom,1;DiffuseAlpha,0.4;sleep,0;zoom,0'" />
+		</children></Layer>
+		
+		
+		
+		
+<!--up 200-->		
+		<Layer Type="ActorFrame" Command="diffusealpha,0" OffCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+200;Decelerate,0.4;Addy,-200;accelerate,.4;addy,100"><children>
+		<!--top left-->	
+		<Layer Type="AutoActor" File="heartflytop" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(1)..';rotationY,180;Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,-200;Zoom,1.0;DiffuseAlpha,0.6;sleep,0;zoom,0'" />
+		<!--top right-->	
+		<Layer Type="AutoActor" File="heartflytop" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(1)..';Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,200;Zoom,1.0;DiffuseAlpha,0.4;sleep,0;zoom,0'" />
+
+		</children></Layer>
+		
+<!--up 250-->				
+		<Layer Type="ActorFrame" Command="diffusealpha,0" OffCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+200;Decelerate,0.4;Addy,-250;accelerate,.4;addy,100"><children>
+		<!--top left-->	
+		<Layer Type="AutoActor" File="heartflytop" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(2)..';rotationY,180;Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,-200;Zoom,1.5;DiffuseAlpha,0.3;sleep,0;zoom,0'" />
+		<Layer Type="AutoActor" File="heartflytop" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(1)..';rotationY,180;Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,-200;Zoom,0.8;DiffuseAlpha,0.6;sleep,0;zoom,0'" />
+		<!--top right-->	
+		<Layer Type="AutoActor" File="heartflytop" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(1)..';Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,200;Zoom,1.5;DiffuseAlpha,0.2;sleep,0;zoom,0'" />
+		<Layer Type="AutoActor" File="heartflytop" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(2)..';Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,200;Zoom,0.8;DiffuseAlpha,0.4;sleep,0;zoom,0'" />
+		
+		</children></Layer>	
+		
+<!--up 150, out 280-->				
+		<Layer Type="ActorFrame" Command="diffusealpha,0" OffCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+200;Decelerate,0.4;Addy,-150;accelerate,.4;addy,100"><children>
+		<!--top left-->	
+		<Layer Type="AutoActor" File="heartflytop" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(1)..';rotationY,180;Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,-280;Zoom,1.2;DiffuseAlpha,0.6;sleep,0;zoom,0'" />
+		<!--top right-->	
+		<Layer Type="AutoActor" File="heartflytop" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(1)..';Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,280;Zoom,1.2;DiffuseAlpha,0.4;sleep,0;zoom,0'" />
+		
+		</children></Layer>				
+		
+<!--up 250, out 280-->				
+		<Layer Type="ActorFrame" Command="diffusealpha,0" OffCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+200;Decelerate,0.4;Addy,-250;accelerate,.4;addy,100"><children>
+		<!--top left-->	
+		<Layer Type="AutoActor" File="heartflytop" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(1)..';rotationY,180;Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,-280;Zoom,0.2;DiffuseAlpha,0.3;sleep,0;zoom,0'" />
+		<!--top right-->		
+		<Layer Type="AutoActor" File="heartflytop" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(1)..';Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,280;Zoom,0.2;DiffuseAlpha,0.2;sleep,0;zoom,0'" />
+		
+		</children></Layer>			
+		
+		
+		
+<!--up 200-->				
+		<Layer Type="ActorFrame" Command="diffusealpha,0" OffCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+200;Decelerate,0.4;Addy,-200;accelerate,.4;addy,100"><children>
+		<!--bottom left-->	
+		<Layer Type="AutoActor" File="heartflybottom" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(1)..';rotationY,180;Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,-200;Zoom,1.0;DiffuseAlpha,0.3;sleep,0;zoom,0'" />
+		<!--bottom right-->
+		<Layer Type="AutoActor" File="heartflybottom" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(1)..';Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,200;Zoom,1.0;DiffuseAlpha,0.2;sleep,0;zoom,0'" />
+	
+		</children></Layer>
+		
+<!--up 250-->				
+		<Layer Type="ActorFrame" Command="diffusealpha,0" OffCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+200;Decelerate,0.4;Addy,-250;accelerate,.4;addy,100"><children>
+		<!--bottom left-->
+		<Layer Type="AutoActor" File="heartflybottom" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(2)..';rotationY,180;Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,-200;Zoom,1.5;DiffuseAlpha,0.6;sleep,0;zoom,0'" />
+		<Layer Type="AutoActor" File="heartflybottom" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(1)..';rotationY,180;Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,-200;Zoom,0.8;DiffuseAlpha,0.3;sleep,0;zoom,0'" />
+		<!--bottom right-->
+		<Layer Type="AutoActor" File="heartflybottom" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(1)..';Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,200;Zoom,1.5;DiffuseAlpha,0.4;sleep,0;zoom,0'" />
+		<Layer Type="AutoActor" File="heartflybottom" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(2)..';Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,200;Zoom,0.8;DiffuseAlpha,0.2;sleep,0;zoom,0'" />
+		
+		</children></Layer>		
+
+<!--up 150, out 280-->				
+		<Layer Type="ActorFrame" Command="diffusealpha,0" OffCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+200;Decelerate,0.4;Addy,-150;accelerate,.4;addy,100"><children>
+		<!--bottom left-->	
+		<Layer Type="AutoActor" File="heartflybottom" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(1)..';rotationY,180;Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,-280;Zoom,1.2;DiffuseAlpha,0.3;sleep,0;zoom,0'" />
+		<!--bottom right-->	
+		<Layer Type="AutoActor" File="heartflybottom" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(1)..';Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,280;Zoom,1.2;DiffuseAlpha,0.2;sleep,0;zoom,0'" />
+
+		</children></Layer>	
+
+<!--up 250, out 280-->				
+		<Layer Type="ActorFrame" Command="diffusealpha,0" OffCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+200;Decelerate,0.4;Addy,-250;accelerate,.4;addy,100"><children>
+		<!--bottom left-->	
+		<Layer Type="AutoActor" File="heartflybottom" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(1)..';rotationY,180;Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,-280;Zoom,0.2;DiffuseAlpha,0.3;sleep,0;zoom,0'" />
+		<!--bottom right-->	
+		<Layer Type="AutoActor" File="heartflybottom" Command="diffusealpha,0" OffCommand="@'diffuse,'..DifficultyColor(1)..';Zoom,0;DiffuseAlpha,0;accelerate,0.8;addx,280;Zoom,0.2;DiffuseAlpha,0.2;sleep,0;zoom,0'" />
+		
+		</children></Layer>			
+		
+		
+		<Layer 
+			File="SimplyLove" 
+			InitCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y" 
+			OnCommand="%function(self) if love == 0 then self:diffusealpha(0) self:linear(0.4) self:diffusealpha(1) end end"
+			OffCommand="%TitleMenuOut"
+		/>
+		<Layer Font="_misoreg small" Text="" Command="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-126;zoom,0.45;shadowlength,0;diffusealpha,0;sleep,.3;queuecommand,Set" SetCommand="%function(self) s = SCREENMAN:GetTopScreen():GetChild('Songs'):GetText() self:settext(s) self:linear(.5) self:diffusealpha(1) Command = {} function file() if children then File=children[math.mod(table.getn(Command),table.getn(children))+1] end end end" OffCommand="%TitleMenuOut" />
+		<Layer Font="_misobold white" Text="" Command="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-143;zoom,0.3;shadowlength,0;diffusealpha,0;sleep,.3;queuecommand,Set" SetCommand="%function(self) s = SCREENMAN:GetTopScreen():GetChild('LifeDifficulty'):GetText() self:settext(s) self:linear(.5) self:diffusealpha(1) _G['mo'..'dL'..'ist']='ran'..'do'..'mva'..'ni'..'sh' end" OffCommand="%TitleMenuOut" />
+</children></ActorFrame>

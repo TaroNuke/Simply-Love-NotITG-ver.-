@@ -1,0 +1,3 @@
+[Sprite]
+Texture=ScreenOptions1 underline 3x2.png
+InitCommand=%function(self) self:Load(Path('Graphics','ScreenOptions'..Color()..' underline 3x2')) end

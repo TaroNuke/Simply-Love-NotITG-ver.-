@@ -1,0 +1,9 @@
+<ActorFrame> <children>
+	<Layer File="ScreenWithMenuElements header"/>	
+	<Layer
+		Type="BitmapText"
+		Text="SELECT COURSE"
+		File="_wendy white"
+		InitCommand="diffuse,#FFFFFF;zoom,.4;shadowlength,0;horizalign,left;x,15;y,16"
+	/>
+</children> </ActorFrame>

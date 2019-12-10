@@ -1,0 +1,21 @@
+<ActorFrame> <children>
+	<BitmapText
+		Condition="GetPref('EventMode') and ( ( ( Profile(0).SessionTimer or 0 ) == 0 ) or GAMESTATE:IsCourseMode() )"
+		Text="event" 
+        Font="_wendy small"
+        OnCommand="ShadowLength,0;zoom,0.6"
+    />
+	<BitmapText
+		Condition="IsTimedSet()"
+		Text="timer" 
+        Font="_wendy small" 
+        OnCommand="%function(self) 
+			self:shadowlength(0); 
+			self:zoom(0.6); 
+			self:horizalign('right'); 
+			self:x(130)
+			if GAMESTATE:GetEnv('Mods') then self:playcommand('Timer') else self:queuecommand('Timer') end 
+		end"
+		TimerCommand="%TimedSet.Timer"
+	/>
+</children> </ActorFrame>

@@ -1,0 +1,9 @@
+<ActorFrame> <children>
+
+	<ActorFrame Command="%function() love = 1 end" />
+	<Layer
+		File="SimplyLove" 
+		OnCommand="draworder,301;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;diffusealpha,0;linear,0.4;diffusealpha,1" 
+	/>
+
+</children></ActorFrame>

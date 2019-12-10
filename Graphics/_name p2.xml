@@ -1,0 +1,5 @@
+<ActorFrame> <children>
+
+	<Layer Type="BitmapText" Text="@GAMESTATE:GetPlayerDisplayName(PLAYER_2)" File="_wendy small" OnCommand="@'diffuse,' .. PlayerColor(PLAYER_2) .. ';ShadowLength,0;horizalign,right;zoom,0.5;x,0;y,0'"/>
+	
+	</children></ActorFrame> 

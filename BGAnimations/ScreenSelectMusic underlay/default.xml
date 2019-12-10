@@ -1,0 +1,35 @@
+<ActorFrame> <children>
+	<ActorFrame Command="queuecommand,Icon" IconCommand="%function() StyleIcon() end" />
+	<ActorFrame Command="%function() if GAMESTATE:GetCoinMode() == 1 and not GetPref('EventMode') then rateMods = rateModsPay else rateMods = rateModsFree end end" />
+	<Layer 
+		File="@'Banner'..Color()..'.png'"
+		OnCommand="x,SCREEN_CENTER_X-(SCREEN_WIDTH*160/640-3);y,SCREEN_CENTER_Y-138;ZoomToWidth,306;ZoomToHeight,119"
+		OffCommand=""
+	/>
+	<Layer Type="Quad"
+			OnCommand="diffuse,#1E282F;stretchto,SCREEN_CENTER_X-(SCREEN_WIDTH*160/640+150),172,SCREEN_CENTER_X-(SCREEN_WIDTH*160/640-156),220"
+	/>	
+	<Layer Type="Quad"
+			OnCommand="diffuse,#1E282F;stretchto,SCREEN_CENTER_X-(SCREEN_WIDTH*160/640+150),245,SCREEN_CENTER_X-(SCREEN_WIDTH*160/640-156),363"
+	/>	
+	
+	<Layer 
+		Type="BitmapText"
+		Font="_misoreg small"
+		Text="ARTIST"
+		OnCommand="horizalign,right;ShadowLength,0;diffuse,#FFFFFF66;zoom,0.5;x,SCREEN_CENTER_X-(SCREEN_WIDTH*160/640+105);y,180"
+	/>
+	<Layer 
+		Type="BitmapText"
+		Font="_misoreg small"
+		Text="BPM"
+		OnCommand="horizalign,right;ShadowLength,0;diffuse,#FFFFFF66;zoom,0.5;x,SCREEN_CENTER_X-(SCREEN_WIDTH*160/640+105);y,200"
+	/>
+	<Layer 
+		Type="BitmapText"
+		Font="_misoreg small"
+		Text="LENGTH"
+		OnCommand="ShadowLength,0;diffuse,#FFFFFF66;zoom,0.5;x,SCREEN_CENTER_X-(SCREEN_WIDTH*160/640);y,200"
+	/>
+	<ActorFrame InitCommand="%SelectMusicInit" FirstUpdateCommand="%SelectMusic" CaptureCommand="%SongInfo" CurrentSongChangedMessageCommand="queuecommand,Capture" CurrentStepsP1ChangedMessageCommand="queuecommand,Capture" CurrentStepsP2ChangedMessageCommand="queuecommand,Capture" />
+</children> </ActorFrame>

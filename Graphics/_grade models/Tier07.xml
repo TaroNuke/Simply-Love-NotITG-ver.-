@@ -1,0 +1,13 @@
+<ActorFrame>
+	<children>
+		<ActorFrame
+			OnCommand="zoom,0.85"
+		>
+			<children>
+				<Actor
+					File="s-minus.png"
+				/>
+			</children>
+		</ActorFrame>
+	</children>
+</ActorFrame>

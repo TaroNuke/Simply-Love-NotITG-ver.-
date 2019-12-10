@@ -1,0 +1,29 @@
+<ActorFrame> <children>
+	<BitmapText
+		Text="event::mode" 
+        Font="_wendy small" 
+		InitCommand="%function(self) 
+			self:shadowlength(0);
+			self:zoom(1.5);
+			self:vertalign('top');
+			self:y(-80);
+			if not GetPref('EventMode') then 
+				self:settext('SONG ' .. table.getn(AllScores)+1) 
+				-- self:y(-20);
+			elseif IsTimedSet() then 
+				self:settext('event') end 
+				-- self:y(-20);
+			end"
+        OnCommand=""
+		ShowCommand="y,-80"
+		FadeInCommand="diffusealpha,0;accelerate,0.3;diffusealpha,1"
+    />
+	<BitmapText
+		Condition="IsTimedSet()"
+		Text="timer"
+		Font="_wendy small" 
+        InitCommand="ShadowLength,0;zoom,1.5;y,36;hidden,1"
+		ShowCommand="hidden,0;playcommand,Timer"
+		TimerCommand="%TimedSet.Timer"
+	/>
+</children> </ActorFrame>

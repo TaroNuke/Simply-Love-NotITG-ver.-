@@ -1,0 +1,10 @@
+<ActorFrame> <children>
+	<Layer Type="Quad" Command="@'diffuse,'..DifficultyColor(2)..';stretchto,-108,-10,200,45'"/>	
+	<Layer 
+		Type="Quad" 
+		Command="stretchto,-108,-10,200,45;queuecommand,Set"
+		SetCommand="%function(self) self:diffuse(BubbleColorRGB(PLAYER_1)) end" 
+		CurrentSongChangedMessageCommand="playcommand,Set" 
+		CurrentStepsP1ChangedMessageCommand="playcommand,Set" 
+	/>	
+</children> </ActorFrame>

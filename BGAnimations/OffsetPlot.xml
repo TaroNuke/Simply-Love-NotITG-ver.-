@@ -1,0 +1,1082 @@
+<ActorFrame InitCommand="%function(self)
+	function math.round(num, numDecimalPlaces)
+	  local mult = 10^(numDecimalPlaces or 0)
+	  return math.floor(num * mult + 0.5) / mult
+	end
+	
+	oplot_plotWidth, oplot_plotHeight = 301,112
+	oplot_plotWidthSml, oplot_plotHeightSml = 150,112
+	oplot_xOffset, oplot_yOffset = 150, 0
+	oplot_dotDims, oplot_plotMargin = 2, 4
+	oplot_maxOffset = math.round(PREFSMAN:GetPreference('JudgeWindowScale')*PREFSMAN:GetPreference('JudgeWindowSecondsBoo')*1000)
+	
+	oplot_songs = STATSMAN:GetCurStageStats():GetPossibleSongs()
+	
+	oplot_finalSecond = 0
+	for i=1,table.getn(oplot_songs) do
+		oplot_finalSecond = oplot_finalSecond + oplot_songs[i]:StepsLengthSeconds()
+	end
+	
+	--so we're going to need to work out Start and End times for each segment using the list of songs
+	--we have a beat, and we have which song it's in
+	
+	function oplot_cumulativeTime(beat,song)
+		local starttime = 0
+		if GAMESTATE:IsCourseMode() then
+			if song > 0 then
+				for i=1,song do
+					starttime = starttime+oplot_songs[i]:StepsLengthSeconds()
+				end
+			end
+			return starttime + oplot_songs[song+1]:GetElapsedTimeFromBeat(beat)
+		else
+			return starttime + GAMESTATE:GetCurrentSong():GetElapsedTimeFromBeat(beat)
+		end
+	end
+	
+	oplot_spellCards = nil
+	
+	if not GAMESTATE:IsCourseMode() then
+		local s = GAMESTATE:GetCurrentSong()
+		oplot_spellCards = s:GetSpellCards()
+		
+		if table.getn(oplot_spellCards) == 0 then
+			oplot_spellCards = nil
+		end
+	end
+	
+	
+	function oplot_fitX(beat,song,w,xo,s,e)	-- Scale time values to fit within plot width.
+		if not w then w = oplot_plotWidth end
+		if not xo then xo = 0 end
+		local perc = 0
+		if s and e then
+			local bt = GAMESTATE:GetCurrentSong():GetElapsedTimeFromBeat(beat)
+			local st = GAMESTATE:GetCurrentSong():GetElapsedTimeFromBeat(s)
+			local et = GAMESTATE:GetCurrentSong():GetElapsedTimeFromBeat(e)
+			perc = (bt-st)/(et-st)
+		else
+			perc = oplot_cumulativeTime(beat,song)/oplot_finalSecond
+		end
+		
+		if not s then s = 0 end
+		if not e then e = oplot_finalSecond end
+		return perc*w - w/2 + xo
+	end
+	function oplot_fitXTime(t)	-- Scale time values to fit within plot width.
+		return t/oplot_finalSecond*oplot_plotWidth - oplot_plotWidth/2
+	end
+
+	function oplot_fitY(y,h,yo)	-- Scale offset values to fit within plot height
+		if not h then h = oplot_plotHeight end
+		if not yo then yo = 0 end
+		return -1*y/oplot_maxOffset*h/2 + yo
+	end
+	
+	oplot_hidden = {1,1}
+	curcard = {0,0}
+	
+	oplot_gw = {
+		PREFSMAN:GetPreference('PercentScoreWeightMarvelous'),
+		PREFSMAN:GetPreference('PercentScoreWeightPerfect'),
+		PREFSMAN:GetPreference('PercentScoreWeightGreat'),
+		PREFSMAN:GetPreference('PercentScoreWeightGood'),
+		PREFSMAN:GetPreference('PercentScoreWeightBoo'),
+		PREFSMAN:GetPreference('PercentScoreWeightMiss')
+	}
+	
+	function offsetToJudgeColor(offset,scale)
+		local offset = math.abs(offset)
+		if not scale then
+			scale = PREFSMAN:GetPreference('JudgeWindowScale')
+		end
+		if offset <= scale*PREFSMAN:GetPreference('JudgeWindowSecondsMarvelous') then
+			return 153/255,204/255,255/255,1
+		elseif offset <= scale*PREFSMAN:GetPreference('JudgeWindowSecondsPerfect') then
+			return 242/255,203/255,048/255,1
+		elseif offset <= scale*PREFSMAN:GetPreference('JudgeWindowSecondsGreat') then
+			return 134/255,249/255,168/255,1
+		elseif offset <= scale*PREFSMAN:GetPreference('JudgeWindowSecondsGood') then
+			return 196/255,133/255,255/255,1
+		elseif offset <= scale*PREFSMAN:GetPreference('JudgeWindowSecondsBoo') then
+			return 201/255,066/255,016/255,1
+		else
+			return 201/255,041/255,041/255,1
+		end
+	end
+	
+	function gradeToJudgeColor(grade)
+		if grade == 1 then
+			return 153/255,204/255,255/255,1
+		elseif grade == 2 then
+			return 242/255,203/255,048/255,1
+		elseif grade == 3 then
+			return 134/255,249/255,168/255,1
+		elseif grade == 4 then
+			return 196/255,133/255,255/255,1
+		elseif grade == 5 then
+			return 201/255,066/255,016/255,1
+		else
+			return 201/255,041/255,041/255,1
+		end
+	end
+	
+	function offsetToJudgeWindow(offset,scale)
+		local offset = math.abs(offset)
+		if not scale then
+			scale = PREFSMAN:GetPreference('JudgeWindowScale')
+		end
+		if offset <= scale*PREFSMAN:GetPreference('JudgeWindowSecondsMarvelous') then
+			return 1
+		elseif offset <= scale*PREFSMAN:GetPreference('JudgeWindowSecondsPerfect') then
+			return 2
+		elseif offset <= scale*PREFSMAN:GetPreference('JudgeWindowSecondsGreat') then
+			return 3
+		elseif offset <= scale*PREFSMAN:GetPreference('JudgeWindowSecondsGood') then
+			return 4
+		elseif offset <= scale*PREFSMAN:GetPreference('JudgeWindowSecondsBoo') then
+			return 5
+		else
+			return 6
+		end
+	end
+	
+end"><children>
+	<!--xy,SCREEN_WIDTH*0.25-oplot_plotWidth/2,SCREEN_HEIGHT*0.5+56+oplot_plotHeight/2-->
+	<Layer Type="ActorFrame" OnCommand="xy,SCREEN_WIDTH*0.5-157,SCREEN_HEIGHT*0.5+72-14;hidden,1"
+	StepP1LeftPressMessageCommand="%function(self)
+		local pn = 1
+		if oplot_hidden[pn] == 1 then
+			self:hidden(0)
+		else
+			self:hidden(1)
+		end
+		curcard[pn] = 0;
+		oplot_hidden[pn] = oplot_hidden[pn]*-1
+		MESSAGEMAN:Broadcast( 'UpdateSpellDisplayP1' );
+	end"
+	StepP2LeftPressMessageCommand="%function(self)
+		local pn = 1
+		if oplot_hidden[pn] == 1 then
+			self:hidden(0)
+		else
+			self:hidden(1)
+		end
+		curcard[pn] = 0;
+		oplot_hidden[pn] = oplot_hidden[pn]*-1
+		MESSAGEMAN:Broadcast( 'UpdateSpellDisplayP1' );
+	end"
+	StepP1UpPressMessageCommand="%function(self)
+		local pn = 1
+		if oplot_spellCards then
+			
+			curcard[pn] = curcard[pn]-1
+			
+			if oplot_hidden[pn] == 1 then
+				self:hidden(0)
+				curcard[pn] = 0
+				oplot_hidden[pn] = -1
+			end
+			
+			if curcard[pn] < 0 then
+				curcard[pn] = table.getn(oplot_spellCards)
+			end
+			MESSAGEMAN:Broadcast( 'UpdateSpellDisplayP1' );
+		end
+	end"
+	StepP1DownPressMessageCommand="%function(self)
+		local pn = 1
+		if oplot_spellCards then
+		
+			curcard[pn] = curcard[pn]+1
+			
+			if oplot_hidden[pn] == 1 then
+				self:hidden(0)
+				curcard[pn] = 0
+				oplot_hidden[pn] = -1
+			end
+			if curcard[pn] > table.getn(oplot_spellCards) then
+				curcard[pn] = 0
+			end
+			MESSAGEMAN:Broadcast( 'UpdateSpellDisplayP1' );
+		end
+	end"
+	><children>
+	
+		<!-- Background -->
+		<Layer Type="Quad" InitCommand="y,0;zoomto,305,112;diffuse,0,0,0,1"
+		UpdateSpellDisplayP1MessageCommand="%function(self)
+			local pn = 1
+			if curcard[pn] == 0 then
+				self:zoomto(305,112)
+				self:y(0)
+			else
+				self:zoomto(305,176)
+				self:y(-30)
+			end
+		end"
+		/>
+		
+		<Layer Type="Quad" InitCommand="zoomto,305,999;diffuse,#1E282F"
+		UpdateSpellDisplayP1MessageCommand="%function(self)
+			local pn = 1
+			if curcard[pn] == 0 then
+				self:x(70 + 12)
+				self:y(-88)
+				self:zoomto(135,60)
+				self:hidden(0)
+			else
+				self:x(0)
+				self:y(-88)
+				self:zoomto(305,60)
+				self:hidden(0)
+			end
+		end"
+		/>
+		
+		<Layer Type="Polygon" DrawMode="Quads" OnCommand="sleep,0;queuecommand,Make"
+		UpdateSpellDisplayP1MessageCommand="%function(self)
+			local pn = 1
+			if curcard[pn] == 0 then
+				self:hidden(0)
+			else
+				self:hidden(1)
+			end
+		end"
+		MakeCommand="%function(self)
+			
+			local vert = 0;
+			
+			if not GAMESTATE:IsCourseMode() then
+			
+				local s = GAMESTATE:GetCurrentSong()
+				local sc = s:GetSpellCards()
+				--spellcard table contains:
+					--StartBeat, EndBeat (float)
+					--Name (string)
+					--Color (table of rgba)
+				
+				local lab = s:GetLabels()
+				
+				self:SetNumVertices(table.getn(lab)*4 + table.getn(sc)*4)
+				
+				for i=1, table.getn(sc) do
+					
+					local x1 = oplot_fitX((sc[i].StartBeat))
+					local x2 = oplot_fitX((sc[i].EndBeat))
+					local y1 = oplot_fitY(oplot_maxOffset+4)
+					local y2 = oplot_fitY(-oplot_maxOffset-4)
+					
+					self:SetVertexPosition(vert+0,x1,y1,0)
+					self:SetVertexPosition(vert+1,x2,y1,0)
+					self:SetVertexPosition(vert+2,x2,y2,0)
+					self:SetVertexPosition(vert+3,x1,y2,0)
+					
+					for j=0,3 do
+						self:SetVertexColor(vert+j,sc[i].Color[1],sc[i].Color[2],sc[i].Color[3],sc[i].Color[4]*0.6)
+					end
+					
+					vert = vert+4
+				end
+				
+				for i=1, table.getn(lab) do 
+					
+					local x = oplot_fitX((lab[i].Beat))
+					local y1 = oplot_fitY(oplot_maxOffset+4)
+					local y2 = oplot_fitY(-oplot_maxOffset-4)
+					
+					self:SetVertexPosition(vert+0,x,y1,1)
+					self:SetVertexPosition(vert+1,x+1,y1,1)
+					self:SetVertexPosition(vert+2,x+1,y2,1)
+					self:SetVertexPosition(vert+3,x,y2,1)
+					
+					vert = vert+4
+				end
+				
+			else
+				
+				local lab = oplot_songs
+				
+				self:SetNumVertices(table.getn(lab)*4)
+				
+				for i=1, table.getn(lab) do 
+					
+					local x = oplot_fitXTime(oplot_cumulativeTime(0,i-1))
+					local y1 = oplot_fitY(oplot_maxOffset+4)
+					local y2 = oplot_fitY(-oplot_maxOffset-4)
+					
+					self:SetVertexPosition(vert+0,x,y1,1)
+					self:SetVertexPosition(vert+1,x+1,y1,1)
+					self:SetVertexPosition(vert+2,x+1,y2,1)
+					self:SetVertexPosition(vert+3,x,y2,1)
+					
+					vert = vert+4
+				end
+				
+			end
+			
+		end"
+		/>
+		
+		<!-- Center Bar -->
+		<Layer Type="Quad" OnCommand="zoomto,oplot_plotWidth+oplot_plotMargin,1;diffuse,offsetToJudgeColor(0)" />
+		
+		<Layer Type="Polygon" DrawMode="Quads" OnCommand="sleep,0;queuecommand,Make"
+		MakeCommand="%function(self)
+			local scale = PREFSMAN:GetPreference('JudgeWindowScale')
+			local fantabars = {
+				1000*scale*PREFSMAN:GetPreference('JudgeWindowSecondsMarvelous'),
+				1000*scale*PREFSMAN:GetPreference('JudgeWindowSecondsPerfect'),
+				1000*scale*PREFSMAN:GetPreference('JudgeWindowSecondsGreat'),
+				1000*scale*PREFSMAN:GetPreference('JudgeWindowSecondsGood'),
+			}
+			self:SetNumVertices(table.getn(fantabars)*8)
+			local vert = 0
+			for i=1, table.getn(fantabars) do 
+				--o[#o+1] = Def.Quad{InitCommand=cmd(y, oplot_fitY(tst[judge]*fantabars[i]); zoomto,oplot_plotWidth+oplot_plotMargin,1;diffuse,byJudgment(bantafars[i]))}
+				--o[#o+1] = Def.Quad{InitCommand=cmd(y, oplot_fitY(-tst[judge]*fantabars[i]); zoomto,oplot_plotWidth+oplot_plotMargin,1;diffuse,byJudgment(bantafars[i]))}
+				
+				self:SetVertexPosition(vert+0,-oplot_plotWidth/2-oplot_plotMargin/2,-oplot_fitY(fantabars[i]),0)
+				self:SetVertexPosition(vert+1,oplot_plotWidth/2+oplot_plotMargin/2,-oplot_fitY(fantabars[i]),0)
+				self:SetVertexPosition(vert+2,oplot_plotWidth/2+oplot_plotMargin/2,-oplot_fitY(fantabars[i])+1,0)
+				self:SetVertexPosition(vert+3,-oplot_plotWidth/2-oplot_plotMargin/2,-oplot_fitY(fantabars[i])+1,0)
+				
+				self:SetVertexPosition(vert+4,-oplot_plotWidth/2-oplot_plotMargin/2,oplot_fitY(fantabars[i])+1,0)
+				self:SetVertexPosition(vert+5,oplot_plotWidth/2+oplot_plotMargin/2,oplot_fitY(fantabars[i])+1,0)
+				self:SetVertexPosition(vert+6,oplot_plotWidth/2+oplot_plotMargin/2,oplot_fitY(fantabars[i]),0)
+				self:SetVertexPosition(vert+7,-oplot_plotWidth/2-oplot_plotMargin/2,oplot_fitY(fantabars[i]),0)
+				
+				for j=0,7 do
+					self:SetVertexColor(vert+j,offsetToJudgeColor((fantabars[i]/1000)+0.002))
+				end
+				
+				vert = vert+8
+			end
+			
+		end"
+		/>
+		
+		<Layer Type="Quad" InitCommand="zoomto,oplot_plotWidth+oplot_plotMargin,oplot_plotHeight+oplot_plotMargin;diffuse,0.1,0.1,0.1,0.8;"/>
+		
+		<Layer Type="Quad" InitCommand="zoomto,305,999;diffuse,#1E282F"
+		UpdateSpellDisplayP1MessageCommand="%function(self)
+			local pn = 1
+			if curcard[pn] == 0 then
+				self:hidden(1)
+			else
+				self:zoomto(60,114)
+				self:x(-152+31)
+				self:y(0)
+				self:hidden(0)
+				local color = oplot_spellCards[ curcard[pn] ].Color;
+				self:diffuse(color[1]*0.3,color[2]*0.3,color[3]*0.3,1)
+			end
+		end"
+		/>
+		
+		<Layer Type="Quad" InitCommand="zoomto,305,999;diffuse,0,0,0,1"
+		UpdateSpellDisplayP1MessageCommand="%function(self)
+			local pn = 1
+			if curcard[pn] == 0 then
+				self:hidden(1)
+			else
+				self:x(-148)
+				self:y(-30)
+				self:zoomto(8,176)
+				self:hidden(0)
+			end
+		end"
+		/>
+		
+		<Layer Type="Quad" InitCommand="zoomto,305,999;diffuse,.2,.2,.2,1"
+		UpdateSpellDisplayP1MessageCommand="%function(self)
+			local pn = 1
+			if curcard[pn] == 0 then
+				self:hidden(1)
+			else
+				self:x(-150)
+				self:y(-30)
+				self:zoomto(6,176)
+				self:hidden(0)
+			end
+		end"
+		/>
+		
+		<Layer Type="Quad" InitCommand="zoomto,305,999;diffuse,.8,.8,.8,1"
+		UpdateSpellDisplayP1MessageCommand="%function(self)
+			local pn = 1
+			if curcard[pn] == 0 then
+				self:hidden(1)
+			else
+				self:x(-150)
+				self:y(-30 - 88 + 8 + 160*((curcard[pn]-1)/(table.getn(oplot_spellCards)-1)) )
+				self:zoomto(6,16)
+				self:hidden(0)
+			end
+		end"
+		/>
+		
+		<Layer Var="oplot_s1_title" File="_eurostile outline" Text="" />
+		<Layer Var="oplot_s1_diff" File="_eurostile outline" Text="" />
+		<Layer Var="oplot_s1_perc" File="_eurostile outline" Text="" />
+		<Layer Var="oplot_s1_1" File="_eurostile outline" Text="" />
+		<Layer Var="oplot_s1_2" File="_eurostile outline" Text="" />
+		<Layer Var="oplot_s1_3" File="_eurostile outline" Text="" />
+		<Layer Var="oplot_s1_4" File="_eurostile outline" Text="" />
+		<Layer Var="oplot_s1_5" File="_eurostile outline" Text="" />
+		<Layer Var="oplot_s1_6" File="_eurostile outline" Text="" />
+		
+		<!-- Convert noterows to timestamps and plot dots -->
+		<Layer Type="Polygon" DrawMode="Quads" OnCommand="sleep,0.02;queuecommand,Make"
+		UpdateSpellDisplayP1MessageCommand="%function(self)
+			self:queuecommand('Make');
+		end"
+		MakeCommand="%function(self)
+			local pn = 1
+			local ss = STATSMAN:GetCurStageStats()
+			local pss = ss:GetPlayerStageStats(pn-1)
+			local dvt = pss:GetOffsetVector()
+			local nrt = pss:GetNoteRowVector()
+			local mrt = pss:GetMineRowVector()
+			local nrs = pss:GetNoteSongVector()
+			
+			self:SetNumVertices(4*table.getn(nrt)+4*table.getn(mrt))
+			
+			local tns = {0,0,0,0,0,0}
+			local poss = 0
+			local act = 0
+			
+			local w, xo, s, e = nil, nil, nil, nil
+				
+			if not GAMESTATE:IsCourseMode() and curcard[pn] > 0 then
+				w = oplot_plotWidth-80
+				xo = 30
+				s = oplot_spellCards[ curcard[pn] ].StartBeat
+				e = oplot_spellCards[ curcard[pn] ].EndBeat
+			end
+			
+			local vert = 0;
+			for i=1,table.getn(nrt) do
+			
+				if s and e and (nrt[i]/48 < s or nrt[i]/48 > e) then
+					--continue, but it's dealing with verts, so we can't...
+					
+					for j=0,3 do
+						self:SetVertexColor(vert+j,0,0,0,0)
+						self:SetVertexPosition(vert+j,-9999,0,0)
+					end
+					
+					vert = vert+4
+					
+				else
+			
+					local x = oplot_fitX(nrt[i]/48,nrs[i], w, xo, s, e)
+					local y = oplot_fitY(oplot_maxOffset+4)
+					if dvt[i] ~= 1000 then y = oplot_fitY(dvt[i]) end
+					
+					if math.abs(y) > oplot_plotHeight/2 then
+						y = oplot_fitY(oplot_maxOffset+4)
+					end
+					
+					self:SetVertexPosition(vert+0,x-oplot_dotDims/2,y-oplot_dotDims/2,0)
+					self:SetVertexPosition(vert+1,x+oplot_dotDims/2,y-oplot_dotDims/2,0)
+					self:SetVertexPosition(vert+2,x+oplot_dotDims/2,y+oplot_dotDims/2,0)
+					self:SetVertexPosition(vert+3,x-oplot_dotDims/2,y+oplot_dotDims/2,0)
+					
+					for j=0,3 do
+						self:SetVertexColor(vert+j,offsetToJudgeColor(dvt[i]/1000))
+					end
+					
+					if not GAMESTATE:IsCourseMode() and curcard[pn] > 0 then
+						local jw = offsetToJudgeWindow(dvt[i]/1000)
+						tns[jw] = tns[jw]+1
+					end
+					
+					vert = vert+4
+					
+				end
+				
+			end
+			
+			for i=1,table.getn(mrt) do
+			
+				if s and e and (mrt[i]/48 < s or mrt[i]/48 > e) or GAMESTATE:IsCourseMode() then
+					--continue, but it's dealing with verts, so we can't...
+					
+					for j=0,3 do
+						self:SetVertexColor(vert+j,0,0,0,0)
+						self:SetVertexPosition(vert+j,-9999,0,0)
+					end
+					
+					vert = vert+4
+					
+				else
+			
+					local x = oplot_fitX(mrt[i]/48,1, w, xo, s, e)
+					local y = oplot_fitY(-oplot_maxOffset+4)
+					
+					self:SetVertexPosition(vert+0,x-oplot_dotDims/2,y-oplot_dotDims/2,0)
+					self:SetVertexPosition(vert+1,x+oplot_dotDims/2,y-oplot_dotDims/2,0)
+					self:SetVertexPosition(vert+2,x+oplot_dotDims/2,y+oplot_dotDims/2,0)
+					self:SetVertexPosition(vert+3,x-oplot_dotDims/2,y+oplot_dotDims/2,0)
+					
+					for j=0,3 do
+						self:SetVertexColor(vert+j,.6,.6,.6,1)
+					end
+					
+					vert = vert+4
+					
+				end
+				
+			end
+			
+			if not GAMESTATE:IsCourseMode() then
+				
+				if curcard[pn]>0 then
+					local color = oplot_spellCards[ curcard[pn] ].Color
+					if color[1] == 0 and color[2] == 0 and color[3] == 0 then color = {1,1,1,1} end
+				
+					_G['oplot_s'..pn..'_title']:horizalign('left')
+					_G['oplot_s'..pn..'_title']:x(-148+7)
+					_G['oplot_s'..pn..'_title']:y(-104)
+					_G['oplot_s'..pn..'_title']:shadowlength(0)
+					_G['oplot_s'..pn..'_title']:diffuse( color[1], color[2], color[3], 1 )
+					_G['oplot_s'..pn..'_title']:zoom(.75)
+					_G['oplot_s'..pn..'_title']:maxwidth(294/.75)
+					_G['oplot_s'..pn..'_title']:settext( oplot_spellCards[ curcard[pn] ].Name )
+					
+					if tonumber(GAMESTATE:GetVersionDate()) >= 20181211 then
+						_G['oplot_s'..pn..'_diff']:horizalign('left')
+						_G['oplot_s'..pn..'_diff']:x(-148+7)
+						_G['oplot_s'..pn..'_diff']:y(-104+20)
+						_G['oplot_s'..pn..'_diff']:shadowlength(0)
+						_G['oplot_s'..pn..'_diff']:diffuse( (color[1]+2)/3, (color[2]+2)/3, (color[3]+2)/3, 1 )
+						_G['oplot_s'..pn..'_diff']:zoom(.6)
+						_G['oplot_s'..pn..'_diff']:maxwidth(294/.6)
+						_G['oplot_s'..pn..'_diff']:settext( 'Difficulty: '..oplot_spellCards[ curcard[pn] ].Difficulty )
+					end
+					
+					for i=1,6 do
+						_G['oplot_s'..pn..'_'..i]:diffuse(gradeToJudgeColor(i))
+						_G['oplot_s'..pn..'_'..i]:horizalign('left')
+						_G['oplot_s'..pn..'_'..i]:x(-148+7)
+						_G['oplot_s'..pn..'_'..i]:zoom(.5)
+						_G['oplot_s'..pn..'_'..i]:y(-61 + 15*(i+1))
+						_G['oplot_s'..pn..'_'..i]:shadowlength(0)
+						_G['oplot_s'..pn..'_'..i]:settext(tns[i])
+						
+						poss = poss+(5*tns[i])
+						act = act+(oplot_gw[i]*tns[i])
+						
+					end
+					
+					_G['oplot_s'..pn..'_perc']:horizalign('left')
+					_G['oplot_s'..pn..'_perc']:x(-148+7)
+					_G['oplot_s'..pn..'_perc']:y(-63 + 15*1)
+					_G['oplot_s'..pn..'_perc']:shadowlength(0)
+					_G['oplot_s'..pn..'_perc']:zoom(.55)
+					_G['oplot_s'..pn..'_perc']:maxwidth(294/.6)
+					_G['oplot_s'..pn..'_perc']:settext( string.format('%.2f', (act/poss)*100 ) )
+					
+				else
+					
+					_G['oplot_s'..pn..'_title']:settext('')
+					_G['oplot_s'..pn..'_diff']:settext('')
+					_G['oplot_s'..pn..'_perc']:settext('')
+					
+					for i=1,6 do
+						_G['oplot_s'..pn..'_'..i]:settext('')
+					end
+					
+				end
+				
+			end
+			
+		end"
+		/>
+
+		<!-- Early/late markers -->
+		<Layer Type="BitmapText" File="_misoreg small"
+			OnCommand="xy,oplot_plotWidth/2,-oplot_plotHeight/2-6;shadowlength,0;zoom,0.4;diffusealpha,.2;horizalign,right;vertalign,top;queuecommand,DoText"
+			DoTextCommand="%function(self)
+				self:settext('Late (+'..oplot_maxOffset..'ms)')
+			end"
+		/>
+		<Layer Type="BitmapText" File="_misoreg small"
+			OnCommand="xy,oplot_plotWidth/2,oplot_plotHeight/2-6;shadowlength,0;zoom,0.4;diffusealpha,.2;horizalign,right;vertalign,bottom;queuecommand,DoText"
+			DoTextCommand="%function(self)
+				self:settext('Early (-'..oplot_maxOffset..'ms)')
+			end"
+		/>
+
+	</children></Layer>
+	
+	<Layer Type="ActorFrame" OnCommand="xy,SCREEN_WIDTH*0.5+157,SCREEN_HEIGHT*0.5+72-14;hidden,1"
+	StepP1RightPressMessageCommand="%function(self)
+		local pn = 2
+		if oplot_hidden[pn] == 1 then
+			self:hidden(0)
+		else
+			self:hidden(1)
+		end
+		curcard[pn] = 0;
+		oplot_hidden[pn] = oplot_hidden[pn]*-1
+		MESSAGEMAN:Broadcast( 'UpdateSpellDisplayP2' );
+	end"
+	StepP2RightPressMessageCommand="%function(self)
+		local pn = 2
+		if oplot_hidden[pn] == 1 then
+			self:hidden(0)
+		else
+			self:hidden(1)
+		end
+		curcard[pn] = 0;
+		oplot_hidden[pn] = oplot_hidden[pn]*-1
+		MESSAGEMAN:Broadcast( 'UpdateSpellDisplayP2' );
+	end"
+	StepP2UpPressMessageCommand="%function(self)
+		local pn = 2
+		if oplot_spellCards then
+			
+			curcard[pn] = curcard[pn]-1
+			
+			if oplot_hidden[pn] == 1 then
+				self:hidden(0)
+				curcard[pn] = 0
+				oplot_hidden[pn] = -1
+			end
+			
+			if curcard[pn] < 0 then
+				curcard[pn] = table.getn(oplot_spellCards)
+			end
+			MESSAGEMAN:Broadcast( 'UpdateSpellDisplayP2' );
+		end
+	end"
+	StepP2DownPressMessageCommand="%function(self)
+		local pn = 2
+		if oplot_spellCards then
+		
+			curcard[pn] = curcard[pn]+1
+			
+			if oplot_hidden[pn] == 1 then
+				self:hidden(0)
+				curcard[pn] = 0
+				oplot_hidden[pn] = -1
+			end
+			if curcard[pn] > table.getn(oplot_spellCards) then
+				curcard[pn] = 0
+			end
+			MESSAGEMAN:Broadcast( 'UpdateSpellDisplayP2' );
+		end
+	end"
+	><children>
+	
+		<!-- Background -->
+		<Layer Type="Quad" InitCommand="y,0;zoomto,305,112;diffuse,0,0,0,1"
+		UpdateSpellDisplayP2MessageCommand="%function(self)
+			local pn = 2
+			if curcard[pn] == 0 then
+				self:zoomto(305,112)
+				self:y(0)
+			else
+				self:zoomto(305,176)
+				self:y(-30)
+			end
+		end"
+		/>
+		
+		<Layer Type="Quad" InitCommand="zoomto,305,999;diffuse,#1E282F"
+		UpdateSpellDisplayP2MessageCommand="%function(self)
+			local pn = 2
+			if curcard[pn] == 0 then
+				self:x(-70 - 12)
+				self:y(-88)
+				self:zoomto(135,60)
+				self:hidden(0)
+			else
+				self:x(0)
+				self:y(-88)
+				self:zoomto(305,60)
+				self:hidden(0)
+			end
+		end"
+		/>
+		
+		<Layer Type="Polygon" DrawMode="Quads" OnCommand="sleep,0;queuecommand,Make"
+		UpdateSpellDisplayP2MessageCommand="%function(self)
+			local pn = 2
+			if curcard[pn] == 0 then
+				self:hidden(0)
+			else
+				self:hidden(1)
+			end
+		end"
+		MakeCommand="%function(self)
+			
+			local vert = 0;
+			
+			if not GAMESTATE:IsCourseMode() then
+			
+				local s = GAMESTATE:GetCurrentSong()
+				local sc = s:GetSpellCards()
+				--spellcard table contains:
+					--StartBeat, EndBeat (float)
+					--Name (string)
+					--Color (table of rgba)
+				
+				local lab = s:GetLabels()
+				
+				self:SetNumVertices(table.getn(lab)*4 + table.getn(sc)*4)
+				
+				for i=1, table.getn(sc) do
+					
+					local x1 = oplot_fitX((sc[i].StartBeat))
+					local x2 = oplot_fitX((sc[i].EndBeat))
+					local y1 = oplot_fitY(oplot_maxOffset+4)
+					local y2 = oplot_fitY(-oplot_maxOffset-4)
+					
+					self:SetVertexPosition(vert+0,x1,y1,0)
+					self:SetVertexPosition(vert+1,x2,y1,0)
+					self:SetVertexPosition(vert+2,x2,y2,0)
+					self:SetVertexPosition(vert+3,x1,y2,0)
+					
+					for j=0,3 do
+						self:SetVertexColor(vert+j,sc[i].Color[1],sc[i].Color[2],sc[i].Color[3],sc[i].Color[4]*0.6)
+					end
+					
+					vert = vert+4
+				end
+				
+				for i=1, table.getn(lab) do 
+					
+					local x = oplot_fitX((lab[i].Beat))
+					local y1 = oplot_fitY(oplot_maxOffset+4)
+					local y2 = oplot_fitY(-oplot_maxOffset-4)
+					
+					self:SetVertexPosition(vert+0,x,y1,1)
+					self:SetVertexPosition(vert+1,x+1,y1,1)
+					self:SetVertexPosition(vert+2,x+1,y2,1)
+					self:SetVertexPosition(vert+3,x,y2,1)
+					
+					vert = vert+4
+				end
+				
+			else
+				
+				local lab = oplot_songs
+				
+				self:SetNumVertices(table.getn(lab)*4)
+				
+				for i=1, table.getn(lab) do 
+					
+					local x = oplot_fitXTime(oplot_cumulativeTime(0,i-1))
+					local y1 = oplot_fitY(oplot_maxOffset+4)
+					local y2 = oplot_fitY(-oplot_maxOffset-4)
+					
+					self:SetVertexPosition(vert+0,x,y1,1)
+					self:SetVertexPosition(vert+1,x+1,y1,1)
+					self:SetVertexPosition(vert+2,x+1,y2,1)
+					self:SetVertexPosition(vert+3,x,y2,1)
+					
+					vert = vert+4
+				end
+				
+			end
+			
+		end"
+		/>
+		
+		<!-- Center Bar -->
+		<Layer Type="Quad" OnCommand="zoomto,oplot_plotWidth+oplot_plotMargin,1;diffuse,offsetToJudgeColor(0)" />
+		
+		<Layer Type="Polygon" DrawMode="Quads" OnCommand="sleep,0;queuecommand,Make"
+		MakeCommand="%function(self)
+			local scale = PREFSMAN:GetPreference('JudgeWindowScale')
+			local fantabars = {
+				1000*scale*PREFSMAN:GetPreference('JudgeWindowSecondsMarvelous'),
+				1000*scale*PREFSMAN:GetPreference('JudgeWindowSecondsPerfect'),
+				1000*scale*PREFSMAN:GetPreference('JudgeWindowSecondsGreat'),
+				1000*scale*PREFSMAN:GetPreference('JudgeWindowSecondsGood'),
+			}
+			self:SetNumVertices(table.getn(fantabars)*8)
+			local vert = 0
+			for i=1, table.getn(fantabars) do 
+				--o[#o+1] = Def.Quad{InitCommand=cmd(y, oplot_fitY(tst[judge]*fantabars[i]); zoomto,oplot_plotWidth+oplot_plotMargin,1;diffuse,byJudgment(bantafars[i]))}
+				--o[#o+1] = Def.Quad{InitCommand=cmd(y, oplot_fitY(-tst[judge]*fantabars[i]); zoomto,oplot_plotWidth+oplot_plotMargin,1;diffuse,byJudgment(bantafars[i]))}
+				
+				self:SetVertexPosition(vert+0,-oplot_plotWidth/2-oplot_plotMargin/2,-oplot_fitY(fantabars[i]),0)
+				self:SetVertexPosition(vert+1,oplot_plotWidth/2+oplot_plotMargin/2,-oplot_fitY(fantabars[i]),0)
+				self:SetVertexPosition(vert+2,oplot_plotWidth/2+oplot_plotMargin/2,-oplot_fitY(fantabars[i])+1,0)
+				self:SetVertexPosition(vert+3,-oplot_plotWidth/2-oplot_plotMargin/2,-oplot_fitY(fantabars[i])+1,0)
+				
+				self:SetVertexPosition(vert+4,-oplot_plotWidth/2-oplot_plotMargin/2,oplot_fitY(fantabars[i])+1,0)
+				self:SetVertexPosition(vert+5,oplot_plotWidth/2+oplot_plotMargin/2,oplot_fitY(fantabars[i])+1,0)
+				self:SetVertexPosition(vert+6,oplot_plotWidth/2+oplot_plotMargin/2,oplot_fitY(fantabars[i]),0)
+				self:SetVertexPosition(vert+7,-oplot_plotWidth/2-oplot_plotMargin/2,oplot_fitY(fantabars[i]),0)
+				
+				for j=0,7 do
+					self:SetVertexColor(vert+j,offsetToJudgeColor((fantabars[i]/1000)+0.002))
+				end
+				
+				vert = vert+8
+			end
+			
+		end"
+		/>
+		
+		<Layer Type="Quad" InitCommand="zoomto,oplot_plotWidth+oplot_plotMargin,oplot_plotHeight+oplot_plotMargin;diffuse,0.1,0.1,0.1,0.8;"/>
+		
+		<Layer Type="Quad" InitCommand="zoomto,305,999;diffuse,#1E282F"
+		UpdateSpellDisplayP2MessageCommand="%function(self)
+			local pn = 2
+			if curcard[pn] == 0 then
+				self:hidden(1)
+			else
+				self:zoomto(60,114)
+				self:x(-152+31)
+				self:y(0)
+				self:hidden(0)
+				local color = oplot_spellCards[ curcard[pn] ].Color;
+				self:diffuse(color[1]*0.3,color[2]*0.3,color[3]*0.3,1)
+			end
+		end"
+		/>
+		
+		<Layer Type="Quad" InitCommand="zoomto,305,999;diffuse,0,0,0,1"
+		UpdateSpellDisplayP2MessageCommand="%function(self)
+			local pn = 2
+			if curcard[pn] == 0 then
+				self:hidden(1)
+			else
+				self:x(-148)
+				self:y(-30)
+				self:zoomto(8,176)
+				self:hidden(0)
+			end
+		end"
+		/>
+		
+		<Layer Type="Quad" InitCommand="zoomto,305,999;diffuse,.2,.2,.2,1"
+		UpdateSpellDisplayP2MessageCommand="%function(self)
+			local pn = 2
+			if curcard[pn] == 0 then
+				self:hidden(1)
+			else
+				self:x(-150)
+				self:y(-30)
+				self:zoomto(6,176)
+				self:hidden(0)
+			end
+		end"
+		/>
+		
+		<Layer Type="Quad" InitCommand="zoomto,305,999;diffuse,.8,.8,.8,1"
+		UpdateSpellDisplayP2MessageCommand="%function(self)
+			local pn = 2
+			if curcard[pn] == 0 then
+				self:hidden(1)
+			else
+				self:x(-150)
+				self:y(-30 - 88 + 8 + 160*((curcard[pn]-1)/(table.getn(oplot_spellCards)-1)) )
+				self:zoomto(6,16)
+				self:hidden(0)
+			end
+		end"
+		/>
+		
+		<Layer Var="oplot_s2_title" File="_eurostile outline" Text="" />
+		<Layer Var="oplot_s2_diff" File="_eurostile outline" Text="" />
+		<Layer Var="oplot_s2_perc" File="_eurostile outline" Text="" />
+		<Layer Var="oplot_s2_1" File="_eurostile outline" Text="" />
+		<Layer Var="oplot_s2_2" File="_eurostile outline" Text="" />
+		<Layer Var="oplot_s2_3" File="_eurostile outline" Text="" />
+		<Layer Var="oplot_s2_4" File="_eurostile outline" Text="" />
+		<Layer Var="oplot_s2_5" File="_eurostile outline" Text="" />
+		<Layer Var="oplot_s2_6" File="_eurostile outline" Text="" />
+		
+		<!-- Convert noterows to timestamps and plot dots -->
+		<Layer Type="Polygon" DrawMode="Quads" OnCommand="sleep,0.02;queuecommand,Make"
+		UpdateSpellDisplayP2MessageCommand="%function(self)
+			self:queuecommand('Make');
+		end"
+		MakeCommand="%function(self)
+			local pn = 2
+			local ss = STATSMAN:GetCurStageStats()
+			local pss = ss:GetPlayerStageStats(pn-1)
+			local dvt = pss:GetOffsetVector()
+			local nrt = pss:GetNoteRowVector()
+			local mrt = pss:GetMineRowVector()
+			local nrs = pss:GetNoteSongVector()
+			
+			self:SetNumVertices(4*table.getn(nrt)+4*table.getn(mrt))
+			
+			local tns = {0,0,0,0,0,0}
+			local poss = 0
+			local act = 0
+			
+			local w, xo, s, e = nil, nil, nil, nil
+				
+			if not GAMESTATE:IsCourseMode() and curcard[pn] > 0 then
+				w = oplot_plotWidth-80
+				xo = 30
+				s = oplot_spellCards[ curcard[pn] ].StartBeat
+				e = oplot_spellCards[ curcard[pn] ].EndBeat
+			end
+			
+			local vert = 0;
+			for i=1,table.getn(nrt) do
+			
+				if s and e and (nrt[i]/48 < s or nrt[i]/48 > e) then
+					--continue, but it's dealing with verts, so we can't...
+					
+					for j=0,3 do
+						self:SetVertexColor(vert+j,0,0,0,0)
+						self:SetVertexPosition(vert+j,-9999,0,0)
+					end
+					
+					vert = vert+4
+					
+				else
+			
+					local x = oplot_fitX(nrt[i]/48,nrs[i], w, xo, s, e)
+					local y = oplot_fitY(oplot_maxOffset+4)
+					if dvt[i] ~= 1000 then y = oplot_fitY(dvt[i]) end
+					
+					if math.abs(y) > oplot_plotHeight/2 then
+						y = oplot_fitY(oplot_maxOffset+4)
+					end
+					
+					self:SetVertexPosition(vert+0,x-oplot_dotDims/2,y-oplot_dotDims/2,0)
+					self:SetVertexPosition(vert+1,x+oplot_dotDims/2,y-oplot_dotDims/2,0)
+					self:SetVertexPosition(vert+2,x+oplot_dotDims/2,y+oplot_dotDims/2,0)
+					self:SetVertexPosition(vert+3,x-oplot_dotDims/2,y+oplot_dotDims/2,0)
+					
+					for j=0,3 do
+						self:SetVertexColor(vert+j,offsetToJudgeColor(dvt[i]/1000))
+					end
+					
+					if not GAMESTATE:IsCourseMode() and curcard[pn] > 0 then
+						local jw = offsetToJudgeWindow(dvt[i]/1000)
+						tns[jw] = tns[jw]+1
+					end
+					
+					vert = vert+4
+					
+				end
+				
+			end
+			
+			for i=1,table.getn(mrt) do
+			
+				if s and e and (mrt[i]/48 < s or mrt[i]/48 > e) or GAMESTATE:IsCourseMode() then
+					--continue, but it's dealing with verts, so we can't...
+					
+					for j=0,3 do
+						self:SetVertexColor(vert+j,0,0,0,0)
+						self:SetVertexPosition(vert+j,-9999,0,0)
+					end
+					
+					vert = vert+4
+					
+				else
+			
+					local x = oplot_fitX(mrt[i]/48,1, w, xo, s, e)
+					local y = oplot_fitY(-oplot_maxOffset+4)
+					
+					self:SetVertexPosition(vert+0,x-oplot_dotDims/2,y-oplot_dotDims/2,0)
+					self:SetVertexPosition(vert+1,x+oplot_dotDims/2,y-oplot_dotDims/2,0)
+					self:SetVertexPosition(vert+2,x+oplot_dotDims/2,y+oplot_dotDims/2,0)
+					self:SetVertexPosition(vert+3,x-oplot_dotDims/2,y+oplot_dotDims/2,0)
+					
+					for j=0,3 do
+						self:SetVertexColor(vert+j,.6,.6,.6,1)
+					end
+					
+					vert = vert+4
+					
+				end
+				
+			end
+			
+			if not GAMESTATE:IsCourseMode() then
+				
+				if curcard[pn]>0 then
+					local color = oplot_spellCards[ curcard[pn] ].Color
+					if color[1] == 0 and color[2] == 0 and color[3] == 0 then color = {1,1,1,1} end
+				
+					_G['oplot_s'..pn..'_title']:horizalign('left')
+					_G['oplot_s'..pn..'_title']:x(-148+7)
+					_G['oplot_s'..pn..'_title']:y(-104)
+					_G['oplot_s'..pn..'_title']:shadowlength(0)
+					_G['oplot_s'..pn..'_title']:diffuse( color[1], color[2], color[3], 1 )
+					_G['oplot_s'..pn..'_title']:zoom(.75)
+					_G['oplot_s'..pn..'_title']:maxwidth(294/.75)
+					_G['oplot_s'..pn..'_title']:settext( oplot_spellCards[ curcard[pn] ].Name )
+					
+					if tonumber(GAMESTATE:GetVersionDate()) >= 20181211 then
+						_G['oplot_s'..pn..'_diff']:horizalign('left')
+						_G['oplot_s'..pn..'_diff']:x(-148+7)
+						_G['oplot_s'..pn..'_diff']:y(-104+20)
+						_G['oplot_s'..pn..'_diff']:shadowlength(0)
+						_G['oplot_s'..pn..'_diff']:diffuse( (color[1]+2)/3, (color[2]+2)/3, (color[3]+2)/3, 1 )
+						_G['oplot_s'..pn..'_diff']:zoom(.6)
+						_G['oplot_s'..pn..'_diff']:maxwidth(294/.6)
+						_G['oplot_s'..pn..'_diff']:settext( 'Difficulty: '..oplot_spellCards[ curcard[pn] ].Difficulty )
+					end
+					
+					for i=1,6 do
+						_G['oplot_s'..pn..'_'..i]:diffuse(gradeToJudgeColor(i))
+						_G['oplot_s'..pn..'_'..i]:horizalign('left')
+						_G['oplot_s'..pn..'_'..i]:x(-148+7)
+						_G['oplot_s'..pn..'_'..i]:zoom(.5)
+						_G['oplot_s'..pn..'_'..i]:y(-61 + 15*(i+1))
+						_G['oplot_s'..pn..'_'..i]:shadowlength(0)
+						_G['oplot_s'..pn..'_'..i]:settext(tns[i])
+						
+						poss = poss+(5*tns[i])
+						act = act+(oplot_gw[i]*tns[i])
+						
+					end
+					
+					_G['oplot_s'..pn..'_perc']:horizalign('left')
+					_G['oplot_s'..pn..'_perc']:x(-148+7)
+					_G['oplot_s'..pn..'_perc']:y(-63 + 15*1)
+					_G['oplot_s'..pn..'_perc']:shadowlength(0)
+					_G['oplot_s'..pn..'_perc']:zoom(.55)
+					_G['oplot_s'..pn..'_perc']:maxwidth(294/.6)
+					_G['oplot_s'..pn..'_perc']:settext( string.format('%.2f', (act/poss)*100 ) )
+					
+				else
+					
+					_G['oplot_s'..pn..'_title']:settext('')
+					_G['oplot_s'..pn..'_diff']:settext('')
+					_G['oplot_s'..pn..'_perc']:settext('')
+					
+					for i=1,6 do
+						_G['oplot_s'..pn..'_'..i]:settext('')
+					end
+					
+				end
+				
+			end
+			
+		end"
+		/>
+
+		<!-- Early/late markers -->
+		<Layer Type="BitmapText" File="_misoreg small"
+			OnCommand="xy,oplot_plotWidth/2,-oplot_plotHeight/2-6;shadowlength,0;zoom,0.4;diffusealpha,.2;horizalign,right;vertalign,top;queuecommand,DoText"
+			DoTextCommand="%function(self)
+				self:settext('Late (+'..oplot_maxOffset..'ms)')
+			end"
+		/>
+		<Layer Type="BitmapText" File="_misoreg small"
+			OnCommand="xy,oplot_plotWidth/2,oplot_plotHeight/2-6;shadowlength,0;zoom,0.4;diffusealpha,.2;horizalign,right;vertalign,bottom;queuecommand,DoText"
+			DoTextCommand="%function(self)
+				self:settext('Early (-'..oplot_maxOffset..'ms)')
+			end"
+		/>
+
+	</children></Layer>
+	
+</children></ActorFrame>

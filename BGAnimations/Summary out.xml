@@ -1,0 +1,4 @@
+<ActorFrame><children>
+	<Layer File="_Fade out" />
+	<Layer File="_saving" OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;diffusealpha,0" StartTransitioningCommand="%function(self) if scoreIndex > table.getn(AllScores) then self:accelerate(0.5) self:diffusealpha(1) end end" />
+</children></ActorFrame>

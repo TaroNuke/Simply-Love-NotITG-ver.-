@@ -1,0 +1,3 @@
+[Sprite]
+Texture=ScreenEvaluationStage ComboGraph (res 305x18).png
+InitCommand=%function(self) self:diffuse(ColorRGB(1)) end

@@ -1,0 +1,97 @@
+<ActorFrame> <children>
+<!-- Player One Step Artist -->
+	<Layer
+		Type="ActorFrame"
+		Condition="GAMESTATE:IsPlayerEnabled(PLAYER_1)"
+		InitCommand="x,SCREEN_CENTER_X-(SCREEN_WIDTH*160/640+115);y,258;zoomy,0"
+		OnCommand="sleep,0.3;accelerate,0.2;zoomy,1;decelerate,0.2;zoomy,0.8;accelerate,0.1;zoomy,1"
+	><children>
+		<Layer
+			File="stepbubble.png"
+			InitCommand="x,52;y,-19;playcommand,Set"
+			SetCommand="%function(self) self:diffuse(BubbleColorRGB(PLAYER_1)) end" 
+			CurrentSongChangedMessageCommand="playcommand,Set" 
+			CurrentStepsP1ChangedMessageCommand="playcommand,Set" 
+		/>
+		<Layer 
+			Type="BitmapText"
+			Condition="not GAMESTATE:IsCourseMode()"
+			Font="_misoreg small"
+			Text="STEPS"
+			OnCommand="y,-29;ShadowLength,0;diffuse,#000000;horizalign,right;zoom,0.5"
+		/>
+		<Layer 
+		   Font="_misobold small"
+			Text="???" 
+			OnCommand="y,-29;x,5;zoom,0.5;shadowlength,0;horizalign,left;maxwidth,250" 
+			SetCommand="%function(self) self:settext(GetStepsDescriptionText(PLAYER_1)) self:diffuse(BubbleColorText(PLAYER_1)) end" 
+			CurrentSongChangedMessageCommand="playcommand,Set" 
+			CurrentStepsP1ChangedMessageCommand="playcommand,Set" 
+		/>
+	</children></Layer>
+
+	<!-- Player Two Step Artist -->
+	<Layer
+		Type="ActorFrame"
+		Condition="GAMESTATE:IsPlayerEnabled(PLAYER_2)"
+		InitCommand="x,SCREEN_CENTER_X-(SCREEN_WIDTH*160/640-116);y,337;zoomy,0"
+		OnCommand="sleep,0.4;accelerate,0.2;zoomy,1;decelerate,0.2;zoomy,0.6;accelerate,0.1;zoomy,1"
+	><children>
+		<Layer
+			File="stepbubble.png"
+			InitCommand="x,-47;y,32;rotationz,180;playcommand,Set"
+			SetCommand="%function(self) self:diffuse(BubbleColorRGB(PLAYER_2)) end" 
+			CurrentSongChangedMessageCommand="playcommand,Set" 
+			CurrentStepsP2ChangedMessageCommand="playcommand,Set" 
+		/>
+		<Layer 
+			Font="_misobold small"
+			Text="???" 
+			OnCommand="y,29;x,-5;zoom,0.5;shadowlength,0;horizalign,right;maxwidth,250;zoomx,0.5;zoomy,0.1;accelerate,0.3;zoom,0.5" 
+			SetCommand="%function(self) self:settext(GetStepsDescriptionText(PLAYER_2)) self:diffuse(BubbleColorText(PLAYER_2)) end" 
+			CurrentSongChangedMessageCommand="playcommand,Set" 
+			CurrentStepsP2ChangedMessageCommand="playcommand,Set" 
+		/>
+		<Layer 
+			Type="BitmapText"
+			Condition="not GAMESTATE:IsCourseMode()"
+			Font="_misoreg small"
+			Text="STEPS"
+			OnCommand="y,29;horizalign,left;ShadowLength,0;diffuse,#000000;zoomx,0.5;zoomy,0.1;accelerate,0.3;zoom,0.5"
+		/>
+	</children></Layer>
+	<Layer
+		Type="ActorFrame"
+		Condition="IsTimedSet() and not GetPref('EventMode')"
+		OnCommand="x,SCREEN_CENTER_X-(SCREEN_WIDTH*160/640-92);y,SCREEN_CENTER_Y-14;queuecommand,Loop"
+		CurrentSongChangedMessageCommand="stoptweening;queuecommand,Loop"
+		LoopCommand="%function(self)
+			if GAMESTATE:GetCurrentSong() and -Clock( TimedSet.CutOff ) < MSSMsMsToSeconds(Screen():GetChild('TotalTime'):GetText()) then
+				self:hidden(0)
+			else
+				self:hidden(1)
+			end
+			self:sleep(1)
+			self:queuecommand('Loop')
+		end"
+	><children>
+		<Layer
+			File="@Path('Graphics','longverbubble.png')"
+			OnCommand="%function(self) self:diffuse(ColorRGB(-1)) end" 
+		/>
+		<Layer
+			Type="BitmapText"
+			Text="INSUFFICIENT TIME"
+			File="_misobold small"
+			InitCommand="zoom,.5;shadowlength,0;addx,2;addy,-2"
+			OnCommand="%function(self) self:diffuse(TextOnColor(-1)) end"
+			OffCommand="linear,0.2;diffusealpha,0"
+		/>
+	</children></Layer>
+	<Quad Command="stretchto,SCREEN_LEFT,SCREEN_TOP,SCREEN_RIGHT,SCREEN_TOP+32;diffuse,#000000" />
+	<Quad Command="stretchto,SCREEN_LEFT,SCREEN_BOTTOM,SCREEN_RIGHT,SCREEN_BOTTOM-24;diffuse,#000000" />
+	<Quad Command="stretchto,SCREEN_CENTER_X+320,SCREEN_BOTTOM,SCREEN_RIGHT,SCREEN_TOP;diffuse,#00000000" OptionsShowMessageCommand="linear,0.4;diffusealpha,1" />
+	<Quad Command="stretchto,SCREEN_CENTER_X-320,SCREEN_BOTTOM,SCREEN_LEFT,SCREEN_TOP;diffuse,#00000000" OptionsShowMessageCommand="linear,0.4;diffusealpha,1" />
+	<Layer Condition="not GAMESTATE:IsCourseMode()" File="DifficultyList.xml" Command="x,SCREEN_CENTER_X-(SCREEN_WIDTH*160/640+94);y,SCREEN_CENTER_Y+25.5" OffCommand="linear,.3;diffusealpha,0" SongInfoMessageCommand="queuecommand,Update" />
+</children> </ActorFrame>
+

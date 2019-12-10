@@ -1,0 +1,10 @@
+<ActorFrame> <children>
+	<Layer
+		Type="BitmapText"
+		Text="Results"
+		File="_wendy white"
+		InitCommand="diffuse,#FFFFFF;zoom,.4;shadowlength,0;horizalign,left;x,15;y,16"
+		OnCommand="%function(self) self:settext('Page ' .. math.floor((scoreIndex+4)/5) .. ' of ' .. math.floor((table.getn(AllScores)+4)/5)) end"
+		OffCommand="linear,0.2;diffusealpha,0"
+	/>
+</children> </ActorFrame>

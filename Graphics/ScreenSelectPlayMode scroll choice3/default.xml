@@ -1,0 +1,50 @@
+<ActorFrame> <children>
+	<Layer 
+		Type="ActorFrame"
+		GainFocusCommand="linear,0.2;zoom,1"
+		LoseFocusCommand="linear,0.2;zoom,0.5"
+	><children>
+		<Layer 
+			Type="ActorFrame"
+		><children>
+			<Layer
+				File="../modebg"
+				OffCommand="%OutCommand"
+			/>
+			
+			<Layer 
+				Type="ActorFrame"
+				OnCommand="zoom,.7;"
+			><children>
+				<Layer
+					File="stopwatch"
+					InitCommand="zbuffer,1"
+					OffCommand="linear,.5;diffusealpha,0"
+				/>
+				<Layer
+					Type="ActorFrame"
+					GainFocusCommand="x,8;y,16;rotationz,15;spin;effectmagnitude,0,0,+45;effectclock,bgm"
+					LoseFocusCommand="x,8;y,16;rotationz,15;stopeffect"
+					OnCommand="x,8;y,16;rotationz,15;"
+				> <children>
+					<AutoActor 
+						File="hand"
+						InitCommand="zbuffer,1;horizalign,right;vertalign,bottom;x,24;y,16"
+						OffCommand="linear,.5;diffusealpha,0"
+					/>
+				</children> </Layer>
+				<Layer
+					File="center"
+					InitCommand="zbuffer,1;horizalign,right;vertalign,bottom;x,36;y,36;hidden,0"
+						OffCommand="linear,.5;diffusealpha,0"
+				/>
+			</children></Layer>
+			
+		</children></Layer>
+		<Layer
+			File="survival"
+			Command="y,100"
+			OffCommand="%OutCommand"
+		/>
+	</children></Layer>
+</children> </ActorFrame>

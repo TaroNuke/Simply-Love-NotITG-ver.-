@@ -1,0 +1,97 @@
+<ActorFrame> <children>
+	<Layer 
+		Type="ActorFrame"
+		Command="x,-30"
+		GainFocusCommand="linear,0.2;zoom,1.4"
+		LoseFocusCommand="linear,0.2;zoom,0.7"
+	><children>
+		<Layer 
+			Condition="game ~= 'techno'"
+			Type="ActorFrame"
+			Command="x,130"
+		><children>
+			<Layer
+				File="../4panels"
+				EnabledCommand="%function(self) if game == 'dance' then self:diffuse(ColorRGB(-1)) else self:diffuse(.16,.24,.27,1) end end"
+				DisabledCommand="%function(self) if game == 'dance' then self:diffuse(.24,.31,.35,1) else self:diffuse(.12,.2,.23,1) end end"
+				OnCommand="%FadeIn"
+				OffCommand="%OutCommand"
+			/>
+			<Layer
+				File="../5panels"
+				EnabledCommand="%function(self) if game == 'pump' then self:diffuse(ColorRGB(-1)) else self:diffuse(.16,.24,.27,1) end end"
+				DisabledCommand="%function(self) if game == 'pump' then self:diffuse(.24,.31,.35,1) else self:diffuse(.12,.2,.23,1) end end"
+				OnCommand="%FadeIn"
+				OffCommand="%OutCommand"
+			/>
+		</children></Layer>
+		<Layer 
+			Condition="game ~= 'techno'"
+			Type="ActorFrame"
+			Command="x,-110"
+		><children>
+			<Layer
+				File="../4panels"
+				EnabledCommand="%function(self) if game == 'dance' then self:diffuse(ColorRGB(1)) else self:diffuse(.16,.24,.27,1) end end"
+				DisabledCommand="%function(self) if game == 'dance' then self:diffuse(.24,.31,.35,1) else self:diffuse(.12,.2,.23,1) end end"
+				OnCommand="%FadeIn"
+				OffCommand="%OutCommand"
+			/>
+			<Layer
+				File="../5panels"
+				EnabledCommand="%function(self) if game == 'pump' then self:diffuse(ColorRGB(1)) else self:diffuse(.16,.24,.27,1) end end"
+				DisabledCommand="%function(self) if game == 'pump' then self:diffuse(.24,.31,.35,1) else self:diffuse(.12,.2,.23,1) end end"
+				OnCommand="%FadeIn"
+				OffCommand="%OutCommand"
+			/>
+		</children></Layer>
+		<Layer 
+			Condition="game == 'techno'"
+			Type="ActorFrame"
+			Command="x,130"
+		><children>
+			<Layer
+				File="../8panels"
+				EnabledCommand="%function(self) self:diffuse(ColorRGB(-1)) end"
+				DisabledCommand="diffuse,.24,.31,.35,1"
+				OnCommand="%FadeIn"
+				OffCommand="%OutCommand"
+			/>
+			<Layer
+				File="../1panel"
+				EnabledCommand="%function(self) self:diffuse(.16,.24,.27,1) end"
+				DisabledCommand="diffuse,.12,.2,.23,1"
+				OnCommand="%FadeIn"
+				OffCommand="%OutCommand"
+			/>
+		</children></Layer>
+		<Layer 
+			Condition="game == 'techno'"
+			Type="ActorFrame"
+			Command="x,-110"
+		><children>
+			<Layer
+				File="../8panels"
+				EnabledCommand="%function(self) self:diffuse(ColorRGB(1)) end"
+				DisabledCommand="diffuse,.24,.31,.35,1"
+				OnCommand="%FadeIn"
+				OffCommand="%OutCommand"
+			/>
+			<Layer
+				File="../1panel"
+				EnabledCommand="%function(self) self:diffuse(.16,.24,.27,1) end"
+				DisabledCommand="diffuse,.12,.2,.23,1"
+				OnCommand="%FadeIn"
+				OffCommand="%OutCommand"
+			/>
+		</children></Layer>
+		<Layer
+			File="2Players"
+			InitCommand="y,130"
+			EnabledCommand="%function(self) self:diffuse(1,1,1,1) end"
+			DisabledCommand="diffuse,.24,.31,.35,1"
+			OnCommand="%FadeIn"
+			OffCommand="%OutCommand"
+		/>
+	</children></Layer>
+</children> </ActorFrame>

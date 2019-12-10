@@ -1,0 +1,50 @@
+<ActorFrame> <children>
+	<ActorFrame InitCommand="%function() file() end" />
+	<Layer Type="ActorFrame"
+		Condition="GAMESTATE:IsHumanPlayer(PLAYER_1) and PROFILEMAN:IsPersistentProfile(PLAYER_1) and not GAMESTATE:IsCourseMode()"
+		OnCommand="x,SCREEN_LEFT+74;y,SCREEN_CENTER_Y+21"
+	> <children>
+		<Layer Type="BitmapText" Text="Total Songs Played" File="_misobold small" InitCommand="@'diffuse,' .. PlayerColor(PLAYER_1) .. ';ShadowLength,0;zoom,0.5'" OnCommand="y,-70+20*0" />
+		<Layer Type="BitmapText" Text="@PROFILEMAN:GetProfile(PLAYER_1):GetTotalNumSongsPlayed()" File="_misobold small" InitCommand="@'diffuse,' .. PlayerColor(PLAYER_1) .. ';ShadowLength,0;zoom,0.7'" OnCommand="y,-70+20*1" />
+		<Layer Type="BitmapText" Text="Quads" File="_misobold small" InitCommand="@'diffuse,' .. PlayerColor(PLAYER_1) .. ';ShadowLength,0;zoom,0.5'" OnCommand="y,10+20*-1" />		
+		<Layer Type="BitmapText" Text="@PROFILEMAN:GetProfile(PLAYER_1):GetTotalStepsWithTopGrade(st,1,0)" File="_misobold small" InitCommand="@'diffuse,' .. PlayerColor(PLAYER_1) .. ';ShadowLength,0;zoom,0.5'" OnCommand="x,20;y,10+20*0" />
+		<Layer Type="BitmapText" Text="@PROFILEMAN:GetProfile(PLAYER_1):GetTotalStepsWithTopGrade(st,2,0)" File="_misobold small" InitCommand="@'diffuse,' .. PlayerColor(PLAYER_1) .. ';ShadowLength,0;zoom,0.5'" OnCommand="x,20;y,10+20*1" />
+		<Layer Type="BitmapText" Text="@PROFILEMAN:GetProfile(PLAYER_1):GetTotalStepsWithTopGrade(st,3,0)" File="_misobold small" InitCommand="@'diffuse,' .. PlayerColor(PLAYER_1) .. ';ShadowLength,0;zoom,0.5'" OnCommand="x,20;y,10+20*2" />
+		<Layer Type="BitmapText" Text="@PROFILEMAN:GetProfile(PLAYER_1):GetTotalStepsWithTopGrade(st,4,0)" File="_misobold small" InitCommand="@'diffuse,' .. PlayerColor(PLAYER_1) .. ';ShadowLength,0;zoom,0.5'" OnCommand="x,20;y,10+20*3" />
+		<Layer Type="BitmapText" Text="@DifficultyToThemedString(DIFFICULTY_EASY)" File="_misobold small" InitCommand="@'diffuse,' .. DifficultyColor(DIFFICULTY_EASY) .. ';horizalign,right;ShadowLength,0;zoom,0.5'" OnCommand="x,-5;y,10+20*0" />
+		<Layer Type="BitmapText" Text="@DifficultyToThemedString(DIFFICULTY_MEDIUM)" File="_misobold small" InitCommand="@'diffuse,' .. DifficultyColor(DIFFICULTY_MEDIUM) .. ';horizalign,right;ShadowLength,0;zoom,0.5'" OnCommand="x,-5;y,10+20*1" />
+		<Layer Type="BitmapText" Text="@DifficultyToThemedString(DIFFICULTY_HARD)" File="_misobold small" InitCommand="@'diffuse,' .. DifficultyColor(DIFFICULTY_HARD) .. ';horizalign,right;ShadowLength,0;zoom,0.5'" OnCommand="x,-5;y,10+20*2" />
+		<Layer Type="BitmapText" Text="@DifficultyToThemedString(DIFFICULTY_CHALLENGE)" File="_misobold small" InitCommand="@'diffuse,' .. DifficultyColor(DIFFICULTY_CHALLENGE) .. ';horizalign,right;ShadowLength,0;zoom,0.5'" OnCommand="x,-5;y,10+20*3" />
+	</children> </Layer>
+
+	<Layer Type="ActorFrame"
+		Condition="GAMESTATE:IsHumanPlayer(PLAYER_2) and PROFILEMAN:IsPersistentProfile(PLAYER_2) and not GAMESTATE:IsCourseMode()"
+		OnCommand="x,SCREEN_RIGHT-74;y,SCREEN_CENTER_Y+21"
+	> <children>
+		<Layer Type="BitmapText" Text="Total Songs Played" File="_misobold small" InitCommand="@'diffuse,' .. PlayerColor(PLAYER_2) .. ';ShadowLength,0;zoom,0.5'" OnCommand="y,-70+20*0" />
+		<Layer Type="BitmapText" Text="@PROFILEMAN:GetProfile(PLAYER_2):GetTotalNumSongsPlayed()" File="_misobold small" InitCommand="@'diffuse,' .. PlayerColor(PLAYER_2) .. ';ShadowLength,0;zoom,0.7'" OnCommand="y,-70+20*1" />
+		<Layer Type="BitmapText" Text="Quads" File="_misobold small" InitCommand="@'diffuse,' .. PlayerColor(PLAYER_1) .. ';ShadowLength,0;zoom,0.5'" OnCommand="y,10+20*-1" />		
+		<Layer Type="BitmapText" Text="@PROFILEMAN:GetProfile(PLAYER_2):GetTotalStepsWithTopGrade(st,1,0)" File="_misobold small" InitCommand="@'diffuse,' .. PlayerColor(PLAYER_2) .. ';ShadowLength,0;zoom,0.5'" OnCommand="x,20;y,10+20*0" />
+		<Layer Type="BitmapText" Text="@PROFILEMAN:GetProfile(PLAYER_2):GetTotalStepsWithTopGrade(st,2,0)" File="_misobold small" InitCommand="@'diffuse,' .. PlayerColor(PLAYER_2) .. ';ShadowLength,0;zoom,0.5'" OnCommand="x,20;y,10+20*1" />
+		<Layer Type="BitmapText" Text="@PROFILEMAN:GetProfile(PLAYER_2):GetTotalStepsWithTopGrade(st,3,0)" File="_misobold small" InitCommand="@'diffuse,' .. PlayerColor(PLAYER_2) .. ';ShadowLength,0;zoom,0.5'" OnCommand="x,20;y,10+20*2" />
+		<Layer Type="BitmapText" Text="@PROFILEMAN:GetProfile(PLAYER_2):GetTotalStepsWithTopGrade(st,4,0)" File="_misobold small" InitCommand="@'diffuse,' .. PlayerColor(PLAYER_2) .. ';ShadowLength,0;zoom,0.5'" OnCommand="x,20;y,10+20*3" />
+		<Layer Type="BitmapText" Text="@DifficultyToThemedString(DIFFICULTY_EASY)" File="_misobold small" InitCommand="@'diffuse,' .. DifficultyColor(DIFFICULTY_EASY) .. ';horizalign,right;ShadowLength,0;zoom,0.5'" OnCommand="x,-5;y,10+20*0" />
+		<Layer Type="BitmapText" Text="@DifficultyToThemedString(DIFFICULTY_MEDIUM)" File="_misobold small" InitCommand="@'diffuse,' .. DifficultyColor(DIFFICULTY_MEDIUM) .. ';horizalign,right;ShadowLength,0;zoom,0.5'" OnCommand="x,-5;y,10+20*1" />
+		<Layer Type="BitmapText" Text="@DifficultyToThemedString(DIFFICULTY_HARD)" File="_misobold small" InitCommand="@'diffuse,' .. DifficultyColor(DIFFICULTY_HARD) .. ';horizalign,right;ShadowLength,0;zoom,0.5'" OnCommand="x,-5;y,10+20*2" />
+		<Layer Type="BitmapText" Text="@DifficultyToThemedString(DIFFICULTY_CHALLENGE)" File="_misobold small" InitCommand="@'diffuse,' .. DifficultyColor(DIFFICULTY_CHALLENGE) .. ';horizalign,right;ShadowLength,0;zoom,0.5'" OnCommand="x,-5;y,10+20*3" />
+	</children> </Layer>
+	
+	<Layer
+		Text="@ScreenEndingGetDisplayName(PLAYER_1)"
+		Condition="GAMESTATE:IsHumanPlayer(PLAYER_1)"
+		File="_misobold small"
+		InitCommand="@'x,SCREEN_LEFT+74;y,SCREEN_CENTER_Y-200;zoom,0.8;ShadowLength,0;diffuse,'..PlayerColor(PLAYER_1)"
+	/>
+
+	<Layer
+		Text="@ScreenEndingGetDisplayName(PLAYER_2)"
+		Condition="GAMESTATE:IsHumanPlayer(PLAYER_2)"
+		File="_misobold small"
+		InitCommand="@'x,SCREEN_RIGHT-74;y,SCREEN_CENTER_Y-200;zoom,0.8;ShadowLength,0;diffuse,'..PlayerColor(PLAYER_2)"
+	/>
+</children> </ActorFrame>

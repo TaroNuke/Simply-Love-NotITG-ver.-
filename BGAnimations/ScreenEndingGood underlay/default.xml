@@ -1,0 +1,8 @@
+<ActorFrame> <children>
+	<ActorFrame Command="sleep,41;queuecommand,Out" OutCommand="%function() SCREENMAN:GetTopScreen():diffusealpha(0) end" />
+	<Layer Type="Quad" OnCommand="diffuse,#00000077;stretchto,SCREEN_LEFT,0,180,480;sleep,41;queuecommand,Out" OutCommand="diffuse,#00000077;linear,.5;diffuse,#00000000" />
+	<Layer Type="Quad" OnCommand="diffuse,#00000077;stretchto,SCREEN_RIGHT-180,0,SCREEN_RIGHT,480;sleep,41;queuecommand,Out" OutCommand="diffuse,#00000077;linear,.5;diffuse,#00000000" />
+	<Layer File="gameover" OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-20;diffusealpha,0;sleep,1;decelerate,2;diffusealpha,1;sleep,37.5;linear,0.5;diffusealpha,0" />
+	<Layer File="../ScreenEndingNormal underlay/Stats.xml" Command="diffuse,1,1,1,1" />
+	<Layer Type="Quad" OnCommand="diffuse,#000000;diffusealpha,0;stretchto,SCREEN_LEFT,SCREEN_BOTTOM,SCREEN_RIGHT,SCREEN_TOP;sleep,41;queuecommand,Out" OutCommand="linear,0.5;diffusealpha,1" />
+</children> </ActorFrame>

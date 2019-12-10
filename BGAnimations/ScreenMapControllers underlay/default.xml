@@ -1,0 +1,11 @@
+<ActorFrame> <children>
+
+	<Layer Type="Quad" Command="diffuse,#1E282F66;stretchto,10,438,630,388"
+		OffCommand="decelerate,0.75;addx,-1000"
+	/>
+	<Layer File="keymapstuff.png" Command="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+25"
+		OffCommand="decelerate,0.75;addx,-1000"
+	/>
+	
+	<Layer Type="Quad" Command="stretchto,SCREEN_CENTER_X-320,SCREEN_CENTER_Y+200,SCREEN_CENTER_X+320,SCREEN_CENTER_Y+240;blend,noeffect;zwrite,1" />
+	</children></ActorFrame> 

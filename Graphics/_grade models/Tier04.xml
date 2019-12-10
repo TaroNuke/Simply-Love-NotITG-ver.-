@@ -1,0 +1,13 @@
+<ActorFrame>
+	<children>
+		<ActorFrame
+			OnCommand="zoom,0.8;pulse;EffectMagnitude,1,0.9,0"
+		>
+			<children>
+				<Actor
+					File="star.png"
+				/>
+			</children>
+		</ActorFrame>
+	</children>
+</ActorFrame>

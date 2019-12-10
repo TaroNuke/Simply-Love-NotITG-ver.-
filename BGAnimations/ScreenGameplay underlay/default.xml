@@ -1,0 +1,287 @@
+<ActorFrame> <children>
+	<Layer Type="Quad" Command="diffuse,#00000080;stretchto,SCREEN_LEFT,SCREEN_TOP,SCREEN_RIGHT,80"/>
+
+	<ActorFrame 
+		Condition="GAMESTATE:GetPlayMode()==PLAY_MODE_REGULAR and GAMESTATE:GetEasiestStepsDifficulty()==DIFFICULTY_BEGINNER and PREFSMAN:GetPreference('MercifulBeginner')"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-30" 
+	><children>
+		<Layer
+			Class="AutoActor"
+			File="light_frame"
+		/>
+		<Layer
+			Class="AutoActor"
+			File="light_green"
+			OnCommand="y,-94;diffusealpha,0;rotationz,0;blend,add"
+			NoteCrossedMessageCommand="finishtweening;diffusealpha,1;zoom,1.2;linear,0.2;zoom,1;diffusealpha,0"
+		/>
+		<Layer
+			Class="AutoActor"
+			File="light_yellow"
+			OnCommand="y,-31;diffusealpha,0;rotationz,45;blend,add"
+			NoteWillCrossIn500MsMessageCommand="finishtweening;diffusealpha,1;zoom,1.2;linear,0.2;zoom,1;diffusealpha,0"
+		/>
+		<Layer
+			Class="AutoActor"
+			File="light_yellow"
+			OnCommand="y,32;diffusealpha,0;rotationz,90;blend,add"
+			NoteWillCrossIn1000MsMessageCommand="finishtweening;diffusealpha,1;zoom,1.2;linear,0.2;zoom,1;diffusealpha,0"
+		/>
+		<Layer
+			Class="AutoActor"
+			File="light_red"
+			OnCommand="y,95;diffusealpha,0;rotationz,135;blend,add"
+			NoteWillCrossIn1500MsMessageCommand="finishtweening;diffusealpha,1;zoom,1.2;linear,0.2;zoom,1;diffusealpha,0"
+		/>
+		<Layer
+			Class="BitmapText"
+			Font="_misobold small"
+			Text="left!"
+			OnCommand="shadowlength,0;y,-106;diffusealpha,0;maxwidth,70"
+			NoteCrossedLeftMessageCommand="finishtweening;diffusealpha,1;zoom,1.4;linear,0.2;zoom,1;sleep,0.4;diffusealpha,0"
+			NoteCrossedJumpMessageCommand="finishtweening;diffusealpha,0"
+		/>
+		<Layer
+			Class="BitmapText"
+			Font="_misobold small"
+			Text="right!"
+			OnCommand="shadowlength,0;y,-106;diffusealpha,0;maxwidth,70"
+			NoteCrossedRightMessageCommand="finishtweening;diffusealpha,1;zoom,1.4;linear,0.2;zoom,1;sleep,0.4;diffusealpha,0"
+			NoteCrossedJumpMessageCommand="finishtweening;diffusealpha,0"
+		/>
+		<Layer
+			Class="BitmapText"
+			Font="_misobold small"
+			Text="up!"
+			OnCommand="shadowlength,0;y,-106;diffusealpha,0;maxwidth,70"
+			NoteCrossedUpMessageCommand="finishtweening;diffusealpha,1;zoom,1.4;linear,0.2;zoom,1;sleep,0.4;diffusealpha,0"
+			NoteCrossedJumpMessageCommand="finishtweening;diffusealpha,0"
+		/>
+		<Layer
+			Class="BitmapText"
+			Font="_misobold small"
+			Text="down!"
+			OnCommand="shadowlength,0;y,-106;diffusealpha,0;maxwidth,70"
+			NoteCrossedDownMessageCommand="finishtweening;diffusealpha,1;zoom,1.4;linear,0.2;zoom,1;sleep,0.4;diffusealpha,0"
+			NoteCrossedJumpMessageCommand="finishtweening;diffusealpha,0"
+		/>
+		<Layer
+			Class="BitmapText"
+			Font="_misobold small"
+			Text="Jump!"
+			OnCommand="shadowlength,0;y,-106;diffusealpha,0;maxwidth,70"
+			NoteCrossedJumpMessageCommand="finishtweening;diffusealpha,1;zoom,1.4;linear,0.2;zoom,1;sleep,0.4;diffusealpha,0"
+		/>
+		<Layer
+			Class="AutoActor"
+			File="light_dot"
+			OnCommand="diffusealpha,0"
+			NoteWillCrossIn500MsMessageCommand="finishtweening;y,-32;diffusealpha,0.5;linear,0.5;addy,-64;sleep,0.01;diffusealpha,0"
+		/>
+		<Layer
+			Class="AutoActor"
+			File="light_dot"
+			OnCommand="diffusealpha,0"
+			NoteWillCrossIn1000MsMessageCommand="finishtweening;y,32;diffusealpha,0.5;linear,0.5;addy,-64;sleep,0.01;diffusealpha,0"
+		/>
+		<Layer
+			Class="AutoActor"
+			File="light_dot"
+			OnCommand="diffusealpha,0"
+			NoteWillCrossIn1500MsMessageCommand="finishtweening;y,96;diffusealpha,0.5;linear,0.5;addy,-64;sleep,0.01;diffusealpha,0"
+		/>
+	</children></ActorFrame>
+	
+	<ActorFrame
+		Condition="GAMESTATE:IsHumanPlayer(PLAYER_1) and GAMESTATE:GetPlayMode()==PLAY_MODE_REGULAR and GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty()==DIFFICULTY_BEGINNER  and PREFSMAN:GetPreference('MercifulBeginner')"
+		OnCommand="x,SCREEN_CENTER_X-(SCREEN_WIDTH*160/640);y,SCREEN_CENTER_Y+40;rotationx,-20"
+		FOV="45"
+		VanishX="SCREEN_CENTER_X-160"
+		VanishY="SCREEN_CENTER_Y+40"
+	><children>
+		<AutoActor
+			File="platform"
+			OnCommand="diffuse,0.6,0.6,0.6,0.8"
+		/>
+		<AutoActor
+			File="panelglow"
+			OnCommand="x,-53;blend,add;diffusealpha,0"
+			NoteCrossedLeftMessageCommand="finishtweening;diffusealpha,1;linear,0.3;zoom,1;diffusealpha,0"
+		/>
+		<AutoActor
+			File="panelglow"
+			OnCommand="x,+53;blend,add;diffusealpha,0"
+			NoteCrossedRightMessageCommand="finishtweening;diffusealpha,1;linear,0.3;zoom,1;diffusealpha,0"
+		/>
+		<AutoActor
+			File="panelglow"
+			OnCommand="y,-53;blend,add;diffusealpha,0"
+			NoteCrossedUpMessageCommand="finishtweening;diffusealpha,1;linear,0.3;zoom,1;diffusealpha,0"
+		/>
+		<AutoActor
+			File="panelglow"
+			OnCommand="y,+53;blend,add;diffusealpha,0"
+			NoteCrossedDownMessageCommand="finishtweening;diffusealpha,1;linear,0.3;zoom,1;diffusealpha,0"
+		/>
+	</children></ActorFrame>
+
+	<ActorFrame
+		Condition="GAMESTATE:IsHumanPlayer(PLAYER_2) and GAMESTATE:GetPlayMode()==PLAY_MODE_REGULAR and GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty()==DIFFICULTY_BEGINNER and PREFSMAN:GetPreference('MercifulBeginner')"
+		OnCommand="x,SCREEN_CENTER_X+(SCREEN_WIDTH*160/640);y,SCREEN_CENTER_Y+40;rotationx,-20"
+		FOV="45"
+		VanishX="SCREEN_CENTER_X+160"
+		VanishY="SCREEN_CENTER_Y+40"
+	><children>
+		<AutoActor
+			File="platform"
+			OnCommand="diffuse,0.6,0.6,0.6,0.8"
+		/>
+		<AutoActor
+			File="panelglow"
+			OnCommand="x,-53;blend,add;diffusealpha,0"
+			NoteCrossedLeftMessageCommand="finishtweening;diffusealpha,1;linear,0.3;zoom,1;diffusealpha,0"
+		/>
+		<AutoActor
+			File="panelglow"
+			OnCommand="x,+53;blend,add;diffusealpha,0"
+			NoteCrossedRightMessageCommand="finishtweening;diffusealpha,1;linear,0.3;zoom,1;diffusealpha,0"
+		/>
+		<AutoActor
+			File="panelglow"
+			OnCommand="y,-53;blend,add;diffusealpha,0"
+			NoteCrossedUpMessageCommand="finishtweening;diffusealpha,1;linear,0.3;zoom,1;diffusealpha,0"
+		/>
+		<AutoActor
+			File="panelglow"
+			OnCommand="y,+53;blend,add;diffusealpha,0"
+			NoteCrossedDownMessageCommand="finishtweening;diffusealpha,1;linear,0.3;zoom,1;diffusealpha,0"
+		/>
+	</children></ActorFrame>
+	
+	<ActorFrame Command="%function() loadMusic = 1 end" />
+	<ActorFrame Command="%GameplayInit" FirstUpdateCommand="%Gameplay" UpdateCommand="%GameplayUpdate"/>
+	<Layer Type="ActorFrame"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_TOP+20;zoomx,((SCREEN_WIDTH/SCREEN_HEIGHT)/(4/3))"
+		> <children>
+
+		<Layer 
+			Type="SongMeterDisplay" 
+			StreamWidth="300" 
+			StreamPath="meter stream" 
+			Command="%function(self) 
+					if Color() == 8 then self:diffuse(ColorRGB(0)) 
+				elseif Color() == 9 then self:diffuse(ColorRGB(-1)) 
+				elseif Color() == 10 then self:diffuse(ColorRGB(3)) 
+				elseif Color() == 11 then self:diffuse(ColorRGB(2)) 
+				else self:diffuse(ColorRGB(1)) 
+				end
+			end" 
+		>
+			<Tip File="tip" OnCommand="hidden,1" />
+		</Layer>
+
+		<Layer File="meter frame" />
+
+		<Layer
+			Type="BitmapText"
+			Font="_misobold white"
+			OnCommand="y,-5;zoom,0.35;shadowlength,0;maxwidth,840;zoomx,0.35/((SCREEN_WIDTH/SCREEN_HEIGHT)/(4/3))"
+			InitCommand="animate,0;playcommand,Update"
+			CurrentSongChangedMessageCommand="playcommand,Update"
+			UpdateCommand="%SetFromSongTitleAndCourseTitle"
+		/>
+	</children> </Layer>
+
+	<!-- Difficulty: -->
+	<Layer Type="ActorFrame"
+		OnCommand="sleep,0.5;queuecommand,TweenOn"
+		OffCommand="queuecommand,TweenOff"
+		ShowGameplayTopFrameMessageCommand="playcommand,TweenOn"
+		HideGameplayTopFrameMessageCommand="playcommand,TweenOff"
+		> <children>
+		
+		<ActorFrame Condition="GAMESTATE:IsPlayerEnabled(PLAYER_1)" OnCommand="x,SCREEN_CENTER_X-(SCREEN_WIDTH*160/640+135);y,SCREEN_TOP+54"><children>
+			<Actor
+				File="@THEME:GetPath(EC_GRAPHICS,'','_difficulty icons')"
+				InitCommand="%function(self) self:y(IconY()) IconCrop(self) end"
+				OnCommand="animate,0;playcommand,Update"
+				CurrentStepsP1ChangedMessageCommand="playcommand,Update"
+				CurrentStepsP2ChangedMessageCommand="playcommand,Update"
+				UpdateCommand="%function(self,parent) SetDifficultyFrameFromSteps(self, PLAYER_1) end"
+			/>
+			<Actor
+				Class="DifficultyMeter"
+				Type="ScreenGameplay DifficultyMeterP1"
+				OnCommand="playcommand,Update"
+				CurrentStepsP1ChangedMessageCommand="playcommand,Update"
+				CurrentStepsP2ChangedMessageCommand="playcommand,Update"
+				UpdateCommand="%function(self) self:SetFromSteps(GAMESTATE:GetCurrentSteps(PLAYER_1)) end"
+			/>
+		</children></ActorFrame>
+		
+		<ActorFrame Condition="GAMESTATE:IsPlayerEnabled(PLAYER_2)" OnCommand="x,SCREEN_CENTER_X+(SCREEN_WIDTH*160/640+135);y,SCREEN_TOP+54"><children>
+			<Actor
+				File="@THEME:GetPath(EC_GRAPHICS,'','_difficulty icons')"
+				InitCommand="%function(self) self:y(IconY()) IconCrop(self) end"
+				OnCommand="animate,0;playcommand,Update"
+				CurrentStepsP1ChangedMessageCommand="playcommand,Update"
+				CurrentStepsP2ChangedMessageCommand="playcommand,Update"
+				UpdateCommand="%function(self,parent) SetDifficultyFrameFromSteps(self, PLAYER_2) end"
+			/>
+			<Actor
+				Class="DifficultyMeter"
+				Type="ScreenGameplay DifficultyMeterP2"
+				OnCommand="playcommand,Update"
+				CurrentStepsP1ChangedMessageCommand="playcommand,Update"
+				CurrentStepsP2ChangedMessageCommand="playcommand,Update"
+				UpdateCommand="%function(self) self:SetFromSteps(GAMESTATE:GetCurrentSteps(PLAYER_2)) end"
+			/>
+		</children></ActorFrame>
+		
+	</children> </Layer>
+
+
+	<!-- Draw on top of the rest -->	
+	
+	<Layer
+		Type="Quad"
+		OnCommand="diffuse,#000000;stretchto,SCREEN_LEFT,SCREEN_TOP,SCREEN_RIGHT,SCREEN_BOTTOM;diffusealpha,1;linear,0.3;diffusealpha,0"
+	/>
+
+	<ActorFrame
+		OnCommand="queuecommand,Set"
+		SetCommand="%function(self) 
+			if not GAMESTATE:IsCourseMode() then
+				local p1 = SCREENMAN:GetTopScreen():GetChild('ScoreP1')
+				local p2 = SCREENMAN:GetTopScreen():GetChild('ScoreP2')
+				if p1 then p1 = p1:GetChild('ScoreDisplayPercentage Percent'):GetChild('PercentP1'); score1 = string.gsub(p1:GetText(),'%%','') end
+				if p2 then p2 = p2:GetChild('ScoreDisplayPercentage Percent'):GetChild('PercentP2'); score2 = string.gsub(p2:GetText(),'%%','') end
+				if p1 then p1:diffuse(1,1,1,1) end
+				if p2 then p2:diffuse(1,1,1,1) end
+				if p1 and p2 and tonumber(score1) < tonumber(score2) then p1:diffuse(1,1,1,0.7) end
+				if p1 and p2 and tonumber(score2) < tonumber(score1) then p2:diffuse(1,1,1,0.7) end
+				self:sleep(.05)
+				self:queuecommand('Set')
+			end
+		end" 
+	/>
+	<Layer
+		Font="_misobold white"
+		Text=""
+		InitCommand="x,SCREEN_CENTER_X;y,SCREEN_TOP+40;zoom,.7;shadowlength,0"
+		OnCommand="queuecommand,Update"
+		UpdateCommand="%GameplayBPM"
+	/>
+	<Layer
+		Font="_misobold white"
+		Text=""
+		InitCommand="x,SCREEN_CENTER_X;y,SCREEN_TOP+66;zoom,.3;shadowlength,0"
+		OnCommand="queuecommand,Update"
+		UpdateCommand="%function(self) 
+		s = modRate .. 'x'
+		if modRate == 1 then s = '' end
+		self:settext(s)
+		end"
+	/>
+</children> </ActorFrame>
+

@@ -1,0 +1,108 @@
+<ActorFrame> <children>
+	<Layer 
+		Type="ActorFrame"
+		Command="x,60"
+		GainFocusCommand="linear,0.2;zoom,1.4"
+		LoseFocusCommand="linear,0.2;zoom,0.7"
+	><children>
+		<Layer 
+			Condition="game == 'dance'"
+			Type="ActorFrame"
+			Command="x,-60"
+		><children>
+			<Layer
+				File="../5panels"
+				EnabledCommand="diffuse,.16,.24,.27,1"
+				DisabledCommand="diffuse,.12,.2,.23,1"
+				OnCommand="%FadeIn"
+				OffCommand="%OutCommand"
+			/>
+			<Layer
+				File="../4panels"
+				EnabledCommand="%function(self) self:diffuse(ColorRGB(2)) end"
+				DisabledCommand="diffuse,.24,.31,.35,1"
+				OnCommand="%FadeIn"
+				OffCommand="%OutCommand"
+			/>
+			<Layer
+				File="../5panels"
+				EnabledCommand="%function(self) self:diffuse(ColorRGB(2)) self:cropbottom(.64) end"
+				DisabledCommand="diffuse,.24,.31,.35,1;cropbottom,.64"
+				OnCommand="%FadeIn"
+				OffCommand="%OutCommand"
+			/>
+			<Layer
+				Condition="game == 'dance'"
+				File="solo"
+				InitCommand="y,130"
+				EnabledCommand="%function(self) self:diffuse(1,1,1,1) end"
+				DisabledCommand="diffuse,.24,.31,.35,1"
+				OnCommand="%FadeIn"
+				OffCommand="%OutCommand"
+			/>
+		</children></Layer>
+		<Layer 
+			Condition="game == 'pump'"
+			Type="ActorFrame"
+			Command="x,110"
+		><children>
+			<Layer
+				File="../4panels"
+				EnabledCommand="%function(self) self:diffuse(.16,.24,.27,1) end"
+				DisabledCommand="diffuse,.12,.2,.23,1"
+				OnCommand="%FadeIn"
+				OffCommand="%OutCommand"
+			/>
+			<Layer
+				File="../5panels"
+				EnabledCommand="%function(self) self:diffuse(.16,.24,.27,1) end"
+				DisabledCommand="diffuse,.12,.2,.23,1"
+				OnCommand="%FadeIn"
+				OffCommand="%OutCommand"
+			/>
+			<Layer
+				File="../5panels"
+				EnabledCommand="%function(self) self:diffuse(ColorRGB(2)) self:cropright(.33) end"
+				DisabledCommand="diffuse,.24,.31,.35,1;cropright,.33"
+				OnCommand="%FadeIn"
+				OffCommand="%OutCommand"
+			/>
+		</children></Layer>
+		<Layer 
+			Condition="game == 'pump'"
+			Type="ActorFrame"
+			Command="x,-110"
+		><children>
+			<Layer
+				File="../4panels"
+				EnabledCommand="%function(self) self:diffuse(.16,.24,.27,1) end"
+				DisabledCommand="diffuse,.12,.2,.23,1"
+				OnCommand="%FadeIn"
+				OffCommand="%OutCommand"
+			/>
+			<Layer
+				File="../5panels"
+				EnabledCommand="%function(self) self:diffuse(.16,.24,.27,1) end"
+				DisabledCommand="diffuse,.12,.2,.23,1"
+				OnCommand="%FadeIn"
+				OffCommand="%OutCommand"
+			/>
+			<Layer
+				File="../5panels"
+				EnabledCommand="%function(self) self:diffuse(ColorRGB(2)) self:cropleft(.33) end"
+				DisabledCommand="diffuse,.24,.31,.35,1;cropleft,.33"
+				OnCommand="%FadeIn"
+				OffCommand="%OutCommand"
+			/>
+		</children></Layer>
+		<Layer
+			Condition="game == 'pump'"
+			File="halfdouble"
+			InitCommand="y,130"
+			EnabledCommand="%function(self) self:diffuse(1,1,1,1) end"
+			DisabledCommand="diffuse,.24,.31,.35,1"
+			OnCommand="%FadeIn"
+			OffCommand="%OutCommand"
+		/>
+	</children></Layer>
+</children> </ActorFrame>

@@ -1,0 +1,11 @@
+<ActorFrame><children>
+	<Layer 
+		Condition="loadMusic == 1"
+		File="_loading in"
+		Command="%function() loadMusic = 0 end"
+	/>
+	<Layer 
+		Condition="loadMusic == 0"
+		File="_fade in"
+	/>
+</children></ActorFrame>

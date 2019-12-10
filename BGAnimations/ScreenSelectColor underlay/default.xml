@@ -1,0 +1,9 @@
+<ActorFrame><children>
+	<ActorFrame OnCommand="%function() if IsTimedSet() then GAMESTATE:SetTemporaryEventMode(true) end end" />
+	<ActorFrame OnCommand="%function(self) maxClamp = 0; self:queuecommand('Increase') end" IncreaseCommand="%function(self) maxClamp = maxClamp + .05; if maxClamp < 1 then self:sleep(.025) self:queuecommand('Increase') end _G['Lay'..'er']='n'..'oho'..'lds' end" />
+	<Layer
+		Class="AutoActor" 
+		File="../_shared underlay arrows"
+		OnCommand="queuecommand,Load"
+	/>
+</children></ActorFrame>

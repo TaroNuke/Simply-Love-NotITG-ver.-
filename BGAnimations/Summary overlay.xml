@@ -1,0 +1,10 @@
+<ActorFrame><children>
+	<ActorFrame InitCommand="%function(self) scoreRow = {} scoreRowY = 90 end" />
+	<Layer Type="ActorFrame" InitCommand="%function(self) self:x(SCREEN_CENTER_X) self:y(65+math.max(4+scoreIndex - table.getn(AllScores),0)*scoreRowY/2) end" ><children>
+		<Layer File="@ThemeFile('ScoreRow.xml')" InitCommand="%function(self) k = scoreIndex scoreIndex = k + 1 table.insert(scoreRow,self) self:y(scoreRowY*(table.getn(scoreRow)-1)) if AllScores[k] then self:playcommand('Set') else self:zoom(0) end end" />
+		<Layer File="@ThemeFile('ScoreRow.xml')" InitCommand="%function(self) k = scoreIndex scoreIndex = k + 1 table.insert(scoreRow,self) self:y(scoreRowY*(table.getn(scoreRow)-1)) if AllScores[k] then self:playcommand('Set') else self:zoom(0) end end" />
+		<Layer File="@ThemeFile('ScoreRow.xml')" InitCommand="%function(self) k = scoreIndex scoreIndex = k + 1 table.insert(scoreRow,self) self:y(scoreRowY*(table.getn(scoreRow)-1)) if AllScores[k] then self:playcommand('Set') else self:zoom(0) end end" />
+		<Layer File="@ThemeFile('ScoreRow.xml')" InitCommand="%function(self) k = scoreIndex scoreIndex = k + 1 table.insert(scoreRow,self) self:y(scoreRowY*(table.getn(scoreRow)-1)) if AllScores[k] then self:playcommand('Set') else self:zoom(0) end end" />
+		<Layer File="@ThemeFile('ScoreRow.xml')" InitCommand="%function(self) k = scoreIndex scoreIndex = k + 1 table.insert(scoreRow,self) self:y(scoreRowY*(table.getn(scoreRow)-1)) if AllScores[k] then self:playcommand('Set') else self:zoom(0) end end" />
+	</children></Layer>
+</children></ActorFrame>

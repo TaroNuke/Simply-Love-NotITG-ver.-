@@ -1,0 +1,17 @@
+<ActorFrame><children>
+	<AutoActor
+		File="../Combo 100milestone"
+	/>
+	
+	<Actor
+		File="heartswoosh"
+		InitCommand="diffusealpha,0;blend,add"
+		MilestoneCommand="@'diffuse,'..DifficultyColor(3)..';zoom,0.25;diffusealpha,0.7;x,0;linear,0.7;zoom,3;diffusealpha,0;x,100'"
+	/>
+	<Actor
+		File="heartswoosh"
+		InitCommand="diffusealpha,0;blend,add"
+		MilestoneCommand="@'diffuse,'..DifficultyColor(3)..';rotationy,180;zoom,0.25;diffusealpha,0.7;x,0;linear,0.7;zoom,3;diffusealpha,0;x,-100'"
+	/>
+	
+</children></ActorFrame>

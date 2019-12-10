@@ -1,0 +1,49 @@
+<ActorFrame> <children>
+	<ActorFrame Command="%function() love = 0 end" />
+	<ActorFrame
+		InitCommand="%function() Voice = 'Jayce'; score = '99.00';  end"
+		OnCommand="sleep,0.01;queuecommand,Vocalize111"
+		Vocalize1Command="%function(self) VocalizeTest(self,1) self:queuecommand('Vocalize2') end"
+		Vocalize2Command="%function(self) VocalizeTest(self,2) self:queuecommand('Vocalize3') end"
+		Vocalize3Command="%function(self) VocalizeTest(self,3) self:queuecommand('Vocalize4') end"
+		Vocalize4Command="%function(self) VocalizeTest(self,4) self:queuecommand('Vocalize5') end"
+		Vocalize5Command="%function(self) VocalizeTest(self,5) end"
+	/>	
+	<ActorFrame
+		InitCommand="%function()
+
+	Jayce = { z0 = .6,
+			z1 = .5,
+			z2 = .6,
+			z3 = .6,
+			z4 = .6,
+			z5 = .6,
+			z6 = .6,
+			z7 = .6,
+			z8 = .6,
+			z9 = .6,
+			z10 = .6,
+			z11 = .6,
+			z12 = .7,
+			z13 = .7,
+			z14 = .7,
+			z15 = .7,
+			z16 = .7,
+			z17 = .7,
+			z18 = .7,
+			z19 = .7,
+			z20 = .6,
+			z30 = .6,
+			z40 = .6,
+			z50 = .6,
+			z60 = .6,
+			z70 = .6,
+			z80 = .6,
+			z90 = .6,
+			z100percent1 = 1,
+			zpoint = .5,
+			quads = 1 }
+			
+		end"
+	/>
+</children></ActorFrame>

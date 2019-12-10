@@ -1,0 +1,20 @@
+<ActorFrame>
+	<children>
+		<BitmapText 
+			Font="_wendy small"
+			OnCommand="zoom,0.4;maxwidth,184;horizalign,left;x,SCREEN_LEFT+20;y,SCREEN_TOP+105;PlayCommand,Refresh"
+			RefreshCommand="%function(self) self:settext(GetEditStepsText()) self:sleep(0.5); self:queuecommand('Refresh') end" 
+		/>
+		<FadingBanner 
+			OnCommand="%function(self) self:LoadFromSong(GAMESTATE:GetCurrentSong()); self:x(SCREEN_LEFT+70); self:y(SCREEN_TOP+65); self:zoom(0.30); end" 
+		/>
+		<BitmapText
+			Text="Press [ESC]::for Edit Menu::::Press [F1]::for Help Menu::::Press [ENTER]::for Area Menu"
+			Font="_misoreg white"
+			InitCommand="ShadowLength,0;zoom,0.35;horizalign,left;x,SCREEN_LEFT+20;y,SCREEN_CENTER_Y"
+			OnCommand=""
+			OffCommand=""
+		/>
+		<ActorFrame Command="%ScreenEditInit" FirstUpdateCommand="%ScreenEdit" />
+	</children>
+</ActorFrame>

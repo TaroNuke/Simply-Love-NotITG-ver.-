@@ -1,0 +1,62 @@
+<ActorFrame> <children>
+	<Layer File="ScreenWithMenuElements footer"/>	
+
+	<Layer Type="ActorFrame" OnCommand="y,SCREEN_BOTTOM-13" > <children>
+		<Layer
+			Type="BitmapText"
+			Font="_misobold white"
+			Text="&START;"
+			Condition="ModeMenuAvailable()"
+			OnCommand="shadowlength,0;x,SCREEN_CENTER_X-37;y,-2;zoom,0.5;diffusealpha,0;horizalign,right;vertalign,bottom"
+			EnableSelectHelpMessageCommand="stoptweening;linear,0.2;diffusealpha,1"
+			SelectMenuOffMessageCommand="stoptweening;linear,0.2;diffusealpha,0"
+		/>
+		<Layer
+			Type="BitmapText"
+			Font="_misobold white"
+			Text="Change Sort"
+			Condition="ModeMenuAvailable()"
+			OnCommand="shadowlength,0;x,SCREEN_CENTER_X-29;zoom,0.3;diffusealpha,0;horizalign,left;vertalign,bottom"
+			EnableSelectHelpMessageCommand="stoptweening;linear,0.2;diffusealpha,1"
+			SelectMenuOffMessageCommand="stoptweening;linear,0.2;diffusealpha,0"
+		/>
+
+		<Layer Type="ActorFrame" OnCommand="%function(self) if ModeMenuAvailable() then self:x(SCREEN_CENTER_X-130) else self:x(SCREEN_CENTER_X-100) end end" > <children>
+			<Layer
+				Type="BitmapText"
+				Font="_misobold white"
+				Text="&MENULEFT;"
+				OnCommand="shadowlength,0;x,-10;y,-2;horizalign,right;vertalign,bottom;zoom,0.5;diffusealpha,0"
+				EnableSelectHelpMessageCommand="stoptweening;linear,0.2;diffusealpha,1"
+				SelectMenuOffMessageCommand="stoptweening;linear,0.2;diffusealpha,0"
+			/>
+			<Layer
+				Type="BitmapText"
+				Font="_misobold white"
+				Text="Easier"
+				OnCommand="shadowlength,0;x,0;horizalign,left;vertalign,bottom;zoom,0.3;diffusealpha,0"
+				EnableSelectHelpMessageCommand="stoptweening;linear,0.2;diffusealpha,1"
+				SelectMenuOffMessageCommand="stoptweening;linear,0.2;diffusealpha,0"
+			/>
+		</children> </Layer>
+
+		<Layer Type="ActorFrame" OnCommand="%function(self) if ModeMenuAvailable() then self:x(SCREEN_CENTER_X+130) else self:x(SCREEN_CENTER_X+100) end end" > <children>
+			<Layer
+				Type="BitmapText"
+				Font="_misobold white"
+				Text="Harder"
+				OnCommand="shadowlength,0;x,0;horizalign,right;vertalign,bottom;zoom,0.3;diffusealpha,0"
+				EnableSelectHelpMessageCommand="stoptweening;linear,0.2;diffusealpha,1"
+				SelectMenuOffMessageCommand="stoptweening;linear,0.2;diffusealpha,0"
+			/>
+			<Layer
+				Type="BitmapText"
+				Font="_misobold white"
+				Text="&MENURIGHT;"
+				OnCommand="shadowlength,0;x,+15;y,-2;horizalign,center;vertalign,bottom;zoom,0.5;diffusealpha,0"
+				EnableSelectHelpMessageCommand="stoptweening;linear,0.2;diffusealpha,1"
+				SelectMenuOffMessageCommand="stoptweening;linear,0.2;diffusealpha,0"
+			/>
+		</children> </Layer>
+	</children> </Layer>
+</children> </ActorFrame>

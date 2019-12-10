@@ -1,0 +1,7 @@
+<ActorFrame> <children>
+	<BitmapText 
+        Text="final" 
+        Font="_wendy small" 
+        OnCommand="ShadowLength,0;zoom,0.6"
+    />
+</children> </ActorFrame>

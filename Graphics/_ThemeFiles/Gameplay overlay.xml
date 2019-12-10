@@ -1,0 +1,7 @@
+<ActorFrame	InitCommand="draworder,99" OnCommand="" OffCommand="" ><children>
+	<ActorFrame InitCommand="%function() compareText = {} measureText = {} end" />
+	<Layer Font="modText" Text=" " InitCommand="aux,1;queuecommand,Go" GoCommand="%CompareText" />
+	<Layer Font="modText" Text=" " InitCommand="aux,2;queuecommand,Go" GoCommand="%CompareText" />
+	<Layer Font="modText" Text=" " InitCommand="aux,1;queuecommand,Go" GoCommand="%MeasureText" />
+	<Layer Font="modText" Text=" " InitCommand="aux,2;queuecommand,Go" GoCommand="%MeasureText" />
+</children></ActorFrame>

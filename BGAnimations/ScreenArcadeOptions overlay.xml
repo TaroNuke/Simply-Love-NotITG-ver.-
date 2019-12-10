@@ -1,0 +1,15 @@
+<ActorFrame> <children>
+	<ActorFrame OffCommand="sleep,0.2" />
+	<Layer
+		Type="Quad"
+		InitCommand="stretchto,0,0,SCREEN_WIDTH,SCREEN_HEIGHT;diffusealpha,0"
+		SaveProfileMessageCommand="diffuse,0,0,0,1"
+	/>
+	<Layer
+		File="_wendy small" 
+		Text="Saving Machine Profile"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;zoom,0.6;diffusealpha,0" 
+		SaveProfileMessageCommand="diffusealpha,1"
+	/>
+	
+</children> </ActorFrame>
