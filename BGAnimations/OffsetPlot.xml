@@ -4,6 +4,12 @@
 	  return math.floor(num * mult + 0.5) / mult
 	end
 	
+	function math.clamp(val, min, max)
+		if val < min then return min end
+		if val > max then return max end
+		return val
+	end
+	
 	oplot_plotWidth, oplot_plotHeight = 301,112
 	oplot_plotWidthSml, oplot_plotHeightSml = 150,112
 	oplot_xOffset, oplot_yOffset = 150, 0
@@ -61,7 +67,7 @@
 		
 		if not s then s = 0 end
 		if not e then e = oplot_finalSecond end
-		return perc*w - w/2 + xo
+		return math.clamp(perc,0,1)*w - w/2 + xo
 	end
 	function oplot_fitXTime(t)	-- Scale time values to fit within plot width.
 		return t/oplot_finalSecond*oplot_plotWidth - oplot_plotWidth/2
@@ -608,6 +614,34 @@ end"><children>
 				self:settext('Early (-'..oplot_maxOffset..'ms)')
 			end"
 		/>
+		
+		<Layer Type="BitmapText" Text="" Font="_misoreg small"
+		UpdateSpellDisplayP1MessageCommand="%function(self)
+			local pn = 1
+			if curcard[pn] == 0 then
+				self:hidden(0)
+			else
+				self:hidden(1)
+			end
+		end"
+		OnCommand="%function(self)
+			self:hidden(1)
+			self:xy(83,-98)
+			self:zoom(.8)
+			self:shadowlength(0)
+			
+			local prof = PROFILEMAN:GetMachineProfile()
+			local plays = math.floor(prof:GetSongNumTimesPlayed(GAMESTATE:GetCurrentSong())/2)
+			
+			if plays == 0 then
+				self:settext( 'No plays' )
+			elseif plays == 1 then
+				self:settext( 'First play' )
+			else
+				self:settext( plays .. ' plays' )
+			end
+			
+		end" />
 
 	</children></Layer>
 	
@@ -1076,7 +1110,37 @@ end"><children>
 				self:settext('Early (-'..oplot_maxOffset..'ms)')
 			end"
 		/>
+		
+		<Layer Type="BitmapText" Text="" Font="_misoreg small"
+		UpdateSpellDisplayP2MessageCommand="%function(self)
+			local pn = 2
+			if curcard[pn] == 0 then
+				self:hidden(0)
+			else
+				self:hidden(1)
+			end
+		end"
+		OnCommand="%function(self)
+			self:hidden(1)
+			self:xy(-83,-98)
+			self:zoom(.8)
+			self:shadowlength(0)
+			
+			local prof = PROFILEMAN:GetMachineProfile()
+			local plays = math.floor(prof:GetSongNumTimesPlayed(GAMESTATE:GetCurrentSong())/2)
+			
+			if plays == 0 then
+				self:settext( 'No plays' )
+			elseif plays == 1 then
+				self:settext( 'First play' )
+			else
+				self:settext( plays .. ' plays' )
+			end
+			
+		end" />
 
 	</children></Layer>
+	
+	
 	
 </children></ActorFrame>
