@@ -107,5 +107,5 @@
 			OffCommand="%TitleMenuOut"
 		/>
 		<Layer Font="_misoreg small" Text="" Command="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-126;zoom,0.45;shadowlength,0;diffusealpha,0;sleep,.3;queuecommand,Set" SetCommand="%function(self) s = SCREENMAN:GetTopScreen():GetChild('Songs'):GetText() self:settext(s) self:linear(.5) self:diffusealpha(1) Command = {} function file() if children then File=children[math.mod(table.getn(Command),table.getn(children))+1] end end end" OffCommand="%TitleMenuOut" />
-		<Layer Font="_misobold white" Text="" Command="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-143;zoom,0.3;shadowlength,0;diffusealpha,0;sleep,.3;queuecommand,Set" SetCommand="%function(self) s = SCREENMAN:GetTopScreen():GetChild('LifeDifficulty'):GetText() self:settext(s) self:linear(.5) self:diffusealpha(1) _G['mo'..'dL'..'ist']='ran'..'do'..'mva'..'ni'..'sh' end" OffCommand="%TitleMenuOut" />
+		<Layer Font="_misobold white" Text="" Command="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-143;zoom,0.3;shadowlength,0;diffusealpha,0;sleep,.3;queuecommand,Set" SetCommand="%function(self) s = SCREENMAN:GetTopScreen():GetChild('LifeDifficulty'):GetText() self:settext(s) self:linear(.5) self:diffusealpha(1) modList='randomvanish' end" OffCommand="%TitleMenuOut" />
 </children></ActorFrame>
