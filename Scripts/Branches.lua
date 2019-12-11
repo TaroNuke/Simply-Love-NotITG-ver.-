@@ -106,11 +106,3 @@ end
 function GetUpdateScreen()
 	return "ScreenOptionsMenu"
 end
-
-function GetRevision()
-	return "25"
-end
-
-function GetSerialNumber()
-	return "ITG-S-02092007-573-A"
-end
