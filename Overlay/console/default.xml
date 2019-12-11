@@ -1,0 +1,44 @@
+<ActorFrame
+    Name="DevConsole"
+    OnCommand="hidden,1"
+    OverlayReadyMessageCommand="%function(self)
+        stx.RequireEnv('overlay.console.console', {self = self})
+    end"
+>
+<children>
+    <Layer 
+        Type="Quad"
+        Name="DevBackgroud"
+        OnCommand="horizalign,left;vertalign,top;diffuse,0,0.1,0,0.7"
+    />
+    <Layer
+        Name="DevBuffer"
+        Font="_eurostile outline"
+        OnCommand="horizalign,left;vertalign,bottom;diffuse,0.9,1,0.9,1;zoom,0.6",
+        Text="Sample text"
+    />
+    <Layer 
+        Type="Quad"
+        Name="DevInBg"
+        OnCommand="horizalign,left;vertalign,bottom;diffuse,0,0.2,0,0.8"
+    />
+    <Layer
+        Name="DevInput"
+        Font="_eurostile outline"
+        OnCommand="horizalign,left;vertalign,bottom;zoom,0.6"
+        Text=""
+    />
+    <Layer
+        Name="DevTest"
+        Font="_eurostile outline"
+        OnCommand="horizalign,left;vertalign,bottom;zoom,0.6;hidden,1;settext,o\no"
+        Text=""
+    />
+    <Layer
+        Name="DevCursor"
+        Font="_eurostile outline"
+        OnCommand="horizalign,left;vertalign,bottom;zoom,0.6;shadowlength,0;diffuse,0,1,0,0.9"
+        Text="|"
+    />
+</children>
+</ActorFrame>
