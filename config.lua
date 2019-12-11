@@ -1,5 +1,5 @@
-layout = "QwertyUK"
-console = "+"
+layout = "QwertyUS"
+console = "0"
 deep = "!"
 bare = ","
 skip = 10
@@ -8,7 +8,7 @@ wraps = {
     ",", ":", "(", ")", "+",
     "*", "-", "/", "^", "="
 }
---[[ 
+--[[
 layout:
     The keyboard layout you use.
     Available layouts:

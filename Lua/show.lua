@@ -1,4 +1,4 @@
-local event = stitch "overlay.lua.event"
+local event = stitch "lua.event"
 
 local sm = {mt = getmetatable(_G.SCREENMAN)}
 sm.SystemMessage = sm.mt.SystemMessage

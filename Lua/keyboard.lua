@@ -1,11 +1,11 @@
 local config = stitch "config"
-local event = stitch "overlay.lua.event"
+local event = stitch "lua.event"
 local keyboard = {}
 
 local metabuf = {}
 keyboard.buffer = setmetatable({}, metabuf)
 
-local map = stitch "overlay.lua.layout"
+local map = stitch "lua.layout"
 keyboard.map = map
 keyboard.lang = config.layout
 
@@ -54,7 +54,7 @@ function keyboard:KeyHandler()
     text = self:GetText()
 end
 
-event.Persist("overlay update", "keyboard", function()
+event.Persist("update", "keyboard", function()
     local keys = string.gfind(text,'Key_K?P? ?(.-) %-')
     if not keys then return end
 
@@ -77,7 +77,6 @@ event.Persist("overlay update", "keyboard", function()
                 local c = check(k)
                 if c then
                     event.Call("key char", c, special)
-                    MESSAGEMAN:Broadcast("KeyPress"..c)
                 end
             else
                 event.Call("key func", k, special)

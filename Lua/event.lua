@@ -91,9 +91,9 @@ local pt
 
 function event.Timer( time, fn )
     local start = clock:GetSecsIntoEffect()
-    event.Add("overlay update",fn,function(_,now)
+    event.Add("update",fn,function(_,now)
         if (now-start) >= time then
-            event.Remove("overlay update",fn)
+            event.Remove("update",fn)
             fn()
         end
     end)
@@ -101,9 +101,9 @@ end
 
 function event.PeristTimer( time, fn )
     local start = clock:GetSecsIntoEffect()
-    event.Persist("overlay update",fn,function(_,now)
+    event.Persist("update",fn,function(_,now)
         if (now-start) >= time then
-            event.Remove("overlay update",fn)
+            event.Remove("update",fn)
             fn()
         end
     end)
@@ -117,7 +117,7 @@ local function update()
     local time = clock:GetSecsIntoEffect()
     local dt = time - pt
     pt = time
-    event.Call("overlay update", dt, time)
+    event.Call("update", dt, time)
 end
 
 function event:Update()

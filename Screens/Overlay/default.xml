@@ -1,0 +1,7 @@
+<ActorFrame>
+    <children>
+        <Layer File="setup"/>
+        <Layer File="console"/>
+        <!-- Feel free to add more overlays here -->
+    </children>
+</ActorFrame>

@@ -1,6 +1,6 @@
 local config = stitch "config"
-local event = stitch "overlay.lua.event"
-local show = stitch "overlay.lua.show"
+local event = stitch "lua.event"
+local show = stitch "lua.show"
 
 local DevConsole = self
 local DevBuffer = self:GetChild("DevBuffer")
@@ -166,11 +166,11 @@ event.Persist("key char","dev console",function(char, special)
         end)
         event.Remove("key char", "dev input")
         event.Remove("key func", "dev input")
-        event.Remove("overlay update", "dev cursor")
+        event.Remove("update", "dev cursor")
         return
     end
 
-    event.Persist("overlay update", "dev cursor", function()
+    event.Persist("update", "dev cursor", function()
         DevCursor:hidden(math.mod(math.floor((event.GetClock()-cursor.clock)*2),2))
     end)
 

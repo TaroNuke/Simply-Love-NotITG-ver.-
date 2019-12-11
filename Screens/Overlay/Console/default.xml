@@ -2,7 +2,7 @@
     Name="DevConsole"
     OnCommand="hidden,1"
     OverlayReadyMessageCommand="%function(self)
-        stx.RequireEnv('overlay.console.console', {self = self})
+        stx.RequireEnv('screens.overlay.console.console', {self = self})
     end"
 >
 <children>
