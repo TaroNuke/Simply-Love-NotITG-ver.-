@@ -12,3 +12,13 @@ event.Persist("key char","uksrt", function(c)
         MESSAGEMAN:Broadcast("KeyPress"..c)
     end
 end)
+
+-- Widescreen centering hack
+event.Persist("update","afts sucks", function ()
+    DISPLAY:ChangeCentering(
+        PREFSMAN:GetPreference("CenterImageTranslateX"),
+        PREFSMAN:GetPreference("CenterImageTranslateY"),
+        PREFSMAN:GetPreference("CenterImageAddWidth"),
+        PREFSMAN:GetPreference("CenterImageAddHeight")
+    )
+end)
