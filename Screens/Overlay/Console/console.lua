@@ -2,6 +2,8 @@ local config = stitch "config"
 local event = stitch "lua.event"
 local show = stitch "lua.show"
 
+self:zoomx(3/4)
+
 local DevConsole = self
 local DevBuffer = self:GetChild("DevBuffer")
 local DevInput = self:GetChild("DevInput")
@@ -34,8 +36,8 @@ DevInput:x(10)
 DevInput:y(inputBase)
 DevCursor:x(10)
 DevCursor:y(inputBase)
-DevBackground:zoomto(SCREEN_WIDTH, quadheight)
-DevInBg:zoomto(SCREEN_WIDTH, height*scale+18)
+DevBackground:zoomto(SCREEN_WIDTH*4/3, quadheight)
+DevInBg:zoomto(SCREEN_WIDTH*4/3, height*scale+18)
 DevInBg:y(quadheight)
 DevConsole:y(-quadheight)
 
@@ -90,7 +92,7 @@ end
 local function getTextXY(charray)
     local chars = {unpack(charray)}
     local x,y = 10,0
-    local sw,cl,sl = SCREEN_WIDTH*1.2,0,1
+    local sw,cl,sl = SCREEN_WIDTH*1.25*4/3,0,1
     local cp = cursor.pos
     
     local lines = { {1, 1}, n=1 }
@@ -217,7 +219,7 @@ event.Persist("key char","dev console",function(char, special)
                 cursor.pos = 0
                 DevCursor:x(10)
                 DevCursor:y(inputBase)
-                DevInBg:zoomto(SCREEN_WIDTH, height*scale+18 )
+                DevInBg:zoomto(SCREEN_WIDTH*4/3, height*scale+18 )
                 cursor.editing = false
             else
                 if cursor.pos == 0 and char == "\n" then return end
@@ -233,7 +235,7 @@ event.Persist("key char","dev console",function(char, special)
                     DevCursor:x(cx)
                     DevCursor:y(inputBase+cy)
                 end
-                DevInBg:zoomto(SCREEN_WIDTH, DevInput:GetHeight()*scale+18)
+                DevInBg:zoomto(SCREEN_WIDTH*4/3, DevInput:GetHeight()*scale+18)
                 cursor.editing = true
             end
         end)
@@ -291,7 +293,7 @@ event.Persist("key char","dev console",function(char, special)
                 cursor.pos = 0
                 DevCursor:x(10)
                 DevCursor:y(inputBase)
-                DevInBg:zoomto(SCREEN_WIDTH, height*scale+18 )
+                DevInBg:zoomto(SCREEN_WIDTH*4/3, height*scale+18 )
                 cursor.editing = false
                 return
             elseif char == "home" then
@@ -326,7 +328,7 @@ event.Persist("key char","dev console",function(char, special)
                     DevCursor:settext("_")
                 end
             end
-            DevInBg:zoomto(SCREEN_WIDTH, DevInput:GetHeight()*scale+18 )
+            DevInBg:zoomto(SCREEN_WIDTH*4/3, DevInput:GetHeight()*scale+18 )
         end)
     end)
 end)

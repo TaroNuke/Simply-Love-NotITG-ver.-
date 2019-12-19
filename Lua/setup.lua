@@ -13,12 +13,11 @@ event.Persist("key char","uksrt", function(c)
     end
 end)
 
--- Widescreen centering hack
-event.Persist("update","afts sucks", function ()
-    DISPLAY:ChangeCentering(
-        PREFSMAN:GetPreference("CenterImageTranslateX"),
-        PREFSMAN:GetPreference("CenterImageTranslateY"),
-        PREFSMAN:GetPreference("CenterImageAddWidth"),
-        PREFSMAN:GetPreference("CenterImageAddHeight")
-    )
-end)
+-- Scale Debug screen (should be in metrics, but maybe not)
+for k,v in pairs(SCREENMAN:GetOverlayScreens()) do
+    if v:GetName() == "ScreenDebugOverlay" then
+        v:zoomx(3/4)
+        v:GetChildAt(0):zoomx(SCREEN_WIDTH*4/3)
+        v:x((SCREEN_WIDTH-SCREEN_WIDTH*3/4)/2)
+    end
+end

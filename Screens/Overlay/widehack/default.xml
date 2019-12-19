@@ -1,0 +1,11 @@
+<ActorFrame
+    OverlayReadyMessageCommand="%function(self) stx.RequireEnv('screens.overlay.widehack.after', {self = self}) end"
+><children>
+
+    <Layer Name="aft" Type="ActorFrameTexture" />
+    <Layer Name="sbg1" File="white" />
+    <Layer Name="sbg2" File="white" />
+    <Layer Name="prx1" Type="ActorProxy" />
+    <Layer Name="prx2" Type="ActorProxy" />
+    <Layer Name="spr" File="white" />
+</children></ActorFrame>

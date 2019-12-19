@@ -1,5 +1,5 @@
 layout = "QwertyUS"
-console = "0"
+console = "9"
 deep = "!"
 bare = ","
 skip = 10
