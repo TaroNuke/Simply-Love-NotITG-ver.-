@@ -19,5 +19,8 @@ for k,v in pairs(SCREENMAN:GetOverlayScreens()) do
         v:zoomx(3/4)
         v:GetChildAt(0):zoomx(SCREEN_WIDTH*4/3)
         v:x((SCREEN_WIDTH-SCREEN_WIDTH*3/4)/2)
+    elseif v:GetName() == "ScreenSyncOverlay" then
+        v:zoomx(3/4)
+        v:x((SCREEN_WIDTH-SCREEN_WIDTH*3/4)/2)
     end
 end
