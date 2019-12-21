@@ -3,8 +3,8 @@
 	<ActorFrame 
 		Condition="GAMESTATE:IsHumanPlayer(PLAYER_1)"
 		InitCommand="x,SCREEN_CENTER_X-160+EvalX();y,SCREEN_CENTER_Y-60,DrawOrder,101;zoom,2.5"
-		OnCommand="addx,-EvalTweenDistance();decelerate,0.5;addx,EvalTweenDistance();sleep,2;decelerate,0.5;zoom,1;x,SCREEN_CENTER_X-240+EvalX();y,SCREEN_CENTER_Y-38"
-		OffCommand="accelerate,0.3;addx,-EvalTweenDistance()"
+		OnCommand="addx,-SIMPLY_LOVE.EvalTweenDistance();decelerate,0.5;addx,SIMPLY_LOVE.EvalTweenDistance();sleep,2;decelerate,0.5;zoom,1;x,SCREEN_CENTER_X-240+EvalX();y,SCREEN_CENTER_Y-38"
+		OffCommand="accelerate,0.3;addx,-SIMPLY_LOVE.EvalTweenDistance()"
 	><children>
 		<BitmapText
 			Font="_misoreg small"
@@ -21,8 +21,8 @@
 	<ActorFrame 
 		Condition="GAMESTATE:IsHumanPlayer(PLAYER_2)"
 		InitCommand="x,SCREEN_CENTER_X+160+EvalX();y,SCREEN_CENTER_Y-60;DrawOrder,101;zoom,2.5"
-		OnCommand="addx,EvalTweenDistance();decelerate,0.5;addx,-EvalTweenDistance();sleep,2;decelerate,0.5;zoom,1;x,SCREEN_CENTER_X+50+EvalX();y,SCREEN_CENTER_Y-38"
-		OffCommand="accelerate,0.3;addx,EvalTweenDistance()"
+		OnCommand="addx,SIMPLY_LOVE.EvalTweenDistance();decelerate,0.5;addx,-SIMPLY_LOVE.EvalTweenDistance();sleep,2;decelerate,0.5;zoom,1;x,SCREEN_CENTER_X+50+EvalX();y,SCREEN_CENTER_Y-38"
+		OffCommand="accelerate,0.3;addx,SIMPLY_LOVE.EvalTweenDistance()"
 	><children>
 		<BitmapText
 			Font="_misoreg small"

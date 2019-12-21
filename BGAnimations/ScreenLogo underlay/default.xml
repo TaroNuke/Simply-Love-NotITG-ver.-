@@ -1,16 +1,16 @@
 <ActorFrame> <children>
-	<ActorFrame Command="%function() love = 0 end" />
+	<ActorFrame Command="%SIMPLY_LOVE(function() love = 0 end)" />
 	<ActorFrame
-		InitCommand="%function() Voice = 'Jayce'; score = '99.00';  end"
+		InitCommand="%SIMPLY_LOVE(function() Voice = 'Jayce'; score = '99.00';  end)"
 		OnCommand="sleep,0.01;queuecommand,Vocalize111"
-		Vocalize1Command="%function(self) VocalizeTest(self,1) self:queuecommand('Vocalize2') end"
-		Vocalize2Command="%function(self) VocalizeTest(self,2) self:queuecommand('Vocalize3') end"
-		Vocalize3Command="%function(self) VocalizeTest(self,3) self:queuecommand('Vocalize4') end"
-		Vocalize4Command="%function(self) VocalizeTest(self,4) self:queuecommand('Vocalize5') end"
-		Vocalize5Command="%function(self) VocalizeTest(self,5) end"
+		Vocalize1Command="%SIMPLY_LOVE(function(self) VocalizeTest(self,1) self:queuecommand('Vocalize2') end)"
+		Vocalize2Command="%SIMPLY_LOVE(function(self) VocalizeTest(self,2) self:queuecommand('Vocalize3') end)"
+		Vocalize3Command="%SIMPLY_LOVE(function(self) VocalizeTest(self,3) self:queuecommand('Vocalize4') end)"
+		Vocalize4Command="%SIMPLY_LOVE(function(self) VocalizeTest(self,4) self:queuecommand('Vocalize5') end)"
+		Vocalize5Command="%SIMPLY_LOVE(function(self) VocalizeTest(self,5) end)"
 	/>	
 	<ActorFrame
-		InitCommand="%function()
+		InitCommand="%SIMPLY_LOVE(function()
 
 	Jayce = { z0 = .6,
 			z1 = .5,
@@ -44,6 +44,6 @@
 			zpoint = .5,
 			quads = 1 }
 			
-		end"
+		end)"
 	/>
 </children></ActorFrame>

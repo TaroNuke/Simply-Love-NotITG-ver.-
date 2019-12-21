@@ -1,14 +1,14 @@
 <ActorFrame><children>
-	<ActorFrame InitCommand="%EvaluationInit" FirstUpdateCommand="%Evaluation" />
-	<ActorFrame Command="queuecommand,Icon" IconCommand="%function() StyleIcon() end" />
+	<ActorFrame InitCommand="%SIMPLY_LOVE.EvaluationInit" FirstUpdateCommand="%SIMPLY_LOVE.Evaluation" />
+	<ActorFrame Command="queuecommand,Icon" IconCommand="%function() SIMPLY_LOVE.StyleIcon() end" />
 	<ActorFrame
 		Condition="GAMESTATE:IsPlayerEnabled(PLAYER_1)"
-		Command="x,DoublesOffset()"
+		Command="x,SIMPLY_LOVE.DoublesOffset()"
 	><children>
 		<ActorFrame Command="queuecommand,NonCombos"
 			NonCombosCommand="%function() 
-				if not WayOffs() then SCREENMAN:GetTopScreen():GetChild('BooNumberP1'):settext('    ') end 
-				if not Decents() then SCREENMAN:GetTopScreen():GetChild('GoodNumberP1'):settext('    ') end
+				if not SIMPLY_LOVE.WayOffs() then SCREENMAN:GetTopScreen():GetChild('BooNumberP1'):settext('    ') end 
+				if not SIMPLY_LOVE.Decents() then SCREENMAN:GetTopScreen():GetChild('GoodNumberP1'):settext('    ') end
 			end"
 		/>
 
@@ -28,12 +28,12 @@
 	</children></ActorFrame>
 	<ActorFrame
 		Condition="GAMESTATE:IsPlayerEnabled(PLAYER_2)"
-		Command="x,DoublesOffset()"
+		Command="x,SIMPLY_LOVE.DoublesOffset()"
 	><children>
 		<ActorFrame Command="queuecommand,NonCombos"
 			NonCombosCommand="%function() 
-				if not WayOffs() then SCREENMAN:GetTopScreen():GetChild('BooNumberP2'):settext('    ') end 
-				if not Decents() then SCREENMAN:GetTopScreen():GetChild('GoodNumberP2'):settext('    ') end
+				if not SIMPLY_LOVE.WayOffs() then SCREENMAN:GetTopScreen():GetChild('BooNumberP2'):settext('    ') end 
+				if not SIMPLY_LOVE.Decents() then SCREENMAN:GetTopScreen():GetChild('GoodNumberP2'):settext('    ') end
 			end"
 		/>
 
@@ -52,9 +52,9 @@
 		/>	
 	</children></ActorFrame>
 	<Layer
-		File="@'../ScreenSelectMusic underlay/Banner'..Color()..'.png'"
-		InitCommand="x,SCREEN_CENTER_X;y,SCREEN_TOP+115;;ZoomToWidth,278;ZoomToHeight,109"
+		File="@'../ScreenSelectMusic underlay/Banner'..SIMPLY_LOVE.Color()..'.png'"
+		InitCommand="x,SCREEN_CENTER_X;y,SCREEN_TOP+115;ZoomToWidth,278;ZoomToHeight,109"
 		OnCommand="ztest,1;diffusealpha,0;linear,0.6;diffusealpha,1"
 	/>
-	<Layer File="@VocalizePath()..'read.xml'" Command="sleep,3;queuecommand,Voice" />
+	<Layer File="@SIMPLY_LOVE.VocalizePath()..'read.xml'" Command="sleep,3;queuecommand,Voice" />
 </children></ActorFrame>

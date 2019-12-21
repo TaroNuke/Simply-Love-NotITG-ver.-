@@ -66,6 +66,9 @@
 -- SCREEN EDIT
 -- <ActorFrame Command="%ScreenEditInit" FirstUpdateCommand="%ScreenEdit" />
 
+setfenv(1, _G['SIMPLY_LOVE'])
+
+
 -----------------------
 -- Default Values
 -----------------------
@@ -127,7 +130,7 @@ function BM(str) MESSAGEMAN:Broadcast(str) end
 function Screen() return SCREENMAN:GetTopScreen() end
 function Sound(str) SOUND:PlayOnce( Path("sounds",str )) end
 function Path(ec,str) return THEME:GetPath( _G['EC_'..string.upper(ec)] , '' , str ) end
-function Player(pn) return GAMESTATE:IsPlayerEnabled(pn-1) end
+local function Player(pn) return GAMESTATE:IsPlayerEnabled(pn-1) end
 function PlayerIndex(pn) if pn == GAMESTATE:GetNumPlayersEnabled() then return pn end return 1 end
 function Profile(pn) if not PROFILEMAN then return {} end if pn == 0 then return PROFILEMAN:GetMachineProfile():GetSaved() else return PROFILEMAN:GetProfile(pn-1):GetSaved() end end
 function GetPref(str) return PREFSMAN:GetPreference(str) end
@@ -617,7 +620,7 @@ function OptionFromEvalPlayerOptions(pn,m)
 	return s
 end
 	
-function CapturePlayerMetric(self,str) if _G[str][1] or not Player(1) then _G[str][2] = self; self:aux(2) else _G[str][1] = self; self:aux(1) end end
+function CapturePlayerMetric(self,str) if SIMPLY_LOVE[str][1] or not Player(1) then SIMPLY_LOVE[str][2] = self; self:aux(2) else SIMPLY_LOVE[str][1] = self; self:aux(1) end end
 
 function SongInfo(self)
 	CapturePane()
@@ -654,8 +657,8 @@ function CaptureJudgment() for pn = 1, 2 do if Player(pn) then for i,v in ipairs
 
 function CaptureMeter()
 	for pn = 1, 2 do if Player(pn) then
-		s = GAMESTATE:GetCurrentSteps(pn-1)
-		if s then Difficulty[pn] = s:GetDifficulty() else Difficulty[pn] = Screen():GetChild('MeterP'.. pn):GetChild('Difficulty'):GetText() end
+		local steps = GAMESTATE:GetCurrentSteps(pn-1)
+		if steps then Difficulty[pn] = steps:GetDifficulty() else Difficulty[pn] = Screen():GetChild('MeterP'.. pn):GetChild('Difficulty'):GetText() end
 		for i=0,5 do if DifficultyToThemedString(i) == Difficulty[pn] or string.upper(DifficultyToThemedString(i)) == Difficulty[pn] then Difficulty[pn] = i break end end
 		Meter[pn] = Screen():GetChild('MeterP'.. pn):GetChild('Meter'):GetText()
 	end end
@@ -865,7 +868,7 @@ function OptionFromList()
 	local t = {}
 	local mod = table.remove(optionsList,1)
 	if not ModsMaster[mod] then ModsMaster[mod] = {} end
-		if ModsMaster[mod].fnctn	then t = _G[ModsMaster[mod].fnctn](ModsMaster[mod].arg)
+		if ModsMaster[mod].fnctn	then t = _G.SIMPLY_LOVE[ModsMaster[mod].fnctn](ModsMaster[mod].arg)
 	elseif ModsMaster[mod].float	then t = OptionFloat(mod)
 	elseif ModsMaster[mod].modlist	then t = OptionList(mod)
 									else t = OptionBool(mod) end
@@ -1128,7 +1131,7 @@ function DifficultyList()
 	if not GAMESTATE:GetCurrentSong() then
 		for pn=1,2 do
 			if Player(pn) then
-				if not Difficulty[pn]==5 then
+				if Difficulty[pn]~=5 then
 					listPointerY[pn] = Difficulty[pn] + 1
 				else
 					listPointerY[pn] = 5
@@ -1174,7 +1177,7 @@ function DifficultyListRow(self,k,t,pn)
 	local d = {}
 	
 	self:stopeffect()
-	
+
 	if Player(1) then d[1] = k+listPointer[1]-listPointerY[1] else d[1] = 0 end
 	if Player(2) then d[2] = k+listPointer[2]-listPointerY[2] else d[2] = 0 end
 	if not GAMESTATE:GetCurrentSong() then
@@ -1182,12 +1185,12 @@ function DifficultyListRow(self,k,t,pn)
 		if t == 'meter' then if k - 1 < 5 then self:settext(b) self:diffuse(DifficultyColorRGB( k - 1 )) else self:settext('') end end
 		if t == 'feet' then self:zoomy(z) self:zoomx(n*z) self:customtexturerect(0,0,n,1/8) end
 	elseif FixedDifficultyRows() then
-		s = difficultyList[k]
-		if s then
-			if t == 'difficulty' then if k - 1  < 5 then self:settext(string.upper(DifficultyToThemedString( k - 1 ))) else self:settext(s:GetDescription()) end self:diffuse(DifficultyColorRGB( k - 1 )) end
-			if t == 'meter' then self:settext(s:GetMeter()) self:diffuse(DifficultyColorRGB( k - 1 )) end
-			if t == 'feet' then self:zoomy(z) self:zoomx(math.min(s:GetMeter(),m)*z) self:customtexturerect(0,k/8,math.min(s:GetMeter(),m),(k+1)/8) end
-			if t and GAMESTATE:GetCurrentSong():GetUnlockMethod(s:GetDifficulty()) ~= '' then
+		diffstr = difficultyList[k]
+		if diffstr then
+			if t == 'difficulty' then if k - 1  < 5 then self:settext(string.upper(DifficultyToThemedString( k - 1 ))) else self:settext(diffstr:GetDescription()) end self:diffuse(DifficultyColorRGB( k - 1 )) end
+			if t == 'meter' then self:settext(diffstr:GetMeter()) self:diffuse(DifficultyColorRGB( k - 1 )) end
+			if t == 'feet' then self:zoomy(z) self:zoomx(math.min(diffstr:GetMeter(),m)*z) self:customtexturerect(0,k/8,math.min(diffstr:GetMeter(),m),(k+1)/8) end
+			if t and GAMESTATE:GetCurrentSong():GetUnlockMethod(diffstr:GetDifficulty()) ~= '' then
 				self:glowshift() self:effectcolor1(1,.8,0,1) self:effectcolor2(1,.8,0,0) self:effectclock('bgm') self:effectperiod(1)
 				--Trace('fixed '..t)
 			else
@@ -1200,20 +1203,20 @@ function DifficultyListRow(self,k,t,pn)
 			self:stopeffect()
 		end
 	else
-		if pn then s = d[pn]
-		elseif not Player(2) then s = d[1]
-		elseif not Player(1) then s = d[2]
+		if pn then diffstr = d[pn]
+		elseif not Player(2) then diffstr = d[1]
+		elseif not Player(1) then diffstr = d[2]
 		elseif k <= math.floor(r/2) then
-			if listPointer[1] <= listPointer[2] then s = d[1] else s = d[2] end
+			if listPointer[1] <= listPointer[2] then diffstr = d[1] else diffstr = d[2] end
 		else
-			if listPointer[1] >= listPointer[2] then s = d[1] else s = d[2] end
+			if listPointer[1] >= listPointer[2] then diffstr = d[1] else diffstr = d[2] end
 		end
-		s = difficultyList[s]
-		if s then
-			if t == 'difficulty' then if s:GetDifficulty() < 5 then self:settext(string.upper(DifficultyToThemedString(s:GetDifficulty()))) else self:settext(s:GetDescription()) end self:diffuse(DifficultyColorRGB( s:GetDifficulty() )) end
-			if t == 'meter' then self:settext(s:GetMeter()) self:diffuse(DifficultyColorRGB( s:GetDifficulty() )) end
-			if t == 'feet' then self:zoomy(z) self:zoomx(math.min(s:GetMeter(),m)*z) self:customtexturerect(0,(s:GetDifficulty()+1)/8,math.min(s:GetMeter(),m),(s:GetDifficulty()+2)/8) end
-			if t and GAMESTATE:GetCurrentSong():GetUnlockMethod(s:GetDifficulty()) ~= '' then
+		diffstr = difficultyList[diffstr]
+		if diffstr then
+			if t == 'difficulty' then if diffstr:GetDifficulty() < 5 then self:settext(string.upper(DifficultyToThemedString(diffstr:GetDifficulty()))) else self:settext(diffstr:GetDescription()) end self:diffuse(DifficultyColorRGB( diffstr:GetDifficulty() )) end
+			if t == 'meter' then self:settext(diffstr:GetMeter()) self:diffuse(DifficultyColorRGB( diffstr:GetDifficulty() )) end
+			if t == 'feet' then self:zoomy(z) self:zoomx(math.min(diffstr:GetMeter(),m)*z) self:customtexturerect(0,(diffstr:GetDifficulty()+1)/8,math.min(diffstr:GetMeter(),m),(diffstr:GetDifficulty()+2)/8) end
+			if t and GAMESTATE:GetCurrentSong():GetUnlockMethod(diffstr:GetDifficulty()) ~= '' then
 				self:glowshift() self:effectcolor1(1,.8,0,1) self:effectcolor2(1,.8,0,0) self:effectclock('bgm') self:effectperiod(1)
 				--Trace('nofixed '..t)
 			else

@@ -1,3 +1,5 @@
+setfenv(1, _G['SIMPLY_LOVE'])
+
 function OptionsRowWeight()
 	local function IndexToPounds(i)
 		return i*5

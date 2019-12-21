@@ -1,11 +1,11 @@
 <ActorFrame><children>
 	<Layer 
-		Condition="loadMusic == 1"
+		Condition="SIMPLY_LOVE.loadMusic == 1"
 		File="_loading in"
-		Command="%function() loadMusic = 0 end"
+		Command="%SIMPLY_LOVE(function() loadMusic = 0 end)"
 	/>
 	<Layer 
-		Condition="loadMusic == 0"
+		Condition="SIMPLY_LOVE.loadMusic == 0"
 		File="_fade in"
 	/>
 </children></ActorFrame>

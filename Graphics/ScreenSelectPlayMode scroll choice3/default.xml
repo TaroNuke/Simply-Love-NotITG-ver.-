@@ -9,7 +9,7 @@
 		><children>
 			<Layer
 				File="../modebg"
-				OffCommand="%OutCommand"
+				OffCommand="%SIMPLY_LOVE.OutCommand"
 			/>
 			
 			<Layer 
@@ -44,7 +44,7 @@
 		<Layer
 			File="survival"
 			Command="y,100"
-			OffCommand="%OutCommand"
+			OffCommand="%SIMPLY_LOVE.OutCommand"
 		/>
 	</children></Layer>
 </children> </ActorFrame>

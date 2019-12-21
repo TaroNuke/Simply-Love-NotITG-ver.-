@@ -1,12 +1,12 @@
 <ActorFrame><children>
 	<Layer
 		Type="Quad"
-		OnCommand="@'stretchto,415,78,515,402;diffuse,'..DifficultyColor(DIFFICULTY_HARD)"
+		OnCommand="@'stretchto,415,78,515,402;diffuse,'..SIMPLY_LOVE.DifficultyColor(DIFFICULTY_HARD)"
 		OffCommand="linear,.5;diffusealpha,0"
 	/>
 	<Layer
 		Type="Quad"
-		OnCommand="@'stretchto,515,78,615,402;diffuse,'..DifficultyColor(DIFFICULTY_CHALLENGE)"
+		OnCommand="@'stretchto,515,78,615,402;diffuse,'..SIMPLY_LOVE.DifficultyColor(DIFFICULTY_CHALLENGE)"
 		OffCommand="linear,.5;diffusealpha,0"
 	/>
 	<Layer

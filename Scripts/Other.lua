@@ -1,3 +1,5 @@
+setfenv(1, _G['SIMPLY_LOVE'])
+
 -- Override these in other themes.
 function Platform() return "arcade" end
 function IsHomeMode() return false end

@@ -1,3 +1,5 @@
+setfenv(1, _G['SIMPLY_LOVE'])
+
 function PlayerColor( pn )
 	if pn == PLAYER_1 then return DifficultyColor(3) end
 	if pn == PLAYER_2 then return DifficultyColor(1) end

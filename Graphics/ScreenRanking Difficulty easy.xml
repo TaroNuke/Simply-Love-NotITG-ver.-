@@ -11,7 +11,7 @@
 			Type="BitmapText" 
 			Text="@DifficultyToThemedString(DIFFICULTY_EASY)" 
 			File="_misobold small" 
-			InitCommand="@'diffuse,' .. ContrastingDifficultyColor(DIFFICULTY_EASY) .. ';ShadowLength,2;zoom,0.5'" 
+			InitCommand="@'diffuse,' .. SIMPLY_LOVE.ContrastingDifficultyColor(DIFFICULTY_EASY) .. ';ShadowLength,2;zoom,0.5'" 
 			OnCommand="diffusealpha,0;sleep,0.1;linear,0.3;diffusealpha,1" 
 			OffCommand="sleep,0.0;linear,0.3;diffusealpha,0" 
 		/>

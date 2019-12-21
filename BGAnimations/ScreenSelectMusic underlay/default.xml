@@ -1,8 +1,8 @@
 <ActorFrame> <children>
-	<ActorFrame Command="queuecommand,Icon" IconCommand="%function() StyleIcon() end" />
-	<ActorFrame Command="%function() if GAMESTATE:GetCoinMode() == 1 and not GetPref('EventMode') then rateMods = rateModsPay else rateMods = rateModsFree end end" />
+	<ActorFrame Command="queuecommand,Icon" IconCommand="%function() SIMPLY_LOVE.StyleIcon() end" />
+	<ActorFrame Command="%SIMPLY_LOVE(function() if GAMESTATE:GetCoinMode() == 1 and not GetPref('EventMode') then rateMods = rateModsPay else rateMods = rateModsFree end end)" />
 	<Layer 
-		File="@'Banner'..Color()..'.png'"
+		File="@'Banner'..SIMPLY_LOVE.Color()..'.png'"
 		OnCommand="x,SCREEN_CENTER_X-(SCREEN_WIDTH*160/640-3);y,SCREEN_CENTER_Y-138;ZoomToWidth,306;ZoomToHeight,119"
 		OffCommand=""
 	/>
@@ -31,5 +31,5 @@
 		Text="LENGTH"
 		OnCommand="ShadowLength,0;diffuse,#FFFFFF66;zoom,0.5;x,SCREEN_CENTER_X-(SCREEN_WIDTH*160/640);y,200"
 	/>
-	<ActorFrame InitCommand="%SelectMusicInit" FirstUpdateCommand="%SelectMusic" CaptureCommand="%SongInfo" CurrentSongChangedMessageCommand="queuecommand,Capture" CurrentStepsP1ChangedMessageCommand="queuecommand,Capture" CurrentStepsP2ChangedMessageCommand="queuecommand,Capture" />
+	<ActorFrame InitCommand="%SIMPLY_LOVE.SelectMusicInit" FirstUpdateCommand="%SIMPLY_LOVE.SelectMusic" CaptureCommand="%SIMPLY_LOVE.SongInfo" CurrentSongChangedMessageCommand="queuecommand,Capture" CurrentStepsP1ChangedMessageCommand="queuecommand,Capture" CurrentStepsP2ChangedMessageCommand="queuecommand,Capture" />
 </children> </ActorFrame>

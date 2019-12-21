@@ -158,8 +158,8 @@
 		/>
 	</children></ActorFrame>
 	
-	<ActorFrame Command="%function() loadMusic = 1 end" />
-	<ActorFrame Command="%GameplayInit" FirstUpdateCommand="%Gameplay" UpdateCommand="%GameplayUpdate"/>
+	<ActorFrame Command="%SIMPLY_LOVE(function() loadMusic = 1 end)" />
+	<ActorFrame Command="%SIMPLY_LOVE.GameplayInit" FirstUpdateCommand="%SIMPLY_LOVE.Gameplay" UpdateCommand="%SIMPLY_LOVE.GameplayUpdate"/>
 	<Layer Type="ActorFrame"
 		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_TOP+20;zoomx,((SCREEN_WIDTH/SCREEN_HEIGHT)/(4/3))"
 		> <children>
@@ -168,14 +168,14 @@
 			Type="SongMeterDisplay" 
 			StreamWidth="300" 
 			StreamPath="meter stream" 
-			Command="%function(self) 
+			Command="%SIMPLY_LOVE(function(self) 
 					if Color() == 8 then self:diffuse(ColorRGB(0)) 
 				elseif Color() == 9 then self:diffuse(ColorRGB(-1)) 
 				elseif Color() == 10 then self:diffuse(ColorRGB(3)) 
 				elseif Color() == 11 then self:diffuse(ColorRGB(2)) 
 				else self:diffuse(ColorRGB(1)) 
 				end
-			end" 
+			end)" 
 		>
 			<Tip File="tip" OnCommand="hidden,1" />
 		</Layer>
@@ -188,7 +188,7 @@
 			OnCommand="y,-5;zoom,0.35;shadowlength,0;maxwidth,840;zoomx,0.35/((SCREEN_WIDTH/SCREEN_HEIGHT)/(4/3))"
 			InitCommand="animate,0;playcommand,Update"
 			CurrentSongChangedMessageCommand="playcommand,Update"
-			UpdateCommand="%SetFromSongTitleAndCourseTitle"
+			UpdateCommand="%SIMPLY_LOVE.SetFromSongTitleAndCourseTitle"
 		/>
 	</children> </Layer>
 
@@ -203,11 +203,11 @@
 		<ActorFrame Condition="GAMESTATE:IsPlayerEnabled(PLAYER_1)" OnCommand="x,SCREEN_CENTER_X-(SCREEN_WIDTH*160/640+135);y,SCREEN_TOP+54"><children>
 			<Actor
 				File="@THEME:GetPath(EC_GRAPHICS,'','_difficulty icons')"
-				InitCommand="%function(self) self:y(IconY()) IconCrop(self) end"
+				InitCommand="%SIMPLY_LOVE(function(self) self:y(IconY()) IconCrop(self) end)"
 				OnCommand="animate,0;playcommand,Update"
 				CurrentStepsP1ChangedMessageCommand="playcommand,Update"
 				CurrentStepsP2ChangedMessageCommand="playcommand,Update"
-				UpdateCommand="%function(self,parent) SetDifficultyFrameFromSteps(self, PLAYER_1) end"
+				UpdateCommand="%function(self,parent) SIMPLY_LOVE.SetDifficultyFrameFromSteps(self, PLAYER_1) end"
 			/>
 			<Actor
 				Class="DifficultyMeter"
@@ -222,11 +222,11 @@
 		<ActorFrame Condition="GAMESTATE:IsPlayerEnabled(PLAYER_2)" OnCommand="x,SCREEN_CENTER_X+(SCREEN_WIDTH*160/640+135);y,SCREEN_TOP+54"><children>
 			<Actor
 				File="@THEME:GetPath(EC_GRAPHICS,'','_difficulty icons')"
-				InitCommand="%function(self) self:y(IconY()) IconCrop(self) end"
+				InitCommand="%SIMPLY_LOVE(function(self) self:y(IconY()) IconCrop(self) end)"
 				OnCommand="animate,0;playcommand,Update"
 				CurrentStepsP1ChangedMessageCommand="playcommand,Update"
 				CurrentStepsP2ChangedMessageCommand="playcommand,Update"
-				UpdateCommand="%function(self,parent) SetDifficultyFrameFromSteps(self, PLAYER_2) end"
+				UpdateCommand="%function(self,parent) SIMPLY_LOVE.SetDifficultyFrameFromSteps(self, PLAYER_2) end"
 			/>
 			<Actor
 				Class="DifficultyMeter"
@@ -250,7 +250,7 @@
 
 	<ActorFrame
 		OnCommand="queuecommand,Set"
-		SetCommand="%function(self) 
+		SetCommand="%SIMPLY_LOVE(function(self) 
 			if not GAMESTATE:IsCourseMode() then
 				local p1 = SCREENMAN:GetTopScreen():GetChild('ScoreP1')
 				local p2 = SCREENMAN:GetTopScreen():GetChild('ScoreP2')
@@ -263,25 +263,25 @@
 				self:sleep(.05)
 				self:queuecommand('Set')
 			end
-		end" 
+		end)" 
 	/>
 	<Layer
 		Font="_misobold white"
 		Text=""
 		InitCommand="x,SCREEN_CENTER_X;y,SCREEN_TOP+40;zoom,.7;shadowlength,0"
 		OnCommand="queuecommand,Update"
-		UpdateCommand="%GameplayBPM"
+		UpdateCommand="%SIMPLY_LOVE.GameplayBPM"
 	/>
 	<Layer
 		Font="_misobold white"
 		Text=""
 		InitCommand="x,SCREEN_CENTER_X;y,SCREEN_TOP+66;zoom,.3;shadowlength,0"
 		OnCommand="queuecommand,Update"
-		UpdateCommand="%function(self) 
-		s = modRate .. 'x'
+		UpdateCommand="%SIMPLY_LOVE(function(self) 
+		local s = modRate .. 'x'
 		if modRate == 1 then s = '' end
 		self:settext(s)
-		end"
+		end)"
 	/>
 </children> </ActorFrame>
 

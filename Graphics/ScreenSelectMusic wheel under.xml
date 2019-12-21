@@ -1,4 +1,4 @@
 <ActorFrame><children>
-	<ActorFrame Command="queuecommand,Pulse" PulseCommand="%function(self) ModPulse(self,modList) end" ModCommand="%function(self) table.insert(Command,1) file() end" />
-	<ActorFrame Command="queuecommand,Pulse" PulseCommand="%function(self) ModPulse(self,Layer) end" ModCommand="%function(self) ActorFrame() end" InitCommand="%file" />
+	<ActorFrame Command="queuecommand,Pulse" PulseCommand="%SIMPLY_LOVE(function(self) ModPulse(self,modList) end)" ModCommand="%SIMPLY_LOVE(function(self) table.insert(Command,1) file() end)" />
+	<ActorFrame Command="queuecommand,Pulse" PulseCommand="%SIMPLY_LOVE(function(self) ModPulse(self,Layer) end)" ModCommand="%SIMPLY_LOVE(function(self) ActorFrame() end)" InitCommand="%file" />
 </children></ActorFrame>

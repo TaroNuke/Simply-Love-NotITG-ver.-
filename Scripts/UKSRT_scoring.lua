@@ -1,3 +1,8 @@
+local t = setmetatable({}, { __index = _G, __call = function(self, a) setfenv(a, self) return a end })
+setfenv(1, t)
+
+_G['UKSRT_SCORING'] = t
+
 smooooch_p1bonus = 0;
 smooooch_p2bonus = 0;
 pid_p1bonus = 0;
@@ -19,8 +24,8 @@ uksrt_p1moneyscore = 0;
 uksrt_p2moneyscore = 0;
 
 for i=1,6 do
-	_G['srt_p1w'..i] = 0;
-	_G['srt_p2w'..i] = 0;
+	UKSRT_SCORING['srt_p1w'..i] = 0;
+	UKSRT_SCORING['srt_p2w'..i] = 0;
 end
 
 function round2(num, idp)

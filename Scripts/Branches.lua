@@ -1,3 +1,8 @@
+local t = setmetatable({}, { __index = _G, __call = function(self, a) setfenv(a, self) return a end })
+setfenv(1, t)
+
+_G['SIMPLY_LOVE'] = t
+
 function GetArcadeStartScreen()
 	-- If we havn't loaded the input driver, do that first; until this finishes, we have
 	-- no input or lights.

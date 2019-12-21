@@ -3,7 +3,7 @@
 	<Layer
 		Type="BitmapText"
 		Font="_misoreg small"
-		Condition="Platform() == 'arcade'"
+		Condition="SIMPLY_LOVE.Platform() == 'arcade'"
 		Text="@'Serial #' .. GetSerialNumber()"
 		InitCommand="x,SCREEN_CENTER_X+300;y,SCREEN_CENTER_Y-182;shadowlength,0;horizalign,right;wrapwidthpixels,1000;zoom,0.6"
 		OnCommand="diffusealpha,0;linear,0.3;diffusealpha,1"
@@ -26,7 +26,7 @@
 	<Layer
 		Type="BitmapText"
 		Font="_misoreg small"
-		Condition="Platform() == 'arcade'"
+		Condition="SIMPLY_LOVE.Platform() == 'arcade'"
 		SetCommand="%function(self) if OPENITG then self:settext( string.format('%02i:%02i:%02i %s %02i %04i', Hour(), Minute(), Second(), MonthToString(MonthOfYear()), DayOfMonth(), Year()) )
 					else self:settext( string.format('%02i:%02i:%02i %s %02i %04i', Hour(), Minute(), Second(), MonthToString(MonthOfYear()-1), DayOfMonth(), Year()) ) end end"
 		PulseMessageCommand="playcommand,Set"
@@ -39,7 +39,7 @@
 	<Layer
 		Type="BitmapText"
 		Font="_misoreg small"
-		Condition="Platform() == 'arcade'"
+		Condition="SIMPLY_LOVE.Platform() == 'arcade'"
 		SetCommand="%function(self) if HubIsConnected and HubIsConnected() then self:settext('') else self:settext('Memory card USB hub disconnected') end end"
 		PulseMessageCommand="playcommand,Set"
 		Text=""

@@ -6,7 +6,7 @@
 			Type="BitmapText"
 			Font="_misobold white"
 			Text="&START;"
-			Condition="ModeMenuAvailable()"
+			Condition="SIMPLY_LOVE.ModeMenuAvailable()"
 			OnCommand="shadowlength,0;x,SCREEN_CENTER_X-37;y,-2;zoom,0.5;diffusealpha,0;horizalign,right;vertalign,bottom"
 			EnableSelectHelpMessageCommand="stoptweening;linear,0.2;diffusealpha,1"
 			SelectMenuOffMessageCommand="stoptweening;linear,0.2;diffusealpha,0"
@@ -15,13 +15,13 @@
 			Type="BitmapText"
 			Font="_misobold white"
 			Text="Change Sort"
-			Condition="ModeMenuAvailable()"
+			Condition="SIMPLY_LOVE.ModeMenuAvailable()"
 			OnCommand="shadowlength,0;x,SCREEN_CENTER_X-29;zoom,0.3;diffusealpha,0;horizalign,left;vertalign,bottom"
 			EnableSelectHelpMessageCommand="stoptweening;linear,0.2;diffusealpha,1"
 			SelectMenuOffMessageCommand="stoptweening;linear,0.2;diffusealpha,0"
 		/>
 
-		<Layer Type="ActorFrame" OnCommand="%function(self) if ModeMenuAvailable() then self:x(SCREEN_CENTER_X-130) else self:x(SCREEN_CENTER_X-100) end end" > <children>
+		<Layer Type="ActorFrame" OnCommand="%function(self) if SIMPLY_LOVE.ModeMenuAvailable() then self:x(SCREEN_CENTER_X-130) else self:x(SCREEN_CENTER_X-100) end end" > <children>
 			<Layer
 				Type="BitmapText"
 				Font="_misobold white"
@@ -40,7 +40,7 @@
 			/>
 		</children> </Layer>
 
-		<Layer Type="ActorFrame" OnCommand="%function(self) if ModeMenuAvailable() then self:x(SCREEN_CENTER_X+130) else self:x(SCREEN_CENTER_X+100) end end" > <children>
+		<Layer Type="ActorFrame" OnCommand="%function(self) if SIMPLY_LOVE.ModeMenuAvailable() then self:x(SCREEN_CENTER_X+130) else self:x(SCREEN_CENTER_X+100) end end" > <children>
 			<Layer
 				Type="BitmapText"
 				Font="_misobold white"

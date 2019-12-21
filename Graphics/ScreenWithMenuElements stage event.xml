@@ -1,12 +1,12 @@
 <ActorFrame> <children>
 	<BitmapText
-		Condition="GetPref('EventMode') and ( ( ( Profile(0).SessionTimer or 0 ) == 0 ) or GAMESTATE:IsCourseMode() )"
+		Condition="SIMPLY_LOVE.GetPref('EventMode') and ( ( ( SIMPLY_LOVE.Profile(0).SessionTimer or 0 ) == 0 ) or GAMESTATE:IsCourseMode() )"
 		Text="event" 
         Font="_wendy small"
         OnCommand="ShadowLength,0;zoom,0.6"
     />
 	<BitmapText
-		Condition="IsTimedSet()"
+		Condition="SIMPLY_LOVE.IsTimedSet()"
 		Text="timer" 
         Font="_wendy small" 
         OnCommand="%function(self) 

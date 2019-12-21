@@ -1,3 +1,4 @@
+setfenv(1, _G['SIMPLY_LOVE'])
 
 feetBaseZoom = .275
 JudgeY = 20

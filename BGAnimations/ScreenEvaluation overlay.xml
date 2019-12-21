@@ -20,7 +20,7 @@
 	/>
 
 	<Layer 
-		Condition="modRate ~= 1"
+		Condition="SIMPLY_LOVE.modRate ~= 1"
 		Type="Quad"
 		OnCommand="diffuse,#1E282F;stretchto,SCREEN_CENTER_X-139,153,SCREEN_CENTER_X+139,170;diffusealpha,0.85"
 	/>	
@@ -35,14 +35,14 @@
 			OnCommand="shadowlength,1;maxwidth,500;y,-24;zoom,.55;diffuse,#FFFFFF"
 			InitCommand="animate,0;queuecommand,Update"
 			CurrentSongChangedMessageCommand="queuecommand,Update"
-			UpdateCommand="%function(self) self:settext(GetSongName()) end"
+			UpdateCommand="%SIMPLY_LOVE(function(self) self:settext(GetSongName()) end)"
 		/>
 		<Layer 
 			Type="BitmapText"
 			Font="_misobold small"
 			OnCommand="y,87;zoom,.5;shadowlength,1;diffuse,#FFFFFF"
 			InitCommand="animate,0;playcommand,Update"
-			UpdateCommand="%function(self) RateBPMlabel(self) end"
+			UpdateCommand="%SIMPLY_LOVE(function(self) RateBPMlabel(self) end)"
 		/>
 	</children> </Layer>
 
@@ -52,35 +52,35 @@
 	> <children>
 		<Actor
 			File="@THEME:GetPath(EC_GRAPHICS,'','_difficulty icons')"
-			InitCommand="%function(self) self:y(IconY()) IconCrop(self) end"
+			InitCommand="%SIMPLY_LOVE(function(self) self:y(IconY()) IconCrop(self) end)"
 			OnCommand="animate,0;playcommand,Update"
-			UpdateCommand="%function(self,parent) SetDifficultyFrameFromGameState(self, PLAYER_1) end"
+			UpdateCommand="%SIMPLY_LOVE(function(self,parent) SetDifficultyFrameFromGameState(self, PLAYER_1) end)"
 		/>
 		<Actor
 			Class="DifficultyMeter"
 			Type="ScreenGameplay DifficultyMeterP1"
 			OnCommand="playcommand,Update"
-			UpdateCommand="%function(self) 
+			UpdateCommand="%SIMPLY_LOVE(function(self) 
 					if GAMESTATE:GetCurrentTrail(PLAYER_1) then 
 						self:SetFromTrail(GAMESTATE:GetCurrentTrail(PLAYER_1)) 
 					else
 						self:SetFromSteps(GAMESTATE:GetCurrentSteps(PLAYER_1))
 					end
 					P1Difficulty = self:GetChild('Difficulty'):GetText()
-				end"
+				end)"
 		/>
 		<Layer 
 			Font="_misobold small"
 			Text="???" 
 			OnCommand="x,25;y,2;zoom,0.4;shadowlength,0;horizalign,left;maxwidth,240;queuecommand,Set" 
-			SetCommand="%function(self) self:settext(P1Difficulty) end" 
+			SetCommand="%SIMPLY_LOVE(function(self) self:settext(P1Difficulty) end)" 
 		/>		
 		<Layer 
 			Condition="not GAMESTATE:IsCourseMode()"
 			Font="_misobold small"
 			Text="???" 
 			OnCommand="x,25;y,-12;zoom,0.4;shadowlength,0;horizalign,left;maxwidth,240;queuecommand,Set" 
-			SetCommand="%function(self) self:settext(GetStepsDescriptionText(PLAYER_1)) end" 
+			SetCommand="%SIMPLY_LOVE(function(self) self:settext(GetStepsDescriptionText(PLAYER_1)) end)" 
 		/>		
 	</children> </Layer>
 
@@ -90,35 +90,35 @@
 	> <children>
 		<Actor
 			File="@THEME:GetPath(EC_GRAPHICS,'','_difficulty icons')"
-			InitCommand="%function(self) self:y(IconY()) IconCrop(self) end"
+			InitCommand="%SIMPLY_LOVE(function(self) self:y(IconY()) IconCrop(self) end)"
 			OnCommand="animate,0;playcommand,Update"
-			UpdateCommand="%function(self,parent) SetDifficultyFrameFromGameState(self, PLAYER_2) end"
+			UpdateCommand="%SIMPLY_LOVE(function(self,parent) SetDifficultyFrameFromGameState(self, PLAYER_2) end)"
 		/>
 		<Actor
 			Class="DifficultyMeter"
 			Type="ScreenGameplay DifficultyMeterP2"
 			OnCommand="playcommand,Update"
-			UpdateCommand="%function(self) 
+			UpdateCommand="%SIMPLY_LOVE(function(self) 
 					if GAMESTATE:GetCurrentTrail(PLAYER_2) then 
 						self:SetFromTrail(GAMESTATE:GetCurrentTrail(PLAYER_2)) 
 					else
 						self:SetFromSteps(GAMESTATE:GetCurrentSteps(PLAYER_2))
 					end
 					P2Difficulty = self:GetChild('Difficulty'):GetText()
-				end"
+				end)"
 		/>
 		<Layer 
 			Font="_misobold small"
 			Text="???" 
 			OnCommand="x,-25;y,2;zoom,0.4;shadowlength,0;horizalign,right;maxwidth,240;queuecommand,Set" 
-			SetCommand="%function(self) self:settext(P2Difficulty) end" 
+			SetCommand="%SIMPLY_LOVE(function(self) self:settext(P2Difficulty) end)" 
 		/>
 		<Layer 
 			Condition="not GAMESTATE:IsCourseMode()"
 			Font="_misobold small"
 			Text="???" 
 			OnCommand="x,-25;y,-12;zoom,0.4;shadowlength,0;horizalign,right;maxwidth,240;queuecommand,Set" 
-			SetCommand="%function(self) self:settext(GetStepsDescriptionText(PLAYER_2)) end" 
+			SetCommand="%SIMPLY_LOVE(function(self) self:settext(GetStepsDescriptionText(PLAYER_2)) end)" 
 		/>
 	</children> </Layer>
 	
