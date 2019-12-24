@@ -4,4 +4,13 @@
 		Class="AutoActor" 
 		File="../_shared underlay arrows"
 	/>
+	
+	<!--Aux QuickPlayFadeMessageCommand="%function(self) SCREENMAN:SystemMessage('Ass') end" /-->
+	
+	<Layer Type="Quad" QPSelMessageCommand="hidden,0" QPDeSelMessageCommand="hidden,1" OnCommand="stretchto,0,0,SCREEN_WIDTH,SCREEN_HEIGHT;diffuse,0,0,0,0;"
+	QuickPlayFadeMessageCommand="diffusealpha,0;linear,.5;diffusealpha,1;" />
+	
+	<Layer Type="BitmapText" File="_wendy small" Text="LOADING" QPSelMessageCommand="hidden,0" QPDeSelMessageCommand="hidden,1" OnCommand="xy,SCREEN_CENTER_X,SCREEN_CENTER_Y;diffusealpha,0;"
+	QuickPlayFadeMessageCommand="diffusealpha,0;sleep,.5;linear,.2;diffusealpha,1;" />
+	
 </children></ActorFrame>
