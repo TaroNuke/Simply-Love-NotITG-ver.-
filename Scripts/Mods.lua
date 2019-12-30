@@ -77,7 +77,7 @@
 	function ScreenList(str) if type(screenList[str]) == 'function' then return screenList[str]() else return screenList[str] end end
 
 -- Judgment tween commands.
-	function JudgmentTween(self) self:zoom(.8) self:decelerate(.1) self:zoom(.75) self:sleep(.6) self:accelerate(.2) self:zoom(0) end
+	function JudgmentTween(self) self:zoom(1.05) self:decelerate(.1) self:zoom(1) self:sleep(.6) self:accelerate(.2) self:zoom(0) end
 	function HoldTween(self) self:diffuse(1,1,1,1) self:zoom(.5); self:sleep(.5) self:zoom(0) end
 
 -- Used with Judgment Graphs.
