@@ -159,8 +159,8 @@ function MusicClock() return Screen():GetSecsIntoEffect() end
 function SelectMusicInit(self) TimedSet.Class = 0; InitializeMods() optionIndex = 0; GhostDataCache = { }; for pn=1,2 do GhostData(pn,"Cache") end; self:queuecommand('FirstUpdate') end
 function SelectMusic(self) self:queuecommand('Capture') end
 
-function GameplayInit(self) TimedSet.Class = 1; Combo = {} lifeNormal = {} lifeHot = {} holdJudgments = {} self:queuecommand('FirstUpdate') end
-function Gameplay(self) EditMode = false; ApplyRateAdjust() JudgmentInit() SurroundLife() Danger.Time = {0,0} Danger.State = { false, false} Dead.Time = {0,0} Dead.State = { false, false } Screen():effectclock('music') self:luaeffect('Update') end
+function GameplayInit(self) TimedSet.Class = 1; Combo = {} lifeNormal = {} lifeHot = {} holdJudgments = {} ApplyRateAdjust() self:queuecommand('FirstUpdate') end
+function Gameplay(self) EditMode = false; JudgmentInit() SurroundLife() Danger.Time = {0,0} Danger.State = { false, false} Dead.Time = {0,0} Dead.State = { false, false } Screen():effectclock('music') self:luaeffect('Update') end
 
 function EvaluationInit(self) TimedSet.Class = 2; RevertHideBG() RevertRateAdjust() self:queuecommand('FirstUpdate') end
 function Evaluation() CaptureJudgment() AddScoreToListFromEval() ApplyHideBG() SaveToProfile() end
@@ -957,7 +957,7 @@ end
 --------------------
 
 function SpeedType()
-	local t = OptionRowBase((optionIndex == 'Edit' and 'Speed') or 'Speed Mod Type',{ 'x' , 'C' })
+	local t = OptionRowBase((optionIndex == 'Edit' and 'Speed') or 'Speed Mod Type',{ 'x' , 'C' , 'm' })
 	t.LoadSelections = function(self, list, pn) for i,v in ipairs(self.Choices) do if modType[pn+1] == v then list[i] = true end end end
 	t.SaveSelections = function(self, list, pn) for i,v in ipairs(list) do if v then modType[pn+1] = self.Choices[i] end end SetSpeedMod(pn+1) SetOptionRow('Adjust Speed',true) end
 	t.LayoutType = 'ShowOneInRow'
@@ -1056,12 +1056,12 @@ function CalculateSpeedMod()
 	modSpeed = {700,700}
 	for pn=1,2 do if Player(pn) then
 		for i=speedMin,speedMax,speedSpread do
-			if CheckMod(pn-1,'C'..i) then modType[pn] = 'C'; modSpeed[pn] = i elseif CheckMod(pn-1,(i/100)..'x') then modType[pn] = 'x'; modSpeed[pn] = i end
+			if CheckMod(pn-1,'C'..i) then modType[pn] = 'C'; modSpeed[pn] = i elseif CheckMod(pn-1,(i/100)..'x') then modType[pn] = 'x'; modSpeed[pn] = i elseif CheckMod(pn - 1, 'm' .. i) then modType[pn] = 'm'; modSpeed[pn] = i end
 		end
 	end end
 end
 
-function SpeedString(pn,speed) local s = speed or modSpeed[pn] or ''; if modType[pn] == 'x' then return string.format('%g',s/100) .. 'x' else return 'C' .. s end end
+function SpeedString(pn,speed) local s = speed or modSpeed[pn] or ''; if modType[pn] == 'x' then return string.format('%g',s/100) .. 'x' else return modType[pn] .. s end end
 function SetSpeedMod(pn) ApplyMod('1x',pn) ApplyMod(SpeedString(pn),pn) BM('SpeedModChanged') end
 
 function ApplyRateAdjust()
