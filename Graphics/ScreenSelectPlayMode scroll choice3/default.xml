@@ -3,23 +3,25 @@
 		Type="ActorFrame"
 		OnCommand="%function(self)
 			self:zoom(0.5)
-			local shader = self:GetChildAt(0):GetShader()
+			if not FUCK_EXE then return end
 			local af = self:GetChildAt(0):GetChildAt(1)
+			local shader = self:GetChildAt(0):GetShader()
 			af:GetChildAt(0):SetShader(shader)
 			af:GetChildAt(1):GetChildAt(0):SetShader(shader)
 			af:GetChildAt(2):SetShader(shader)
-			self:sleep(0.1)
 		end"
 		GainFocusCommand="%function(self)
 			self:stoptweening()
 			self:linear(0.2)
 			self:zoom(1)
+			if not FUCK_EXE then return end
 			self:GetChildAt(0):GetShader():uniform1f('saturation',1)
 		end"
 		LoseFocusCommand="%function(self)
 			self:stoptweening()
 			self:linear(0.2)
 			self:zoom(0.5)
+			if not FUCK_EXE then return end
 			self:GetChildAt(0):GetShader():uniform1f('saturation',0)
 		end"
 	><children>
