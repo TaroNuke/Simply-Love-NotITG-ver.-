@@ -642,6 +642,35 @@ end"><children>
 			end
 			
 		end" />
+		
+		<Layer Type="Quad"
+			UpdateSpellDisplayP1MessageCommand="%function(self)
+				local pn = 1
+				if curcard[pn] == 0 then
+					self:hidden(1)
+				else
+					self:hidden(0)
+					
+					local s = GAMESTATE:GetCurrentSong()
+					local sc = s:GetSpellCards()
+					local i = curcard[pn]
+						
+					local x1 = oplot_fitX((sc[ i ].StartBeat))
+					--local x1 = oplot_fitX(0)
+					local x2 = oplot_fitX((sc[ i ].EndBeat))
+					
+					self:stretchto(x1,60,x2,92)
+					self:diffuseshift()
+					self:effectperiod(.5)
+					self:effectcolor1(sc[i].Color[1],sc[i].Color[2],sc[i].Color[3],sc[i].Color[4]*.4)
+					self:effectcolor2(sc[i].Color[1],sc[i].Color[2],sc[i].Color[3],sc[i].Color[4]*.1)
+					
+				end
+			end"
+			OnCommand="%function(self)
+				self:hidden(1)
+			end"
+		/>
 
 	</children></Layer>
 	
@@ -1138,6 +1167,35 @@ end"><children>
 			end
 			
 		end" />
+		
+		<Layer Type="Quad"
+			UpdateSpellDisplayP2MessageCommand="%function(self)
+				local pn = 2
+				if curcard[pn] == 0 then
+					self:hidden(1)
+				else
+					self:hidden(0)
+					
+					local s = GAMESTATE:GetCurrentSong()
+					local sc = s:GetSpellCards()
+					local i = curcard[pn]
+						
+					local x1 = oplot_fitX((sc[ i ].StartBeat))
+					--local x1 = oplot_fitX(0)
+					local x2 = oplot_fitX((sc[ i ].EndBeat))
+					
+					self:stretchto(x1,60,x2,92)
+					self:diffuseshift()
+					self:effectperiod(.5)
+					self:effectcolor1(sc[i].Color[1],sc[i].Color[2],sc[i].Color[3],sc[i].Color[4]*.4)
+					self:effectcolor2(sc[i].Color[1],sc[i].Color[2],sc[i].Color[3],sc[i].Color[4]*.1)
+					
+				end
+			end"
+			OnCommand="%function(self)
+				self:hidden(1)
+			end"
+		/>
 
 	</children></Layer>
 	
