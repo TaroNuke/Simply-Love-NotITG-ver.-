@@ -1,6 +1,8 @@
-<ActorFrame>
+<ActorFrame 
+    OnCommand="effectperiod,0/1;luaeffect,Update"
+    UpdateCommand="%function(self) stitch('lua.event').Update(self) end"
+    OverlayReadyMessageCommand="%function(self) stitch.RequireEnv('lua.setup', {self = self}) end" >
     <children>
-        <Layer File="setup"/>
         <Layer File="console"/>
         <!-- Feel free to add more overlays here -->
     </children>

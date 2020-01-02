@@ -103,7 +103,7 @@
 		<Layer 
 			File="SimplyLove" 
 			InitCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y" 
-			OnCommand="%function(self) self:zoom(.9) if love == 0 then self:diffusealpha(0) self:linear(0.4) self:diffusealpha(1) end end"
+			OnCommand="%function(self) self:zoom(.9/(FUCK_EXE and 1 or 2)) if love == 0 then self:diffusealpha(0) self:linear(0.4) self:diffusealpha(1) end end"
 			OffCommand="%TitleMenuOut"
 		/>
 		<Layer Font="_misoreg small" Text="" Command="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-126;zoom,0.45;shadowlength,0;diffusealpha,0;sleep,.3;queuecommand,Set" SetCommand="%function(self) s = SCREENMAN:GetTopScreen():GetChild('Songs'):GetText() self:settext(s) self:linear(.5) self:diffusealpha(1) Command = {} function file() if children then File=children[math.mod(table.getn(Command),table.getn(children))+1] end end end" OffCommand="%TitleMenuOut" />

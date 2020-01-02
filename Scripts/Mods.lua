@@ -1187,11 +1187,13 @@ function DifficultyListRow(self,k,t,pn)
 			if t == 'difficulty' then if k - 1  < 5 then self:settext(string.upper(DifficultyToThemedString( k - 1 ))) else self:settext(s:GetDescription()) end self:diffuse(DifficultyColorRGB( k - 1 )) end
 			if t == 'meter' then self:settext(s:GetMeter()) self:diffuse(DifficultyColorRGB( k - 1 )) end
 			if t == 'feet' then self:zoomy(z) self:zoomx(math.min(s:GetMeter(),m)*z) self:customtexturerect(0,k/8,math.min(s:GetMeter(),m),(k+1)/8) end
-			if t and GAMESTATE:GetCurrentSong():GetUnlockMethod(s:GetDifficulty()) ~= '' then
-				self:glowshift() self:effectcolor1(1,.8,0,1) self:effectcolor2(1,.8,0,0) self:effectclock('bgm') self:effectperiod(1)
-				--Trace('fixed '..t)
-			else
-				self:stopeffect()
+			if Song.GetUnlockMethod then
+				if t and GAMESTATE:GetCurrentSong():GetUnlockMethod(s:GetDifficulty()) ~= '' then
+					self:glowshift() self:effectcolor1(1,.8,0,1) self:effectcolor2(1,.8,0,0) self:effectclock('bgm') self:effectperiod(1)
+					--Trace('fixed '..t)
+				else
+					self:stopeffect()
+				end
 			end
 		else
 			if t == 'difficulty' then if k - 1 < 5 then self:settext(string.upper(DifficultyToThemedString( k - 1 ))) else self:settext('') end self:diffuse(DifficultyColorRGB()) end

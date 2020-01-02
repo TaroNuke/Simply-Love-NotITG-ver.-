@@ -1,4 +1,6 @@
-<ActorFrame InitCommand="%function(self)
+<ActorFrame 
+	Condition="FUCK_EXE"
+	InitCommand="%function(self)
 	function math.round(num, numDecimalPlaces)
 	  local mult = 10^(numDecimalPlaces or 0)
 	  return math.floor(num * mult + 0.5) / mult

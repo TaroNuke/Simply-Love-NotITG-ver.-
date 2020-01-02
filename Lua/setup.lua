@@ -1,7 +1,8 @@
 local event = stitch 'lua.event'
-local self = self:GetParent()
+local self = self
 
-self:xy(0,0)
+self:x(0)
+self:y(0)
 self:zoom(1)
 self:horizalign("left")
 self:vertalign("top")
@@ -13,12 +14,22 @@ event.Persist("key char","uksrt", function(c)
     end
 end)
 
+
 -- Widescreen centering hack
-event.Persist("update","afts sucks", function ()
-    DISPLAY:ChangeCentering(
-        PREFSMAN:GetPreference("CenterImageTranslateX"),
-        PREFSMAN:GetPreference("CenterImageTranslateY"),
-        PREFSMAN:GetPreference("CenterImageAddWidth"),
-        PREFSMAN:GetPreference("CenterImageAddHeight")
-    )
-end)
+local function pref(name)
+    return PREFSMAN:GetPreference(name)
+end
+
+if  pref("CenterImageTranslateX") ~= 0 or
+    pref("CenterImageTranslateY") ~= 0 or
+    pref("CenterImageAddWidth") ~= 0 or
+    pref("CenterImageAddHeight") ~= 0 then
+    event.Persist("update","afts sucks", function ()
+        DISPLAY:ChangeCentering(
+            pref("CenterImageTranslateX"),
+            pref("CenterImageTranslateY"),
+            pref("CenterImageAddWidth"),
+            pref("CenterImageAddHeight")
+        )
+    end)
+end

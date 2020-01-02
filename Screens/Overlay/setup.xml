@@ -1,8 +1,0 @@
-<ActorFrame
-    OnCommand="diffusealpha,0;effectperiod,0/1;luaeffect,Update"
-    UpdateCommand="%function(self)
-        stx('lua.event').Update(self)
-    end"
-    OverlayReadyMessageCommand="%function(self) stx.RequireEnv('lua.setup', {self = self}) end"
-    ><children>
-</children></ActorFrame>
