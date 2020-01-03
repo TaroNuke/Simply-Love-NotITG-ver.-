@@ -51,46 +51,11 @@ end
 
 function VocalizeTest(self,j)
 	local digits = {''}
-	score = string.gsub(score,'%%','')
-	local int = math.floor(score)
-	local dec = string.sub(score,string.len(score)-1)
-	if int >= 100 then digits[1] = '100percent'
-	else
-		if int < 20 then
-			digits[1] = int; digits[2] = 'point'
-		elseif math.mod(int,10) == 0 then
-			digits[1] = int; digits[2] = 'point'
-		else
-			digits[1] = int - math.mod(int,10); digits[2] = math.mod(int,10); digits[3] = 'point'
-		end
-		for i=2,4 do
-			if not digits[i] then digits[i] = string.sub(dec,1,1); digits[i+1] = string.sub(dec,2,2) break end
-		end
-	end
-	if digits[j] then
-		if j == 1 then
-			speaker = Voice
-			if Voice == 'Random' then speaker = vocalizeList[math.random(1,table.getn(vocalizeList))] end
-		end
-		
-		if Voice == 'Blender' then speaker = vocalizeList[math.random(1,table.getn(vocalizeList))] end
-		if digits[j] == '100percent' then digits[j] = digits[j] .. math.random(1,loadstring('if _G[speaker] then return _G[speaker].quads else return 1 end')()) end
-		local Path = VocalizePath() .. speaker ..'/'..digits[j]..'.ogg' 
-		SOUND:PlayOnce( Path )
-		self:sleep(loadstring('if _G[speaker] then return _G[speaker].z' .. digits[j] .. ' else return .5 end')())
-		if not digits[j+1] then self:sleep(.3) end
-	end
-end
-
-function Vocalize(self,pn,j)
-	if GAMESTATE:IsPlayerEnabled(pn-1) then
-		local score = SCREENMAN:GetTopScreen():GetChild('PercentP'..pn):GetChild('PercentP'..pn):GetText()
-		local digits = {''}
-		score = string.gsub(score,'%%','')
+	local score = string.gsub(score,'%%','')
+	if tonumber(score) <= 100 then
 		local int = math.floor(score)
 		local dec = string.sub(score,string.len(score)-1)
 		if int >= 100 then digits[1] = '100percent'
-		elseif tonumber(score) == 0 then digits[1] = nil
 		else
 			if int < 20 then
 				digits[1] = int; digits[2] = 'point'
@@ -103,18 +68,57 @@ function Vocalize(self,pn,j)
 				if not digits[i] then digits[i] = string.sub(dec,1,1); digits[i+1] = string.sub(dec,2,2) break end
 			end
 		end
-		if digits[j] and vocalize[pn] ~= 'None' then
+		if digits[j] then
 			if j == 1 then
-				speaker = vocalize[pn]
-				if vocalize[pn] == 'Random' then speaker = vocalizeList[math.random(2,table.getn(vocalizeList)-7)] end
+				speaker = Voice
+				if Voice == 'Random' then speaker = vocalizeList[math.random(1,table.getn(vocalizeList))] end
 			end
 			
-			if vocalize[pn] == 'Blender' then speaker = vocalizeList[math.random(2,table.getn(vocalizeList)-7)] end
+			if Voice == 'Blender' then speaker = vocalizeList[math.random(1,table.getn(vocalizeList))] end
 			if digits[j] == '100percent' then digits[j] = digits[j] .. math.random(1,loadstring('if _G[speaker] then return _G[speaker].quads else return 1 end')()) end
 			local Path = VocalizePath() .. speaker ..'/'..digits[j]..'.ogg' 
 			SOUND:PlayOnce( Path )
 			self:sleep(loadstring('if _G[speaker] then return _G[speaker].z' .. digits[j] .. ' else return .5 end')())
 			if not digits[j+1] then self:sleep(.3) end
+		end
+	end
+end
+
+function Vocalize(self,pn,j)
+	if GAMESTATE:IsPlayerEnabled(pn-1) then
+		local score = SCREENMAN:GetTopScreen():GetChild('PercentP'..pn):GetChild('PercentP'..pn):GetText()
+		if tonumber(score) <= 100 then
+			local digits = {''}
+			score = string.gsub(score,'%%','')
+			local int = math.floor(score)
+			local dec = string.sub(score,string.len(score)-1)
+			if int >= 100 then digits[1] = '100percent'
+			elseif tonumber(score) == 0 then digits[1] = nil
+			else
+				if int < 20 then
+					digits[1] = int; digits[2] = 'point'
+				elseif math.mod(int,10) == 0 then
+					digits[1] = int; digits[2] = 'point'
+				else
+					digits[1] = int - math.mod(int,10); digits[2] = math.mod(int,10); digits[3] = 'point'
+				end
+				for i=2,4 do
+					if not digits[i] then digits[i] = string.sub(dec,1,1); digits[i+1] = string.sub(dec,2,2) break end
+				end
+			end
+			if digits[j] and vocalize[pn] ~= 'None' then
+				if j == 1 then
+					speaker = vocalize[pn]
+					if vocalize[pn] == 'Random' then speaker = vocalizeList[math.random(2,table.getn(vocalizeList)-7)] end
+				end
+				
+				if vocalize[pn] == 'Blender' then speaker = vocalizeList[math.random(2,table.getn(vocalizeList)-7)] end
+				if digits[j] == '100percent' then digits[j] = digits[j] .. math.random(1,loadstring('if _G[speaker] then return _G[speaker].quads else return 1 end')()) end
+				local Path = VocalizePath() .. speaker ..'/'..digits[j]..'.ogg' 
+				SOUND:PlayOnce( Path )
+				self:sleep(loadstring('if _G[speaker] then return _G[speaker].z' .. digits[j] .. ' else return .5 end')())
+				if not digits[j+1] then self:sleep(.3) end
+			end
 		end
 	end
 end
