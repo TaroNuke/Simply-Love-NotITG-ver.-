@@ -10,7 +10,7 @@ if _G.stitch then
 end
 
 local stitch = {
-    _VERSION = 'Stitch 1901203 dev'
+    _VERSION = 'Stitch 200103 dev'
 }
 
 _G.stitch = stitch
@@ -19,18 +19,19 @@ _G.stx = stitch
 local folder = '/'..THEME:GetCurThemeName()..'/'
 local addFolder = lower(PREFSMAN:GetPreference('AdditionalFolders'))
 local add = './themes,' .. gsub(addFolder, ',' ,'/themes,') .. '/themes'
-local hit = ''
 
 local requireCache = {}
 
-local function load(name)
+local function load(name, prefix)
     local file = gsub(lower(name), '%.', '/') .. '.lua'
+    if prefix then
+        file = prefix .. file
+    end
     local log={}
-    for w in gfind(hit .. add,'[^,]+') do
+    for w in gfind(add,'[^,]+') do
         local path = gsub(w .. folder .. file, '/+', '/')
         local func, err = loadfile(path)
         if func then
-            hit = w .. ','
             Debug('[Loading] ' .. path)
             return func
         end
@@ -101,8 +102,15 @@ Trace '[Stitch] Initialized!'
 Trace('[Stitch] We are on version "' .. stitch._VERSION .. '"')
 
 -- Preload config
-local config = setmetatable({},{})
-stitch.RequireEnv("config", config)
-requireCache["config"] = {config}
+do
+    local config = setmetatable({},{})
+    stitch.RequireEnv("config", config)
+    local dataconf = load("config", "../../Data/")
+    if dataconf then
+        setfenv( dataconf, config )
+        dataconf()
+    end
+    requireCache["config"] = {config}
+end
 
 return stitch
