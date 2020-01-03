@@ -10,11 +10,10 @@
 				self:LoadFromSong(GAMESTATE:GetCurrentSong()); self:x(SCREEN_LEFT+70); self:y(SCREEN_TOP+65); self:zoom(0.30); self:queuecommand('Update')
 			end" 
 			UpdateCommand="%function(self)
-				
-				if PREFSMAN:GetPreference('EditorShowSongTitle') then
-					self:hidden(0)
+				if FUCK_EXE then
+					self:visible(PREFSMAN:GetPreference('EditorShowSongTitle') and 1 or 0)
 				else
-					self:hidden(1)
+					self:hidden(stitch('config').EditorShowSongTitle and 0 or 1)
 				end
 				
 				self:sleep(.1)
