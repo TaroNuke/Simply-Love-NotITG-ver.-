@@ -1,5 +1,14 @@
-<ActorFrame>
-	<children>
+<ActorFrame
+	OnCommand="%function() 
+		-- OpenITG scalable check
+		if FUCK_EXE then return end
+		for pn=0,1 do
+			if GAMESTATE:PlayerIsUsingModifier(pn, 'scalable') then
+				GAMESTATE:ApplyGameCommand('mod,cel', pn+1)
+			end
+		end
+	end"
+	><children>
 	<Layer File="backstuff.png" Command="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-30"
 	/>
 		<Layer Type="Quad"

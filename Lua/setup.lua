@@ -1,3 +1,4 @@
+local config = stitch 'config'
 local event = stitch 'lua.event'
 local self = self
 
@@ -13,7 +14,6 @@ event.Persist("key char","uksrt", function(c)
         MESSAGEMAN:Broadcast("KeyPress"..c)
     end
 end)
-
 
 -- Widescreen centering hack
 local function pref(name)
@@ -32,4 +32,9 @@ if  pref("CenterImageTranslateX") ~= 0 or
             pref("CenterImageAddHeight")
         )
     end)
+end
+
+-- OpenITG EditorShowSongTitle emulation
+if config.EditorShowSongTitle == nil then
+    config.EditorShowSongTitle = true
 end
