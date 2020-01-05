@@ -445,7 +445,8 @@ end"><children>
 			local pss = ss:GetPlayerStageStats(pn-1)
 			local dvt = pss:GetOffsetVector()
 			local nrt = pss:GetNoteRowVector()
-			local mrt = pss:GetMineRowVector()
+			local mrt = pss.GetMineRowVector and 
+						pss:GetMineRowVector() or {}
 			local nrs = pss:GetNoteSongVector()
 			
 			self:SetNumVertices(4*table.getn(nrt)+4*table.getn(mrt))
@@ -970,7 +971,8 @@ end"><children>
 			local pss = ss:GetPlayerStageStats(pn-1)
 			local dvt = pss:GetOffsetVector()
 			local nrt = pss:GetNoteRowVector()
-			local mrt = pss:GetMineRowVector()
+			local mrt = pss.GetMineRowVector and 
+						pss:GetMineRowVector() or {}
 			local nrs = pss:GetNoteSongVector()
 			
 			self:SetNumVertices(4*table.getn(nrt)+4*table.getn(mrt))
