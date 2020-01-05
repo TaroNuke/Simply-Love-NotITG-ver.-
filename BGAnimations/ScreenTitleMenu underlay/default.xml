@@ -101,7 +101,7 @@
 		
 		
 		<Layer 
-			File="SimplyLove" 
+			File="@FUCK_EXE and 'SimplyLove' or 'SimplyOpen'" 
 			InitCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y" 
 			OnCommand="%function(self) self:zoom(.9/(FUCK_EXE and 1 or 2)) if love == 0 then self:diffusealpha(0) self:linear(0.4) self:diffusealpha(1) end end"
 			OffCommand="%TitleMenuOut"
