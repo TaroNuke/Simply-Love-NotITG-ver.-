@@ -22,7 +22,7 @@
 			
 			if sl_playerisfailed[2] or not GAMESTATE:IsHumanPlayer(1) then
 				MESSAGEMAN:Broadcast('SLOverlayDed')
-				GAMESTATE:ApplyGameCommand('sound,srt_hurt')
+				GAMESTATE:ApplyGameCommand('sound,srt_hit')
 			end
 		
 		else
@@ -41,7 +41,7 @@
 			
 			if sl_playerisfailed[1] or not GAMESTATE:IsHumanPlayer(0) then
 				MESSAGEMAN:Broadcast('SLOverlayDed')
-				GAMESTATE:ApplyGameCommand('sound,srt_hurt')
+				GAMESTATE:ApplyGameCommand('sound,srt_hit')
 			end
 		
 		else
