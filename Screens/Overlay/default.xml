@@ -3,7 +3,61 @@
     UpdateCommand="%function(self) stitch('lua.event').Update(self) end"
     OverlayReadyMessageCommand="%function(self) stitch.RequireEnv('lua.setup', {self = self}) end" >
     <children>
-        <Layer File="console"/>
         <!-- Feel free to add more overlays here -->
+		
+		<Layer Type="ActorFrameTexture"
+			OverlayReadyMessageCommand="%function(self)
+				
+				self:SetWidth( DISPLAY:GetDisplayWidth() );
+				self:SetHeight( DISPLAY:GetDisplayHeight() );
+				self:EnableDepthBuffer( false );
+				self:EnableAlphaBuffer( true );
+				self:EnableFloat( false );
+				self:EnablePreserveTexture( true );
+				
+				self:hidden(1);
+				
+				self:Create();
+				
+				sg_af_capture = self;
+				
+			end"
+			AFWastedMessageCommand="%function(self)
+				self:hidden(0)
+			end"
+		/>
+		
+		<Layer Type="Sprite" Texture="white" Frag="gray.frag"
+			OverlayReadyMessageCommand="%function(self)
+				self:SetTextureFiltering(true)
+				self:basezoomx((SCREEN_WIDTH/DISPLAY:GetDisplayWidth()));
+				self:basezoomy(-1*(SCREEN_HEIGHT/DISPLAY:GetDisplayHeight()));
+				self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y);
+				self:sleep(0.01);
+				self:hidden(1)
+				self:queuecommand('Set');
+				self:GetShader():uniform1f( 'howGray', 1.0 )
+
+			end"
+			
+			SetCommand="%function(self)
+				self:SetTexture(sg_af_capture:GetTexture())
+			end"
+			AFWastedMessageCommand="hidden,0;sleep,4;linear,1;diffusealpha,0;"
+		/>
+		
+		<Layer Type="Quad" OverlayReadyMessageCommand="stretchto,0,0,SCREEN_WIDTH,SCREEN_HEIGHT;diffuse,1,1,1,0;" AFWastedMessageCommand="diffusealpha,1;linear,.5;diffusealpha,0;" />
+		
+		<Layer File="wasted" OverlayReadyMessageCommand="basezoomx,.8;basezoomy,.8;xy,SCREEN_CENTER_X,SCREEN_CENTER_Y;diffusealpha,0;fadeleft,.1;faderight,.1;" AFWastedMessageCommand="sleep,2.25;diffusealpha,1;zoom,1.1;linear,.3;zoom,1;sleep,2;linear,1;diffusealpha,0;" />
+		
+		
+		
+		<Layer Type="Quad" OverlayReadyMessageCommand="stretchto,0,0,SCREEN_WIDTH,SCREEN_HEIGHT;diffuse,1,0,0,0" SLOverlayDedMessageCommand="diffusealpha,.7;linear,.4;diffusealpha,0;" />
+		<Layer File="ded" OverlayReadyMessageCommand="xy,SCREEN_CENTER_X,SCREEN_CENTER_Y;diffusealpha,0;" SLOverlayDedMessageCommand="diffusealpha,1;linear,1;diffusealpha,0;" />
+		
+	
+        <Layer File="console"/>
+		
     </children>
+	
 </ActorFrame>

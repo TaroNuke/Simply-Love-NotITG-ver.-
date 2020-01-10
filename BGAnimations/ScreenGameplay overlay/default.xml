@@ -1,4 +1,136 @@
 <ActorFrame> <children>
-
+	<CODE Type="Quad"
+	InitCommand="%function(self)
+	
+		self:hidden(1)
+		
+		sw = SCREEN_WIDTH
+		sh = SCREEN_HEIGHT
+		scx = sw/2
+		scy = sh/2
+		
+		if not g_failmode then
+			g_failmode = 1
+		end
+		
+		sl_playerisfailed = {false,false}
+	
+	end"
+	OnCommand="hidden,1"
+	MFailP1MessageCommand="%function(self)
+		if not g_failmode or g_failmode == 1 then
+			
+			if sl_playerisfailed[2] or not GAMESTATE:IsHumanPlayer(1) then
+				MESSAGEMAN:Broadcast('SLOverlayDed')
+				GAMESTATE:ApplyGameCommand('sound,srt_hurt')
+			end
+		
+		else
+			
+			if sl_playerisfailed[2] or not GAMESTATE:IsHumanPlayer(1) then
+				MESSAGEMAN:Broadcast('AFWasted')
+				GAMESTATE:ApplyGameCommand('sound,gta_wasted')
+			end
+			
+		end
+			
+		sl_playerisfailed[1] = true
+	end"
+	MFailP2MessageCommand="%function(self)
+		if not g_failmode or g_failmode == 1 then
+			
+			if sl_playerisfailed[1] or not GAMESTATE:IsHumanPlayer(0) then
+				MESSAGEMAN:Broadcast('SLOverlayDed')
+				GAMESTATE:ApplyGameCommand('sound,srt_hurt')
+			end
+		
+		else
+			
+			if sl_playerisfailed[1] or not GAMESTATE:IsHumanPlayer(0) then
+				MESSAGEMAN:Broadcast('AFWasted')
+				GAMESTATE:ApplyGameCommand('sound,gta_wasted')
+			end
+			
+		end
+			
+		sl_playerisfailed[2] = true
+	end"
+	StepP1Action5PressMessageCommand="%function(self)
+		
+		if not g_failmode then
+			g_failmode = 1
+		else
+			if g_failmode == 1 then
+				g_failmode = 2
+			else
+				g_failmode = 1
+			end
+		end
+		
+		SCREENMAN:SystemMessage('Failmode: '..g_failmode)
+	end"
+	/>
+	
+	<Layer Type="Quad"
+		InitCommand="%function(self)
+			
+			srt_lifebarPassing = {true,true}
+			
+		end"
+	/>
+	
+	<Layer File="_eurostile outline" Text=""
+	Condition="STATSMAN:GetCurStageStats():GetPlayerStageStats(0)"
+	OnCommand="zoom,.5;xy,SCREEN_WIDTH/2 - 100,SCREEN_HEIGHT/2;sleep,.02;queuecommand,Make"
+	MakeCommand="%function(self)
+	
+		local life = STATSMAN:GetCurStageStats():GetPlayerStageStats(0):GetCurrentLife()
+		--Trace(life);
+		if STATSMAN:GetCurStageStats():GetPlayerStageStats(0):GetActualDancePoints() == 0 then
+			life = 0.5;
+		end
+		
+		self:settext('')
+		
+		if life == 0 then
+			srt_lifebarPassing[1] = false
+			Trace('P1 DED (srt)')
+			MESSAGEMAN:Broadcast('MFailP1')
+		end
+		
+		if srt_lifebarPassing[1] then
+			self:sleep(0.04);
+			self:queuecommand('Make');
+		end
+	end"
+	/>
+	
+	<Layer File="_eurostile outline" Text=""
+	Condition="STATSMAN:GetCurStageStats():GetPlayerStageStats(1)"
+	OnCommand="zoom,.5;xy,SCREEN_WIDTH/2 + 100,SCREEN_HEIGHT/2;sleep,.02;queuecommand,Make"
+	MakeCommand="%function(self)
+		local life = STATSMAN:GetCurStageStats():GetPlayerStageStats(1):GetCurrentLife()
+		--Trace(life);
+		if STATSMAN:GetCurStageStats():GetPlayerStageStats(1):GetActualDancePoints() == 0 then
+			life = 0.5;
+		end
+		
+		self:settext('')
+		
+		if life == 0 then
+			srt_lifebarPassing[2] = false
+			Trace('P2 DED (srt)')
+			MESSAGEMAN:Broadcast('MFailP2')
+		end
+		
+		if srt_lifebarPassing[2] then
+			self:sleep(0.04);
+			self:queuecommand('Make');
+		end
+	end"
+	/>
+	
+	
+	
 </children> </ActorFrame>
 
