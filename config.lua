@@ -12,6 +12,9 @@ wraps = {
 -- Used by OpenITG only; see NotITGPrefs.ini for the NotITG variant
 -- Hides song title and banner in ScreenEdit
 EditorShowSongTitle=true
+
+-- Debug: Lua heap viewer
+ViewGC = false
 --[[
 layout:
     The keyboard layout you use.

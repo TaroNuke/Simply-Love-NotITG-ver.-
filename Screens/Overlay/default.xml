@@ -6,7 +6,7 @@
         <!-- Feel free to add more overlays here -->
 		<Layer File="Death" />
         <Layer File="Console"/>
-
+        <Layer File="ViewGC" />
     </children>
 	
 </ActorFrame>

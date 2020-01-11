@@ -1,0 +1,23 @@
+<ActorFrame Condition="stitch'config'.ViewGC"><children>
+    <Layer Type="Quad" InitCommand="horizalign,right;vertalign,bottom;x,SCREEN_WIDTH-5;y,SCREEN_HEIGHT-5;diffuse,0,0,0,0.5;effectperiod,1/0" OverlayReadyMessageCommand="%function(s) gc_info_quad = s end" />
+    <Layer Type="BitmapText" File="_eurostile outline" 
+        InitCommand="diffuse,0,1,0,1;horizalign,right;vertalign,bottom;shadowlength,0;x,SCREEN_WIDTH-10;y,SCREEN_HEIGHT-10;zoom,0.3;luaeffect,Update" 
+        UpdateCommand="%(function()
+            local prev = gcinfo()
+            local red = 0
+            gc_info_quad = nil
+            return function(self)
+                local quad = quad or gc_info_quad
+                local now, max = gcinfo()
+                local time = quad:GetSecsIntoEffect()
+                self:settext(string.format('%d KB / %d KB', now, max))
+                quad:zoomto(self:GetWidth()*0.3+10,self:GetHeight()*0.3+10)
+                if prev > now then
+                    red = time+1
+                end
+                quad:diffuse(red-time,0,0,0.5)
+                prev = now
+            end
+        end)()"
+    />
+</children></ActorFrame>
