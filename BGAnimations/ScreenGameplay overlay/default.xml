@@ -1,4 +1,5 @@
 <ActorFrame> <children>
+	<ActorFrame Condition="FUCK_EXE"> <children>
 	<CODE Type="Quad"
 	InitCommand="%function(self)
 	
@@ -132,5 +133,6 @@
 	
 	
 	
+</children> </ActorFrame>
 </children> </ActorFrame>
 

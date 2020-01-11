@@ -127,7 +127,7 @@ function BM(str) MESSAGEMAN:Broadcast(str) end
 function Screen() return SCREENMAN:GetTopScreen() end
 function Sound(str) SOUND:PlayOnce( Path("sounds",str )) end
 function Path(ec,str) return THEME:GetPath( _G['EC_'..string.upper(ec)] , '' , str ) end
-function Player(pn) return GAMESTATE:IsPlayerEnabled(pn-1) end
+local function Player(pn) return GAMESTATE:IsPlayerEnabled(pn-1) end
 function PlayerIndex(pn) if pn == GAMESTATE:GetNumPlayersEnabled() then return pn end return 1 end
 function Profile(pn) if not PROFILEMAN then return {} end if pn == 0 then return PROFILEMAN:GetMachineProfile():GetSaved() else return PROFILEMAN:GetProfile(pn-1):GetSaved() end end
 function GetPref(str) return PREFSMAN:GetPreference(str) end
@@ -1215,11 +1215,13 @@ function DifficultyListRow(self,k,t,pn)
 			if t == 'difficulty' then if s:GetDifficulty() < 5 then self:settext(string.upper(DifficultyToThemedString(s:GetDifficulty()))) else self:settext(s:GetDescription()) end self:diffuse(DifficultyColorRGB( s:GetDifficulty() )) end
 			if t == 'meter' then self:settext(s:GetMeter()) self:diffuse(DifficultyColorRGB( s:GetDifficulty() )) end
 			if t == 'feet' then self:zoomy(z) self:zoomx(math.min(s:GetMeter(),m)*z) self:customtexturerect(0,(s:GetDifficulty()+1)/8,math.min(s:GetMeter(),m),(s:GetDifficulty()+2)/8) end
-			if t and GAMESTATE:GetCurrentSong():GetUnlockMethod(s:GetDifficulty()) ~= '' then
-				self:glowshift() self:effectcolor1(1,.8,0,1) self:effectcolor2(1,.8,0,0) self:effectclock('bgm') self:effectperiod(1)
-				--Trace('nofixed '..t)
-			else
-				self:stopeffect()
+			if Song.GetUnlockMethod then
+				if t and GAMESTATE:GetCurrentSong():GetUnlockMethod(s:GetDifficulty()) ~= '' then
+					self:glowshift() self:effectcolor1(1,.8,0,1) self:effectcolor2(1,.8,0,0) self:effectclock('bgm') self:effectperiod(1)
+					--Trace('nofixed '..t)
+				else
+					self:stopeffect()
+				end
 			end
 		else
 			if t == 'difficulty' then self:settext('') end
