@@ -86,10 +86,6 @@
 	MakeCommand="%function(self)
 	
 		local life = STATSMAN:GetCurStageStats():GetPlayerStageStats(0):GetCurrentLife()
-		--Trace(life);
-		if STATSMAN:GetCurStageStats():GetPlayerStageStats(0):GetActualDancePoints() == 0 then
-			life = 0.5;
-		end
 		
 		self:settext('')
 		
@@ -103,6 +99,7 @@
 			self:sleep(0.04);
 			self:queuecommand('Make');
 		end
+		
 	end"
 	/>
 	
@@ -111,10 +108,6 @@
 	OnCommand="zoom,.5;xy,SCREEN_WIDTH/2 + 100,SCREEN_HEIGHT/2;sleep,.02;queuecommand,Make"
 	MakeCommand="%function(self)
 		local life = STATSMAN:GetCurStageStats():GetPlayerStageStats(1):GetCurrentLife()
-		--Trace(life);
-		if STATSMAN:GetCurStageStats():GetPlayerStageStats(1):GetActualDancePoints() == 0 then
-			life = 0.5;
-		end
 		
 		self:settext('')
 		
@@ -128,6 +121,7 @@
 			self:sleep(0.04);
 			self:queuecommand('Make');
 		end
+		
 	end"
 	/>
 	
