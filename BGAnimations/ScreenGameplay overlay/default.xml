@@ -56,9 +56,11 @@
 	end"
 	StepP1Action5PressMessageCommand="%function(self)
 		
-		stitch('config').FailOverlay = (stitch('config').FailOverlay+1)%3
+		local types = {'Off', 'YOU DIED', 'Wasted'}
+
+		stitch('config').FailOverlay = (stitch('config').FailOverlay+1)%#types
 		
-		SCREENMAN:SystemMessage('Failmode: '..stitch('config').FailOverlay)
+		SCREENMAN:SystemMessage('FailOverlay '..types[stitch('config').FailOverlay+1])
 	end"
 	/>
 	
