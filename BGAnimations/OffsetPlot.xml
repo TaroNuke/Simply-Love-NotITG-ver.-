@@ -585,7 +585,11 @@ end"><children>
 					_G['oplot_s'..pn..'_perc']:shadowlength(0)
 					_G['oplot_s'..pn..'_perc']:zoom(.55)
 					_G['oplot_s'..pn..'_perc']:maxwidth(294/.6)
-					_G['oplot_s'..pn..'_perc']:settext( string.format('%.2f', (act/poss)*100 ) )
+					if poss > 0 then
+						_G['oplot_s'..pn..'_perc']:settext( string.format('%.2f', (act/poss)*100 ) )
+					else
+						_G['oplot_s'..pn..'_perc']:settext( string.format('%.2f', 0 ) )
+					end
 					
 				else
 					
@@ -1111,7 +1115,11 @@ end"><children>
 					_G['oplot_s'..pn..'_perc']:shadowlength(0)
 					_G['oplot_s'..pn..'_perc']:zoom(.55)
 					_G['oplot_s'..pn..'_perc']:maxwidth(294/.6)
-					_G['oplot_s'..pn..'_perc']:settext( string.format('%.2f', (act/poss)*100 ) )
+					if poss > 0 then
+						_G['oplot_s'..pn..'_perc']:settext( string.format('%.2f', (act/poss)*100 ) )
+					else
+						_G['oplot_s'..pn..'_perc']:settext( string.format('%.2f', 0 ) )
+					end
 					
 				else
 					
