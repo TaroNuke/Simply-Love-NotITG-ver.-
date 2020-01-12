@@ -2,6 +2,8 @@
 -- Read contents by doing stitch("config").YourPref
 
 -- For console, instructions further down
+layout = "QwertyUS"
+console = "9"
 deep = "!"
 bare = ","
 skip = 10
