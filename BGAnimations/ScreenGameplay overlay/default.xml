@@ -55,12 +55,12 @@
 		sl_playerisfailed[2] = true
 	end"
 	StepP1Action5PressMessageCommand="%function(self)
-		
+		local config = stitch('config')
 		local types = {'Off', 'YOU DIED', 'Wasted'}
 
-		stitch('config').FailOverlay = (stitch('config').FailOverlay+1)%#types
+		config.FailOverlay = (config.FailOverlay+1)%#types
 		
-		SCREENMAN:SystemMessage('FailOverlay '..types[stitch('config').FailOverlay+1])
+		SCREENMAN:SystemMessage('FailOverlay '..types[config.FailOverlay+1])
 	end"
 	/>
 	
