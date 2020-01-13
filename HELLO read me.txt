@@ -12,7 +12,7 @@ Hello thanks for downloading my lovely creation. I'm
 just going to include a few notes here that may help 
 you use and understand the theme.
 
-(edited for notITG v3 by TaroNuke and Ky_Dash)
+(edited for NotITG v4 by TaroNuke, Ky_Dash, and ArcticFqx)
 
 <3~<3~<3~<3~<3~<3~<3~<3~<3~<3~<3~<3~<3~<3~<3~<3~<3~<3
 
@@ -36,7 +36,7 @@ OPERATOR MENU includes options for:
 
 - DECENTS AND WAY OFFS: ON/OFF
 
-**Turning off Way Offs and Decents sets the Way Off and Decent timing windows to the same as the Great timing window, making them impossible to trigger. What would have been a Way Off or Decent will be a Miss instead. If the pad triggers in the time that would have been the early Way Off or Decent window, it won’t register, giving the player another chance to hit the arrow on time. This helps compensate for pad misfires but can also make it much easier for players to mash and get Greats instead of non-combos.
+**Turning off Way Offs and Decents sets the Way Off and Decent timing windows to the same as the Great timing window, making them impossible to trigger. What would have been a Way Off or Decent will be a Miss instead. If the pad triggers in the time that would have been the early Way Off or Decent window, it wonï¿½t register, giving the player another chance to hit the arrow on time. This helps compensate for pad misfires but can also make it much easier for players to mash and get Greats instead of non-combos.
 
 **There is an obvious visual difference on the evaluation screen if decents/way offs are turned off, so people can tell in screenshots.
 
@@ -48,7 +48,7 @@ OPERATOR MENU includes options for:
 
 - PLAY MODE: STAGES/TIMER
 
-**Timer mode allows operator to set amount of time a player can play per credit. A timer shows up during their game. Operator can also set the “cut off time” - or how long the player is allowed to continue playing the current song if the timer runs out during a song.
+**Timer mode allows operator to set amount of time a player can play per credit. A timer shows up during their game. Operator can also set the ï¿½cut off timeï¿½ - or how long the player is allowed to continue playing the current song if the timer runs out during a song.
 
 **If time runs out in Event Mode, the timer will continue counting showing negative time. If play length is set to 0 in Event Mode, the timer will count up instead to time your session.
 
@@ -152,10 +152,10 @@ Vospi - "fuckin"
 
 - Ghost Data 
 **Compare your score to personal best, machine record, or see subtractive scoring. 
-**See how many measures into a run you are - select the type of note you’d like to track - if you’ve played the song before, it will also show how many measures remain.
+**See how many measures into a run you are - select the type of note youï¿½d like to track - if youï¿½ve played the song before, it will also show how many measures remain.
 
 
-- Surround Lifebar - Lifebar will fill the screen during gameplay - background briefly flashes green if you’ve survived low life “danger”
+- Surround Lifebar - Lifebar will fill the screen during gameplay - background briefly flashes green if youï¿½ve survived low life ï¿½dangerï¿½
 
 
 
