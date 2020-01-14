@@ -36,7 +36,11 @@
 		SetCommand="%function(self)
 			self:SetTexture(sg_af_capture:GetTexture())
 		end"
-		AFWastedMessageCommand="hidden,0;diffusealpha,1;sleep,4;linear,1;diffusealpha,0;"
+		AFWastedMessageCommand="hidden,0;diffusealpha,1;sleep,4;linear,1;diffusealpha,0;queuecommand,HideAft"
+		HideAftCommand="%function(self)
+			self:hidden(1)
+			sg_af_capture:hidden(1)
+		end"
 	/>
 	
 	<Layer Type="Quad" OverlayReadyMessageCommand="stretchto,0,0,SCREEN_WIDTH,SCREEN_HEIGHT;diffuse,1,1,1,0;" AFWastedMessageCommand="diffusealpha,1;linear,.5;diffusealpha,0;" />
