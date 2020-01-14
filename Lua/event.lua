@@ -59,9 +59,8 @@ end
 
 function event.Call( name, ... )
     event.Call = Call
-    local ret = {Call(name, unpack(arg))}
     MESSAGEMAN:Broadcast("OverlayReady")
-    return unpack(ret)
+    return Call(name, unpack(arg))
 end
 
 function event.Add( name, id, fn )
