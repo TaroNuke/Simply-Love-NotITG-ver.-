@@ -1,9 +1,8 @@
 <ActorFrame Condition="FUCK_EXE" ><children>
 	<Layer Type="ActorFrameTexture"
-		OverlayReadyMessageCommand="%function(self)
-			
-			self:SetWidth( DISPLAY:GetDisplayWidth() );
-			self:SetHeight( DISPLAY:GetDisplayHeight() );
+		InitCommand="%function(self)
+			self:SetWidth( PREFSMAN:GetPreference('DisplayWidth') );
+			self:SetHeight( PREFSMAN:GetPreference('DisplayHeight') );
 			self:EnableDepthBuffer( false );
 			self:EnableAlphaBuffer( true );
 			self:EnableFloat( false );
@@ -12,9 +11,9 @@
 			self:hidden(1);
 			
 			self:Create();
-			
-			sg_af_capture = self;
-			
+		end"
+		OverlayReadyMessageCommand="%function(self)
+			sg_af_capture = self 
 		end"
 		AFWastedMessageCommand="%function(self)
 			self:hidden(0)
@@ -24,8 +23,8 @@
 	<Layer Type="Sprite" Texture="white" Frag="gray.frag"
 		OverlayReadyMessageCommand="%function(self)
 			self:SetTextureFiltering(true)
-			self:basezoomx((SCREEN_WIDTH/DISPLAY:GetDisplayWidth()));
-			self:basezoomy(-1*(SCREEN_HEIGHT/DISPLAY:GetDisplayHeight()));
+			self:basezoomx(SCREEN_WIDTH/DISPLAY:GetDisplayWidth());
+			self:basezoomy(-SCREEN_HEIGHT/DISPLAY:GetDisplayHeight());
 			self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y);
 			self:sleep(0.01);
 			self:hidden(1)
