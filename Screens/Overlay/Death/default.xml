@@ -1,16 +1,18 @@
 <ActorFrame Condition="FUCK_EXE" ><children>
 	<Layer Type="ActorFrameTexture"
 		InitCommand="%function(self)
-			self:SetWidth( PREFSMAN:GetPreference('DisplayWidth') );
-			self:SetHeight( PREFSMAN:GetPreference('DisplayHeight') );
-			self:EnableDepthBuffer( false );
-			self:EnableAlphaBuffer( true );
-			self:EnableFloat( false );
-			self:EnablePreserveTexture( true );
-			
-			self:hidden(1);
-			
-			self:Create();
+			if not self:GetTexture() then
+				self:SetWidth( PREFSMAN:GetPreference('DisplayWidth') );
+				self:SetHeight( PREFSMAN:GetPreference('DisplayHeight') );
+				self:EnableDepthBuffer( false );
+				self:EnableAlphaBuffer( true );
+				self:EnableFloat( false );
+				self:EnablePreserveTexture( true );
+				
+				self:hidden(1);
+				
+				self:Create();
+			end
 		end"
 		OverlayReadyMessageCommand="%function(self)
 			sg_af_capture = self 
