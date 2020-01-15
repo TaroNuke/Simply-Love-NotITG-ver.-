@@ -1,5 +1,3 @@
 <ActorFrame> <children>
-<ActorFrame Condition="FUCK_EXE" InitCommand="%stitch('lua.death').Start"> <children>
-</children> </ActorFrame>
 </children> </ActorFrame>
 

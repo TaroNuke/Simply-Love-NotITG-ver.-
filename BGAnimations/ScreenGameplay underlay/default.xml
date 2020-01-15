@@ -157,9 +157,22 @@
 			NoteCrossedDownMessageCommand="finishtweening;diffusealpha,1;linear,0.3;zoom,1;diffusealpha,0"
 		/>
 	</children></ActorFrame>
-	
-	<ActorFrame Command="%function() loadMusic = 1 end" />
-	<ActorFrame Command="%GameplayInit" FirstUpdateCommand="%Gameplay" UpdateCommand="%GameplayUpdate"/>
+
+	<ActorFrame 
+		Command="%function(self) 
+			loadMusic = 1 
+			GameplayInit(self)
+		end" 
+		FirstUpdateCommand="%function(self)
+			Gameplay(self)
+			self:stopeffect()
+			self:SetUpdateFunction(GameplayUpdate)
+			if FUCK_EXE then
+				stitch('lua.death').Start()
+			end
+		end" 
+	/>
+
 	<Layer Type="ActorFrame"
 		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_TOP+20;zoomx,((SCREEN_WIDTH/SCREEN_HEIGHT)/(4/3))"
 		> <children>
@@ -187,7 +200,7 @@
 			Font="_misobold white"
 			OnCommand="y,-5;zoom,0.35;shadowlength,0;maxwidth,840;zoomx,0.35/((SCREEN_WIDTH/SCREEN_HEIGHT)/(4/3))"
 			InitCommand="animate,0;playcommand,Update"
-			CurrentSongChangedMessageCommand="playcommand,Update"
+			CurrentSongChangedMessageCommand="playcommand,UpdateTitle"
 			UpdateCommand="%SetFromSongTitleAndCourseTitle"
 		/>
 	</children> </Layer>
