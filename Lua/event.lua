@@ -19,7 +19,7 @@ function event.Ignore( name, bool )
     ignore[name] = bool and true
 end
 
-local function Call( name, ... )
+function event.Call( name, ... )
     if ignore[name] then return end
     stacksize = stacksize+1
 
@@ -57,10 +57,13 @@ local function Call( name, ... )
     end
 end
 
-function event.Call( name, ... )
-    event.Call = Call
-    MESSAGEMAN:Broadcast("OverlayReady")
-    return Call(name, unpack(arg))
+local isOverlayReady = false
+function event.OverlayReady()
+    if not isOverlayReady then
+        isOverlayReady = true
+        print("Preparing overlay")
+        MESSAGEMAN:Broadcast("OverlayReady")
+    end
 end
 
 function event.Add( name, id, fn )

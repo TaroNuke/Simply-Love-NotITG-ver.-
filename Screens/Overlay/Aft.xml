@@ -1,0 +1,7 @@
+<Layer 
+    Condition="FUCK_EXE"
+    Name="OverlayActorFrameTexture"
+    Type="ActorFrameTexture" 
+    InitCommand="%function(self) stitch('lua.aftoverlay').Init(self) end"
+    OverlayReadyMessageCommand="%function(self) stitch('lua.aftoverlay').Ready(self) end"
+/>

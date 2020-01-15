@@ -1,0 +1,4 @@
+	<ActorFrame Name="YouDied"><children>
+		<Layer Type="Quad" />
+		<Layer File="ded" />
+	</children></ActorFrame>

@@ -1,0 +1,5 @@
+<ActorFrame Name="Wasted"><children>
+    <Layer Name="AftSprite" Type="Sprite" Texture="white" Frag="gray.frag" />
+    <Layer Type="Quad" />
+    <Layer File="wasted" />
+</children></ActorFrame>
