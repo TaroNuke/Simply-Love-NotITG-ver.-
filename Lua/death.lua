@@ -38,7 +38,7 @@ function death:Ready()
 
     for i=1,2 do
         local pn = i
-        self:addcommand("DeadP"..pn.."Message",function()
+        self:addcommand("FailP"..pn.."Message",function()
             players = players - 1
             if players == 0 then
                 death.Trigger()
