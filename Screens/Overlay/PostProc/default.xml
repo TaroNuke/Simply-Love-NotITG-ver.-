@@ -1,0 +1,31 @@
+<ActorFrame><children>
+    <Layer Type="ActorFrameTexture" />
+    <Layer 
+        File="Sprite" 
+        Frag="gameboy.frag"
+        OnCommand="%function(self)
+            local w = PREFSMAN:GetPreference('DisplayWidth')
+            local h = PREFSMAN:GetPreference('DisplayHeight')
+            local aft = self:GetParent()(1)
+            aft:SetWidth( w )
+            aft:SetHeight( h )
+            aft:EnableDepthBuffer( false )
+            aft:EnableAlphaBuffer( true )
+            aft:EnableFloat( false )
+            aft:EnablePreserveTexture( true )
+            aft:Create()
+
+            local aftsprite = self
+            aftsprite:SetTextureFiltering(false)
+            aftsprite:basezoomx(SCREEN_WIDTH/w)
+            aftsprite:basezoomy(-SCREEN_HEIGHT/h)
+            aftsprite:x(SCREEN_CENTER_X+8)
+            aftsprite:y(SCREEN_CENTER_Y-15)
+            local scale = 0.63
+            aftsprite:zoom(scale)
+            aftsprite:GetShader():uniform1f( 'scale', scale )
+            aftsprite:SetTexture(aft:GetTexture())
+        end"
+    />
+    <Layer File="gboverlay" InitCommand="xy,SCREEN_CENTER_X,SCREEN_CENTER_Y" />
+</children></ActorFrame>
