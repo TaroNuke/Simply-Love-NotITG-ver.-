@@ -13,11 +13,11 @@ wraps = {
     "*", "-", "/", "^", "="
 }
 
--- 0: off
--- 1: YOU DIED
--- 2: Wasted
+-- 1: off
+-- 2: YOU DIED
+-- 3: Wasted
 -- Scroll through them with Action5
-FailOverlay = 1
+FailOverlay = 2
 
 -- Used by OpenITG only; see NotITGPrefs.ini for the NotITG variant
 -- Hides song title and banner in ScreenEdit
