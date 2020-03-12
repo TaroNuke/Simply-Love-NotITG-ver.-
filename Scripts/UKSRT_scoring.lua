@@ -55,6 +55,16 @@ local function GetHoldScore(pn, category)
 	return pss:GetHoldNoteScores(category)
 end
 
+local function GetTapScoreCouples(pn, category)
+	local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(GAMESTATE:GetMasterPlayerNumber())
+	return pss:GetTapNoteScoresForPlayer(pn+1,category)
+end
+
+local function GetHoldScoreCouples(pn, category)
+	local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(GAMESTATE:GetMasterPlayerNumber())
+	return pss:GetHoldNoteScoresForPlayer(pn+1,category)
+end
+
 local function SetValueForChild( self, name, value )
 	local child = self:GetChild(name)
 	if not child then return end
@@ -132,6 +142,34 @@ end
 
 function GetMinesHit( self, pn )
 	return GetTapScore(pn, TNS_HITMINE)
+end	
+
+function GetNotesFantasticHitCouples( self, pn )
+	return GetTapScoreCouples(pn, TNS_MARVELOUS)
+end	
+
+function GetNotesExcellentHitCouples( self, pn )
+	return GetTapScoreCouples(pn, TNS_PERFECT)
+end
+
+function GetNotesGreatHitCouples( self, pn )
+	return GetTapScoreCouples(pn, TNS_GREAT)
+end	
+
+function GetNotesDecentHitCouples( self, pn )
+	return GetTapScoreCouples(pn, TNS_GOOD)
+end	
+
+function GetNotesWayOffHitCouples( self, pn )
+	return GetTapScoreCouples(pn, TNS_BOO)
+end	
+
+function GetNotesMissedCouples( self, pn )
+	return GetTapScoreCouples(pn, TNS_MISS)
+end	
+
+function GetMinesHitCouples( self, pn )
+	return GetTapScoreCouples(pn, TNS_HITMINE)
 end	
 
 function GetNotesExcellentComboHit( self, pn )

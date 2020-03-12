@@ -1,0 +1,148 @@
+<Layer Type="ActorFrame"><children>
+	
+	<!--detect if using couples noteskin, and doubles-->
+	<Layer Type="ActorFrame" OnCommand="xy,SCREEN_CENTER_X+100,SCREEN_CENTER_Y+10;zoom,.88" ><children>
+	
+		<Layer Type="Quad"
+			OnCommand="diffuse,#1E282F;y,20;zoomto,200,200;"
+		/>
+		
+		<Layer
+			Type="BitmapText" 
+			File="_misoreg white.ini" 
+			InitCommand="shadowlength,0;zoom,.35;xy,0,-63 + 27*0;settext,Fantastic" 
+		/>
+		<Layer
+			Type="BitmapText" 
+			File="_misoreg white.ini" 
+			InitCommand="shadowlength,0;zoom,.35;xy,0,-63 + 27*1;settext,Excellent" 
+		/>
+		<Layer
+			Type="BitmapText" 
+			File="_misoreg white.ini" 
+			InitCommand="shadowlength,0;zoom,.35;xy,0,-63 + 27*2;settext,Great" 
+		/>
+		<Layer
+			Type="BitmapText" 
+			File="_misoreg white.ini" 
+			InitCommand="shadowlength,0;zoom,.35;xy,0,-63 + 27*3;settext,Decent" 
+		/>
+		<Layer
+			Type="BitmapText" 
+			File="_misoreg white.ini" 
+			InitCommand="shadowlength,0;zoom,.35;xy,0,-63 + 27*4;settext,Way Off" 
+		/>
+		<Layer
+			Type="BitmapText" 
+			File="_misoreg white.ini" 
+			InitCommand="shadowlength,0;zoom,.35;xy,0,-63 + 27*5;settext,Miss" 
+		/>
+		<Layer
+			Type="BitmapText" 
+			File="_misoreg white.ini" 
+			InitCommand="shadowlength,0;zoom,.35;xy,0,-63 + 27*6;settext,Mines" 
+		/>
+		
+		<Layer 
+			Type="BitmapText" 
+			File="_wendywhite numbers.ini" 
+			Text="fa"
+			InitCommand="shadowlength,0;zoom,.35;xy,-40,-60 + 27*0;horizalign,right;playcommand,Set;" 
+			SetCommand="%function(self) self:settext(GetNotesFantasticHitCouples(self,PLAYER_1)) end"
+		/>
+		<Layer 
+			Type="BitmapText" 
+			File="_wendywhite numbers.ini" 
+			Text="ex"
+			InitCommand="shadowlength,0;zoom,.35;xy,-40,-60 + 27*1;horizalign,right;playcommand,Set;" 
+			SetCommand="%function(self) self:settext(GetNotesExcellentHitCouples(self,PLAYER_1)) end"
+		/>
+		<Layer 
+			Type="BitmapText" 
+			File="_wendywhite numbers.ini" 
+			Text="gr"
+			InitCommand="shadowlength,0;zoom,.35;xy,-40,-60 + 27*2;horizalign,right;playcommand,Set;" 
+			SetCommand="%function(self) self:settext(GetNotesGreatHitCouples(self,PLAYER_1)) end"
+		/>
+		<Layer 
+			Type="BitmapText" 
+			File="_wendywhite numbers.ini" 
+			Text="de"
+			InitCommand="shadowlength,0;zoom,.35;xy,-40,-60 + 27*3;horizalign,right;playcommand,Set;" 
+			SetCommand="%function(self) self:settext(GetNotesDecentHitCouples(self,PLAYER_1)) end"
+		/>
+		<Layer 
+			Type="BitmapText" 
+			File="_wendywhite numbers.ini" 
+			Text="wo"
+			InitCommand="shadowlength,0;zoom,.35;xy,-40,-60 + 27*4;horizalign,right;playcommand,Set;" 
+			SetCommand="%function(self) self:settext(GetNotesWayOffHitCouples(self,PLAYER_1)) end"
+		/>
+		<Layer 
+			Type="BitmapText" 
+			File="_wendywhite numbers.ini" 
+			Text="mi"
+			InitCommand="shadowlength,0;zoom,.35;xy,-40,-60 + 27*5;horizalign,right;playcommand,Set;" 
+			SetCommand="%function(self) self:settext(GetNotesMissedCouples(self,PLAYER_1)) end"
+		/>
+		<Layer 
+			Type="BitmapText" 
+			File="_wendywhite numbers.ini" 
+			Text="mn"
+			InitCommand="shadowlength,0;zoom,.35;xy,-40,-60 + 27*6;horizalign,right;playcommand,Set;" 
+			SetCommand="%function(self) self:settext(GetMinesHitCouples(self,PLAYER_1)) end"
+		/>
+		
+		<Layer 
+			Type="BitmapText" 
+			File="_wendywhite numbers.ini" 
+			Text="fa"
+			InitCommand="shadowlength,0;zoom,.35;xy,40,-60 + 27*0;horizalign,left;playcommand,Set;" 
+			SetCommand="%function(self) self:settext(GetNotesFantasticHitCouples(self,PLAYER_2)) end"
+		/>
+		<Layer 
+			Type="BitmapText" 
+			File="_wendywhite numbers.ini" 
+			Text="ex"
+			InitCommand="shadowlength,0;zoom,.35;xy,40,-60 + 27*1;horizalign,left;playcommand,Set;" 
+			SetCommand="%function(self) self:settext(GetNotesExcellentHitCouples(self,PLAYER_2)) end"
+		/>
+		<Layer 
+			Type="BitmapText" 
+			File="_wendywhite numbers.ini" 
+			Text="gr"
+			InitCommand="shadowlength,0;zoom,.35;xy,40,-60 + 27*2;horizalign,left;playcommand,Set;" 
+			SetCommand="%function(self) self:settext(GetNotesGreatHitCouples(self,PLAYER_2)) end"
+		/>
+		<Layer 
+			Type="BitmapText" 
+			File="_wendywhite numbers.ini" 
+			Text="de"
+			InitCommand="shadowlength,0;zoom,.35;xy,40,-60 + 27*3;horizalign,left;playcommand,Set;" 
+			SetCommand="%function(self) self:settext(GetNotesDecentHitCouples(self,PLAYER_2)) end"
+		/>
+		<Layer 
+			Type="BitmapText" 
+			File="_wendywhite numbers.ini" 
+			Text="wo"
+			InitCommand="shadowlength,0;zoom,.35;xy,40,-60 + 27*4;horizalign,left;playcommand,Set;" 
+			SetCommand="%function(self) self:settext(GetNotesWayOffHitCouples(self,PLAYER_2)) end"
+		/>
+		<Layer 
+			Type="BitmapText" 
+			File="_wendywhite numbers.ini" 
+			Text="mi"
+			InitCommand="shadowlength,0;zoom,.35;xy,40,-60 + 27*5;horizalign,left;playcommand,Set;" 
+			SetCommand="%function(self) self:settext(GetNotesMissedCouples(self,PLAYER_2)) end"
+		/>
+		<Layer 
+			Type="BitmapText" 
+			File="_wendywhite numbers.ini" 
+			Text="mn"
+			InitCommand="shadowlength,0;zoom,.35;xy,40,-60 + 27*6;horizalign,left;playcommand,Set;" 
+			SetCommand="%function(self) self:settext(GetMinesHitCouples(self,PLAYER_2)) end"
+		/>
+	
+	</children></Layer>
+	
+</children></Layer>
