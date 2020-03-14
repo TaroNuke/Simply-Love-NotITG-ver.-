@@ -20,7 +20,7 @@
 	/>
 
 	<Layer 
-		Condition="modRate ~= 1"
+		Condition="SongOptionsLabel() ~= ''"
 		Type="Quad"
 		OnCommand="diffuse,#1E282F;stretchto,SCREEN_CENTER_X-139,153,SCREEN_CENTER_X+139,170;diffusealpha,0.85"
 	/>	
@@ -42,7 +42,7 @@
 			Font="_misobold small"
 			OnCommand="y,87;zoom,.5;shadowlength,1;diffuse,#FFFFFF"
 			InitCommand="animate,0;playcommand,Update"
-			UpdateCommand="%function(self) RateBPMlabel(self) end"
+			UpdateCommand="%function(self) SongOptionsLabel(self) end"
 		/>
 	</children> </Layer>
 
