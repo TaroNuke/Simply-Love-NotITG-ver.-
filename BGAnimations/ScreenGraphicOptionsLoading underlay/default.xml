@@ -1,0 +1,14 @@
+<ActorFrame><children>
+	<A
+		Type="Quad"
+		InitCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;zoomto,SCREEN_WIDTH,SCREEN_HEIGHT;diffuse,0,0,0,1;sleep,99999"
+	/>
+	<C
+		Type="Quad"
+		OnCommand="queuecommand,Set"
+		SetCommand="%function(self)
+			stx('lua.event').ForceOverlayReady()
+			GAMESTATE:DelayedGameCommand('screen,ScreenOptionsMenu')
+		end"
+	/>
+</children></ActorFrame>
