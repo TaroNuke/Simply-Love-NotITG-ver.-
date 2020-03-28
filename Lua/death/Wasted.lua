@@ -10,9 +10,11 @@ function wasted:Setup()
     aftsprite:GetShader():uniform1f( 'howGray', 1.0 )
     aftsprite:hidden(1)
 
-    aftsprite:addcommand( "HideAft", function()
-        stitch("lua.aftoverlay"):Off()
-    end)
+    if not aftsprite:hascommand("HideAft") then
+        aftsprite:addcommand("HideAft", function() 
+            stitch("lua.aftoverlay"):Off()
+        end)
+    end
 
     self(2):cmd("stretchto,0,0,SCREEN_WIDTH,SCREEN_HEIGHT;diffuse,1,1,1,0;")
     self(3):cmd("basezoomx,.8;basezoomy,.8;xy,SCREEN_CENTER_X,SCREEN_CENTER_Y;diffusealpha,0;fadeleft,.1;faderight,.1;")
