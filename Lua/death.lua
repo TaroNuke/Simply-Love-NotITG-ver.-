@@ -36,6 +36,8 @@ function death:Ready()
         types[i+1] = style
     end
 
+    if self:hascommand("StepP1Action5Press") then return end
+
     for i=1,2 do
         local pn = i
         self:addcommand("FailP"..pn.."Message",function()
