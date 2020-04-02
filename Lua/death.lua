@@ -10,11 +10,13 @@ local players = 0
 local isReady = false
 
 function death.Next()
-    current = current%#types+1
-    if types[current].Prepare then
-        types[current].Prepare(types[current].Frame)
-    end
-    SCREENMAN:SystemMessage('FailOverlay '..types[current].Name)
+	if not GAMESTATE:IsEditMode() then
+		current = current%#types+1
+		if types[current].Prepare then
+			types[current].Prepare(types[current].Frame)
+		end
+		SCREENMAN:SystemMessage('FailOverlay '..types[current].Name)
+	end
 end
 
 function death.Trigger()
