@@ -66,6 +66,10 @@ function event.OverlayReady()
     end
 end
 
+function event.ForceOverlayReady()
+    MESSAGEMAN:Broadcast("OverlayReady")
+end
+
 function event.Add( name, id, fn )
     subs[name] = subs[name] or {}
     subs[name][id] = fn
