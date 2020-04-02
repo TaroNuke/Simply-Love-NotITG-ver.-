@@ -42,10 +42,8 @@ end
 
 -- Use untruncated SCREEN_WIDTH and SCREEN_CENTER_X for v3.1 below / OpenITG
 if not FUCK_EXE or tonumber(GAMESTATE:GetVersionDate()) < 20200112 then
-    -- really hacky
-    local disp_width = PREFSMAN:GetPreference('DisplayWidth')
-    local disp_height = PREFSMAN:GetPreference('DisplayHeight')
+    local disp_ratio = PREFSMAN:GetPreference('DisplayAspectRatio')
     --
-    SCREEN_WIDTH = 480 * (disp_width / disp_height)
+    SCREEN_WIDTH = 480 * disp_ratio
     SCREEN_CENTER_X = SCREEN_WIDTH / 2
 end
