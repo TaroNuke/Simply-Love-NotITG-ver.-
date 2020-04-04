@@ -1,12 +1,4 @@
-<ActorFrame OnCommand="%function()
-		-- OpenITG scalable check
-		if FUCK_EXE then return end
-		for pn=0,1 do
-			if GAMESTATE:PlayerIsUsingModifier(pn, 'scalable') then
-				GAMESTATE:ApplyGameCommand('mod,cel', pn+1)
-			end
-		end
-	end"><children>
+<ActorFrame><children>
 	<ActorFrame OnCommand="%function() if IsTimedSet() then GAMESTATE:SetTemporaryEventMode(true) end end" />
 	<ActorFrame OnCommand="%function(self) maxClamp = 0; self:queuecommand('Increase') end" IncreaseCommand="%function(self) maxClamp = maxClamp + .05; if maxClamp < 1 then self:sleep(.025) self:queuecommand('Increase') end Layer='noholds' end" />
 	<Layer
@@ -14,4 +6,14 @@
 		File="../_shared underlay arrows"
 		OnCommand="queuecommand,Load"
 	/>
+	<Layer OnCommand="%function(self)
+		-- OpenITG scalable check
+		self:hidden(1)
+		if FUCK_EXE then return end
+		for pn=0,1 do
+			if GAMESTATE:PlayerIsUsingModifier(pn, 'scalable') then
+				GAMESTATE:ApplyGameCommand('mod,cel', pn+1)
+			end
+		end
+	end" />
 </children></ActorFrame>
