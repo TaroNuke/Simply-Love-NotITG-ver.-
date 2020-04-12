@@ -986,10 +986,11 @@ do
 
 	function RateMods( s )
 		local t = OptionRowBase('Music Rate',s and rateModsEdit or rateMods)
+		local edit = s and true or false
 		t.OneChoiceForAllPlayers = true
 		t.LoadSelections = function(self, list, pn)	for i,m in ipairs(self.Choices) do if CheckMod(pn,m..'music') then list[i] = true; s = string.gsub(m,'x','') modRate = tonumber(s) end end end
 		t.SaveSelections = function(self, list, pn)
-			for i,m in ipairs(self.Choices) do if list[i] then s = string.gsub(m,'x',''); modRate = tonumber(s) AdjustXModFromRate() SetOptionRow('Adjust Speed',true) end end
+			for i,m in ipairs(self.Choices) do if list[i] then s = string.gsub(m,'x',''); modRate = tonumber(s) if not edit then AdjustXModFromRate() SetOptionRow('Adjust Speed',true) end end end
 			ApplyMod(s..'xmusic',pn+1)
 			MESSAGEMAN:Broadcast('RateModChanged')
 		end
