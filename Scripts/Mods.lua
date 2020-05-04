@@ -114,7 +114,7 @@
 -- These will be the option rows available on the [nth] option screen. The 'NextScreen' row will be automatically added as long as there is more than 1 option screen.
 	playerOptions = {}
 	playerOptions[1] = { 'SpeedType','SpeedNumber','Mini','Perspective','NoteSkin','Turn','LifeBar','Compare','Rate' }
-	playerOptions[2] = { 'MetaMods','Turn','Accel','Scroll','Effect','Appearance','Handicap','InsertTaps','InsertOther','Hide','Ghost' }
+	playerOptions[2] = { 'MetaMods1','MetaMods2','Turn','Accel','Scroll','Effect','Appearance','Handicap','InsertTaps','InsertOther','Hide','Ghost' }
 	playerOptions.Edit = { 'SpeedType','SpeedNumber','Mini','Perspective','NoteSkin','Turn' }
 	ShowAllInRow = false
 
@@ -754,9 +754,11 @@ function RateBPMlabel(self) s = RateModText() if s ~= '' then s = s .. ' (' .. A
 function MetaModsText(self)
 	mods = {}
 
-	for i, v in ipairs(metaMods.mods) do
-		if CheckMod(0, v) then
-			table.insert(mods, metaMods.modlist[i])
+	for _, metaModsRow in ipairs(metaModsRows) do
+		for i, v in ipairs(metaModsRow.mods) do
+			if CheckMod(0, v) then
+				table.insert(mods, metaModsRow.modlist[i])
+			end
 		end
 	end
 
@@ -810,10 +812,17 @@ end
 baseSpeed = { "C700", "C800", "C900", "C1000", "C1100", "C1200", "C1300", "C1400", "1x", "2x", "3x", "4x", "5x", "6x", "7x", "C400", "C500", "C600" }
 extraSpeed = { "0", "+C10", "+C20", "+C30", "+C40", "+C50", "+C60", "+C70", "+C80", "+C90", "+.75x", "+.50x", "+.25x" }
 
-metaMods = {
-	modlist = {'MetaFlip', 'MetaOrient', 'MetaReverse', '50% MetaStealth', 'MetaDizzy'},
-	default = 'no metaflip, no metaorient, no metareverse, no metastealth, no metadizzy',
-	mods = {'metaflip', 'metaorient', 'metareverse', '50% metastealth', 'metadizzy'}
+metaModsRows = {
+	{
+		modlist = {'MetaFlip', 'MetaInvert', 'MetaReverse'},
+		default = 'no metaflip, no metainvert, no metareverse',
+		mods = {'metaflip', 'metainvert', 'metareverse'}
+	},
+	{
+		modlist = {'MetaOrient', '50% MetaStealth', 'MetaDizzy'},
+		default = 'no metaorient, no metastealth, no metadizzy',
+		mods = {'metaorient', '50% metastealth', 'metadizzy'}
+	}
 }
 
 rateMods = { "1.0x", "1.1x", "1.2x", "1.3x", "1.4x", "1.5x", "1.6x", "1.7x", "1.8x", "1.9x", "2.0x" }
@@ -858,7 +867,8 @@ ModsMaster.Tipsy =			{ float = true }
 ModsMaster.Beat =			{ float = true }
 ModsMaster.Mini =			{ float = true }
 
-ModsMaster.MetaMods = 		{ fnctn = 'MetaMods' }
+ModsMaster.MetaMods1 = 		{ fnctn = 'MetaMods1' }
+ModsMaster.MetaMods2 = 		{ fnctn = 'MetaMods2' }
 ModsMaster.SpeedType =		{ fnctn = 'SpeedType' }
 ModsMaster.SpeedNumber =	{ fnctn = 'SpeedNumber' }
 ModsMaster.Next =			{ fnctn = 'NextScreenOption' }
@@ -1041,14 +1051,15 @@ do
 	end
 end
 
-function MetaMods( s )
-	local t = OptionRowBase('MetaMods', metaMods.modlist)
+function MetaMods( s, iRow )
+	local metaModsRow = metaModsRows[ iRow ]
+	local t = OptionRowBase('MetaMods' .. iRow, metaModsRow.modlist)
 
 	t.SelectType = 'SelectMultiple'
 	t.OneChoiceForAllPlayers = true
 
 	t.LoadSelections = function(self, list, pn)
-		for i, v in ipairs(metaMods.mods) do
+		for i, v in ipairs(metaModsRow.mods) do
 			list[i] = CheckMod(pn, v)
 		end
 	end
@@ -1056,15 +1067,23 @@ function MetaMods( s )
 	t.SaveSelections = function(self, list, pn)
 		if pn ~= 0 then return end -- in OneChoiceForAllPlayers row, list in other players than player 1 is not valid
 
-		ApplyMod(metaMods.default, pn+1)
+		ApplyMod(metaModsRow.default, pn+1)
 		for i, v in ipairs(list) do
 			if v then
-				ApplyMod(metaMods.mods[i], pn+1)
+				ApplyMod(metaModsRow.mods[i], pn+1)
 			end
 		end
 	end
 
 	return t
+end
+
+function MetaMods1( s )
+	return MetaMods( s, 1 )
+end
+
+function MetaMods2( s )
+	return MetaMods( s, 2 )
 end
 
 function NextScreenOption()
