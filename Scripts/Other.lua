@@ -55,6 +55,7 @@ function TechnoPrefs()
 end
 
 function StyleIcon()
+	if not game then game = 'dance' end
 	s = "icon " .. game .. " " .. CurStyleName()
 	path = THEME:GetPath( EC_GRAPHICS, "MenuElements" , s)
 	i = SCREENMAN:GetTopScreen():GetChild('StyleIcon')
