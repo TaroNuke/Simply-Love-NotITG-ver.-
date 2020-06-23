@@ -816,7 +816,7 @@ metaModsRows = {
 	{
 		modlist = {'MetaFlip', 'MetaInvert', 'MetaReverse','MetaVideogames','MetaPieces'},
 		default = 'no metaflip, no metainvert, no metareverse, no metavideogames, no metahidden, no metabrake, no metahiddenoffset',
-		mods = {'metaflip', 'metainvert', 'metareverse','metavideogames','metahidden, 90% metabrake, -20% metahiddenoffset'}
+		mods = {'metaflip', 'metainvert', 'metareverse','metavideogames','metahidden, 80% metabrake, -20% metahiddenoffset'}
 	},
 	{
 		modlist = {'MetaOrient', '50% MetaStealth', 'MetaDizzy','MetaNyan'},
