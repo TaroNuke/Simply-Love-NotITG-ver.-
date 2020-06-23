@@ -815,8 +815,8 @@ extraSpeed = { "0", "+C10", "+C20", "+C30", "+C40", "+C50", "+C60", "+C70", "+C8
 metaModsRows = {
 	{
 		modlist = {'MetaFlip', 'MetaInvert', 'MetaReverse','MetaVideogames','MetaPieces'},
-		default = 'no metaflip, no metainvert, no metareverse, no metavideogames, no metahidden, no metabrake',
-		mods = {'metaflip', 'metainvert', 'metareverse','metavideogames','metahidden, metabrake'}
+		default = 'no metaflip, no metainvert, no metareverse, no metavideogames, no metahidden, no metabrake, no metahiddenoffset',
+		mods = {'metaflip', 'metainvert', 'metareverse','metavideogames','metahidden, 90% metabrake, -20% metahiddenoffset'}
 	},
 	{
 		modlist = {'MetaOrient', '50% MetaStealth', 'MetaDizzy','MetaNyan'},
