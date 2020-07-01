@@ -37,7 +37,7 @@ void main() {
 #endif // KIND_TRITANOPIA
 
 #ifdef KIND_ACHROMATOPSIA
-    col = mix( col, vec3( dot( VEC_ACHROMATOPSIA, col ) ), BLEND );
+    col = mix( col, vec3( dot( VEC_ACHROMATOPSIA, col ) ), blend );
 #endif // KIND_ACHROMATOPSIA
 
     gl_FragColor = vec4( pow( col, vec3( 0.4545 ) ), 1.0 ) * color;
