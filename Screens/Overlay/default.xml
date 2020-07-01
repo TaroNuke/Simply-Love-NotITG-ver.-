@@ -6,6 +6,8 @@
         <!-- Feel free to add more overlays here -->
         <Layer File="Aft" />
 		<Layer File="Death" />
+
+		<Layer File="ColorSim" />
         <Layer File="Console"/>
         <Layer File="ViewGC" />
     </children>
