@@ -21,7 +21,6 @@ function colorsim.initSprite( sprite )
     sprite:x( SCREEN_CENTER_X )
     sprite:y( SCREEN_CENTER_Y )
     sprite:visible( 0 )
-    sprite:SetTexture( stitch( 'lua.aftoverlay' ).texture )
 end
 
 function colorsim.uninitSprite()
@@ -37,16 +36,19 @@ function colorsim.setKind( kind )
     local prevKind = colorsim.kind
     colorsim.kind = kind
 
-    shader:clearDefine( 'KIND_' .. string.upper( prevKind ) )
-    shader:define( 'KIND_' .. string.upper( kind ) )
-
     if kind ~= 'None' then
         stitch( 'lua.aftoverlay' ):On()
+        sprite:SetTexture( stitch( 'lua.aftoverlay' ).texture ) -- deferred just in case
         sprite:visible( 1 )
+
+        shader:uniform1f( 'blend', colorsim.blend )
     else
         stitch( 'lua.aftoverlay' ):Off()
         sprite:visible( 0 )
     end
+
+    shader:clearDefine( 'KIND_' .. string.upper( prevKind ) )
+    shader:define( 'KIND_' .. string.upper( kind ) )
 end
 
 function colorsim.setBlend( blend )
@@ -54,7 +56,10 @@ function colorsim.setBlend( blend )
     local shader = sprite:GetShader()
 
     colorsim.blend = blend
-    shader:uniform1f( 'blend', blend )
+
+    if kind ~= 'None' then
+        shader:uniform1f( 'blend', blend )
+    end
 end
 
 return colorsim
