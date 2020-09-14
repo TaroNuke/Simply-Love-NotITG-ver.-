@@ -22,10 +22,6 @@ end
 
 function EvaluationNextScreen()
 
-	if GAMESTATE:IsCourseMode() then
-		GAMESTATE:ApplyGameCommand('mod,metal');
-	end
-
 	if GetPref('EventMode') then return SongSelectionScreen() end
 	if IsTimedSet() then
 		if Clock( TimedSet.End ) < 0 then 
