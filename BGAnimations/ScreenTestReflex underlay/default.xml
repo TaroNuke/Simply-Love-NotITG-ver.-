@@ -1,0 +1,172 @@
+<ActorFrame InitCommand="%function(self)
+	
+	GAMESTATE:JoinPlayer(0)
+	
+	sw=SCREEN_WIDTH
+	sh=SCREEN_HEIGHT
+	scx=SCREEN_CENTER_X
+	scy=SCREEN_CENTER_Y
+	
+	reflex_bars = {}
+	
+	function addbar(obj)
+	
+		local xv = table.getn(reflex_bars)
+	
+		table.insert(reflex_bars,obj)
+		
+		local bg = obj:GetChild('bg')
+		local level1 = obj:GetChild('level1')
+		local level2 = obj:GetChild('level2')
+		local level3 = obj:GetChild('level3')
+		local level4 = obj:GetChild('level4')
+		local v1 = obj:GetChild('value1')
+		local v2 = obj:GetChild('value2')
+		local v3 = obj:GetChild('value3')
+		
+		x = (xv + 1) * sw/5
+		
+		obj:x(x)
+		obj:y(sh - 100)
+		
+		bg:valign(1)
+		bg:zoomto(16,280)
+		bg:diffuse(0,.5,1,.3)
+		bg:diffusetopedge(1,.5,0,.3)
+		
+		level1:blend('add')
+		level1:diffuse(1,0,0,.7)
+		level1:zoomto(32,4)
+		level2:blend('add')
+		level2:diffuse(0,1,0,.7)
+		level2:zoomto(32,4)
+		level3:blend('add')
+		level3:diffuse(0,.3,1,1)
+		level3:zoomto(32,4)
+		level4:blend('add')
+		level4:diffuse(0,.3,1,.25)
+		level4:zoomto(24,4)
+		
+		v1:y(20)
+		v1:zoom(.4)
+		v2:y(30)
+		v2:zoom(.4)
+		v3:y(40)
+		v3:zoom(.4)
+		
+	end
+	
+	function diffusebar(bar,val)
+		local b = reflex_bars[bar+1]:GetChild('bg')
+		b:diffusealpha(val)
+	end
+	function positionbar(bar,v,val,min,max)
+		local b = reflex_bars[bar+1]:GetChild('level'..v)
+		b:y(-280*((val-min)/(max-min)))
+	end
+	
+	function settextf(bar,v,val)
+		local t = reflex_bars[bar+1]:GetChild('value'..v)
+		t:settext(string.format('%.1f',val))
+	end
+	function settexti(bar,v,val)
+		local t = reflex_bars[bar+1]:GetChild('value'..v)
+		t:settext(val)
+	end
+	
+end"> <children>
+
+	<CODE
+		StepP1Action3PressMessageCommand="%function(self)
+			REFLEX:Connect()
+			REFLEX:SetPanelThresholds(300,300,300,300)
+		end"
+		StepP1Action4PressMessageCommand="%function() REFLEX:Disconnect() end"
+		StepP1Action7PressMessageCommand="%function(self) SCREENMAN:SetNewScreen('ScreenTestReflex4') end"
+		StepP1Action8PressMessageCommand="%function(self) SCREENMAN:SetNewScreen('ScreenSelectMusic') end"
+	/>
+	
+	<CODE
+		StepP1LeftPressMessageCommand="%function(self) diffusebar(0,.6) end"
+		StepP1LeftLiftMessageCommand="%function(self) diffusebar(0,.3) end"
+		StepP1DownPressMessageCommand="%function(self) diffusebar(1,.6) end"
+		StepP1DownLiftMessageCommand="%function(self) diffusebar(1,.3) end"
+		StepP1UpPressMessageCommand="%function(self) diffusebar(2,.6) end"
+		StepP1UpLiftMessageCommand="%function(self) diffusebar(2,.3) end"
+		StepP1RightPressMessageCommand="%function(self) diffusebar(3,.6) end"
+		StepP1RightLiftMessageCommand="%function(self) diffusebar(3,.3) end"
+	/>
+	
+	<Layer Type="BitmapText" Font="_eurostile outline" Text="Test Reflex :D" OnCommand="zoom,1.5;x,scx;y,50" />
+	
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level4" />
+		<Layer Type="Quad" Name="level3" />
+		<Layer Type="Quad" Name="level2" />
+		<Layer Type="Quad" Name="level1" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value3" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level4" />
+		<Layer Type="Quad" Name="level3" />
+		<Layer Type="Quad" Name="level2" />
+		<Layer Type="Quad" Name="level1" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value3" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level4" />
+		<Layer Type="Quad" Name="level3" />
+		<Layer Type="Quad" Name="level2" />
+		<Layer Type="Quad" Name="level1" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value3" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level4" />
+		<Layer Type="Quad" Name="level3" />
+		<Layer Type="Quad" Name="level2" />
+		<Layer Type="Quad" Name="level1" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value3" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	
+	<Aux OnCommand="queuecommand,Update"
+		UpdateCommand="%function(self)
+		
+			local sens = {4200/5700,5000/5700,5000/5700,5300/5700}
+			
+			local pressure = hardware_readPressureNormalizedPersonal()
+			
+			for i=0,3 do
+			
+				positionbar(i,1,REFLEX:GetPanelValue(i),2500,7000)
+				positionbar(i,2,REFLEX:GetPanelBaseline(i),2500,7000)
+				positionbar(i,3,REFLEX:GetPanelBaseline(i)+REFLEX:GetPanelThreshold(i),2500,7000)
+				positionbar(i,4,REFLEX:GetPanelBaseline(i)+REFLEX:GetPanelCooldown(i),2500,7000)
+				
+				settexti(i,1,REFLEX:GetPanelValue(i))
+				settexti(i,2,REFLEX:GetPanelValueAboveBaseline(i))
+				settexti(i,3,REFLEX:GetPanelBaseline(i))
+				
+				local val = math.floor(4000*pressure[i+1]/sens[i+1])
+				REFLEX:SetLightArrow(0,i,clamp(255*val/5700,0,255),0,0);
+				
+			end
+			
+	
+			self:sleep(0.02)
+			self:queuecommand('Update')
+		end"
+	/>
+
+</children> </ActorFrame>

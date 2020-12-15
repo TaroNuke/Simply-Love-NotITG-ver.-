@@ -1,0 +1,187 @@
+<ActorFrame InitCommand="%function(self)
+	
+	GAMESTATE:JoinPlayer(0)
+	
+	sw=SCREEN_WIDTH
+	sh=SCREEN_HEIGHT
+	scx=SCREEN_CENTER_X
+	scy=SCREEN_CENTER_Y
+	
+	reflex_bars = {}
+	
+	function addbar(obj)
+	
+		local xv = table.getn(reflex_bars)
+	
+		table.insert(reflex_bars,obj)
+		
+		local bg = obj:GetChild('bg')
+		local level = obj:GetChild('level')
+		local v1 = obj:GetChild('value1')
+		local v2 = obj:GetChild('value2')
+		
+		x = (xv + 2.5) * sw/20
+		
+		obj:x(x)
+		obj:y(sh - 100)
+		
+		bg:valign(1)
+		bg:zoomto(8,280)
+		bg:diffuse(0,.5,1,.5)
+		bg:diffusetopedge(1,.5,0,.5)
+		
+		level:diffuse(1,0,0,.4)
+		level:zoomto(16,8)
+		
+		v1:y(20)
+		v1:zoom(.4)
+		v2:y(30)
+		v2:zoom(.4)
+		
+	end
+	
+	function positionbar(bar,val)
+		local b = reflex_bars[bar+1]:GetChild('level')
+		local t = reflex_bars[bar+1]:GetChild('value1')
+		b:y(-280*(val/4096))
+		t:zoom(.4)
+		t:settext(val)
+	end
+	
+	function settext2(bar,val)
+		local t = reflex_bars[bar+1]:GetChild('value2')
+		t:zoom(.4)
+		t:settext(val)
+	end
+	
+end"> <children>
+
+	<CODE
+		StepP1Action3PressMessageCommand="%function() REFLEX:Connect() REFLEX:SetPanelThresholds(300,300,300,300) end"
+		StepP1Action4PressMessageCommand="%function() REFLEX:Disconnect() end"
+		StepP1Action8PressMessageCommand="%function(self) SCREENMAN:SetNewScreen('ScreenSelectMusic') end"
+	/>
+	
+	<Layer Type="BitmapText" Font="_eurostile outline" Text="Test Reflex :D" OnCommand="zoom,1.5;x,scx;y,50" />
+	
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	
+	<Aux OnCommand="queuecommand,Update"
+		UpdateCommand="%function(self)
+			
+			for i=0,15 do
+				positionbar(i,REFLEX:GetSensorValue(i))
+			end
+			
+			local sens = {4200/5700,5000/5700,5000/5700,5300/5700}
+			
+			local pressure = hardware_readPressureNormalizedPersonal()
+			
+			for i=0,3 do
+				--local val = math.floor(REFLEX:GetPanelValueAboveBaseline(i))
+				local val = math.floor(4000*pressure[i+1]/sens[i+1])
+				settext2(i*4,val)
+				REFLEX:SetLightArrow(0,i,clamp(255*val/5700,0,255),0,0);
+			end
+	
+			self:sleep(0.02)
+			self:queuecommand('Update')
+		end"
+	/>
+
+</children> </ActorFrame>

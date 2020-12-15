@@ -1,0 +1,811 @@
+<ActorFrame InitCommand="%function(self)
+	
+	GAMESTATE:JoinPlayer(0)
+	
+	sw=SCREEN_WIDTH
+	sh=SCREEN_HEIGHT
+	scx=SCREEN_CENTER_X
+	scy=SCREEN_CENTER_Y
+	
+	reflex_bars = {}
+	
+	sensor_baseline = nil
+	sensor_value = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+	sensor_value_norm = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+	
+	panel_baseline = {0,0,0,0}
+	panel_max = {4400,5300,5200,5700}
+	sensor_max_raw = {2600,3900,3900,3500,4005,4005,3600,4005,4020,4020,4020,4020,4012,4012,4012,4012}
+	sensor_max = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+	
+	panel_value = {0,0,0,0}
+	
+	num_blocks = 0
+	reflex_blocks = {}
+	
+	reflex_data = {
+		{},
+		{},
+		{},
+		{},
+	}
+	
+	function addblock(obj)
+	
+		reflex_blocks[num_blocks] = obj
+		num_blocks = num_blocks+1
+		
+		obj:zoom(8)
+		obj:diffuse(0,0,0,1)
+		
+	end
+	
+	reflex_block_spatial = {
+		{},
+		{},
+		{},
+		{}
+	}
+	
+	function addbar(obj)
+	
+		local xv = table.getn(reflex_bars)
+	
+		table.insert(reflex_bars,obj)
+		
+		local v1 = obj:GetChild('value1')
+		local v2 = obj:GetChild('value2')
+		local v3 = obj:GetChild('value3')
+		
+		x = (xv + 1) * sw/17
+		
+		obj:x(x)
+		obj:y(sh - 100)
+		
+		v1:y(20)
+		v1:zoom(.4)
+		v2:y(30)
+		v2:zoom(.4)
+		v3:y(40)
+		v3:zoom(.4)
+		
+	end
+	
+	function settextf(bar,v,val)
+		local t = reflex_bars[bar+1]:GetChild('value'..v)
+		t:zoom(.4)
+		t:settext(string.format('%.1f',val))
+	end
+	function settexti(bar,v,val)
+		local t = reflex_bars[bar+1]:GetChild('value'..v)
+		t:zoom(.4)
+		t:settext(val)
+	end
+	
+	function color_led(pan,x,y,r,g,b)
+		local a = reflex_block_spatial[pan][y][x]
+		if a then
+			a:diffuse(r,g,b,1)
+			reflex_data[pan][a:getaux()+1] = {
+				math.floor(128*math.clamp(r,0,1)),
+				math.floor(128*math.clamp(g,0,1)),
+				math.floor(128*math.clamp(b,0,1))
+			}
+			--todo writelight color correction, pow,2 intensity
+			--REFLEX:SetLightData(0,pan-1,a:getaux(),128*math.clamp(r,0,1),128*math.clamp(g,0,1),128*math.clamp(b,0,1))
+			WriteLED(0,pan-1,a:getaux(),{0.5*math.clamp(r,0,1),0.5*math.clamp(g,0,1),0.5*math.clamp(b,0,1)})
+		end
+	end
+	
+	function math.clamp(val,min,max)
+		if min > max then min,max = max,min end
+		if val > max then return max end
+		if val < min then return min end
+		return val
+	end
+	
+	function math.mod2(a, b)
+		return a - math.floor(a/b)*b;
+	end
+	
+	function inOutCubic(t, b, c, d)
+	  t = t / d * 2
+	  if t < 1 then
+		return c / 2 * t * t * t + b
+	  else
+		t = t - 2
+		return c / 2 * (t * t * t + 2) + b
+	  end
+	end
+	
+	function outCubic(t, b, c, d)
+	  t = t / d - 1
+	  return c * (math.pow(t, 3) + 1) + b
+	end
+	
+	reflex_arrow = {
+		{ 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+		{ 0, 0, 0, 0, 1,.4,.4, 1, 0, 0, 0, 0, 0, 0},
+		{ 0, 0, 0, 0, 1,.4,.4,.4, 1, 0, 0, 0, 0, 0},
+		{ 0, 0, 0, 0, 0, 1,.4, 2, 2, 1, 0, 0, 0, 0},
+		{ 0, 1, 1, 1, 1, 1, 1, 2, 2,.4, 1, 0, 0, 0},
+		{ 1,.4,.4,.4,.4,.4,.4,.4,.4,.4,.4, 1, 0, 0},
+		{ 1,.4,.4,.4,.4,.4,.4,.4,.4,.4,.4, 1, 0, 0},
+		{ 0, 1, 1, 1, 1, 1, 1, 2, 2,.4, 1, 0, 0, 0},
+		{ 0, 0, 0, 0, 0, 1,.4, 2, 2, 1, 0, 0, 0, 0},
+		{ 0, 0, 0, 0, 1,.4,.4,.4, 1, 0, 0, 0, 0, 0},
+		{ 0, 0, 0, 0, 1,.4,.4, 1, 0, 0, 0, 0, 0, 0},
+		{ 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0}
+	}
+	
+	reflex_donchan = {
+		{0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,1,1,1,1,0,0,0,0},
+		{0,0,0,1,2,2,2,2,1,0,0,0},
+		{0,0,1,2,2,2,2,2,2,1,0,0},
+		{0,1,2,0,0,2,2,0,0,2,1,0},
+		{0,1,2,0,0,2,2,0,0,2,1,0},
+		{0,1,2,2,2,2,2,2,2,2,1,0},
+		{0,1,2,2,3,3,3,3,2,2,1,0},
+		{0,0,1,2,2,3,3,2,2,1,0,0},
+		{0,0,0,1,2,2,2,2,1,0,0,0},
+		{0,0,0,0,1,1,1,1,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0}
+	}
+	
+	function trace_panel(pan,dim)
+		str = '{'
+		for i=0,83 do
+			str = str.. ' '..math.floor(reflex_data[pan][i][1]*dim)..','
+			str = str.. ' '..math.floor(reflex_data[pan][i][2]*dim)..','
+			str = str.. ' '..math.floor(reflex_data[pan][i][3]*dim)
+			if i < 83 then str = str..',' end
+		end
+		str = str..' }'
+		Trace(str);
+	end
+	
+	uptime = 0
+	
+end"> <children>
+
+	<CODE
+		StepP1Action3PressMessageCommand="%function(self) REFLEX:Connect() REFLEX:SetPanelThresholds(300,300,300,300) self:sleep(.5) self:queuecommand('GetBaseline') end"
+		StepP1Action4PressMessageCommand="%function() REFLEX:Disconnect() end"
+		StepP1Action7PressMessageCommand="%function()
+			--Trace('TOP LED ON LEFT: '..reflex_data[1][0][1]..','..reflex_data[1][0][2]..','..reflex_data[1][0][3])
+			--{ r_led0, g_led0, b_led0, r_led1, g_led1, b_led1... r_led83, g_led83, b_led83 };
+			trace_panel(4,0.8)
+		end"
+		StepP1Action8PressMessageCommand="%function(self) SCREENMAN:SetNewScreen('ScreenSelectMusic') end"
+		GetBaselineCommand="%function()
+			sensor_baseline = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+			for i=0,3 do
+				panel_baseline[i+1] = REFLEX:GetPanelBaseline(i)
+			end
+			for i=0,15 do
+				sensor_baseline[i+1] = REFLEX:GetSensorBaseline(i)
+				sensor_max[i+1] = sensor_max_raw[i+1] - REFLEX:GetSensorBaseline(i)
+			end
+		end"
+	/>
+	
+	<Layer Type="BitmapText" Font="_eurostile outline" Text="Test Position tracking :D" OnCommand="zoom,1.5;x,scx;y,50" />
+	
+	<Layer Type="Quad" OnCommand="xy,sw*0.25,sh*0.55;diffuse,1,1,1,.4;zoom,140;" />
+	<Layer Type="Quad" OnCommand="xy,sw*0.5,sh*0.35;diffuse,1,1,1,.4;zoom,140;" />
+	<Layer Type="Quad" OnCommand="xy,sw*0.5,sh*0.75;diffuse,1,1,1,.4;zoom,140;" />
+	<Layer Type="Quad" OnCommand="xy,sw*0.75,sh*0.55;diffuse,1,1,1,.4;zoom,140;" />
+	
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	<Layer Type="Quad" OnCommand="%addblock" />
+	
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value3" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value3" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value3" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value3" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value3" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value3" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value3" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value3" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value3" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value3" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value3" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value3" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value3" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value3" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value3" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	<Layer Type="ActorFrame" OnCommand="%addbar"><children>
+		<Layer Type="Quad" Name="bg" />
+		<Layer Type="Quad" Name="level" />
+		<Layer Type="BitmapText" Name="value1" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value2" Font="_eurostile outline" Text="0" />
+		<Layer Type="BitmapText" Name="value3" Font="_eurostile outline" Text="0" />
+	</children></Layer>
+	
+	<Layer Type="BitmapText" Font="_eurostile outline" Text="100" Var="pos_text_0" OnCommand="xy,sw*0.25,sh*0.55+80;diffuse,1,1,1,1;zoom,.6;" />
+	<Layer Type="BitmapText" Font="_eurostile outline" Text="100" Var="pos_text_1" OnCommand="xy,sw*0.5,sh*0.75+80;diffuse,1,1,1,1;zoom,.6;" />
+	<Layer Type="BitmapText" Font="_eurostile outline" Text="100" Var="pos_text_2" OnCommand="xy,sw*0.5,sh*0.35+80;diffuse,1,1,1,1;zoom,.6;" />
+	<Layer Type="BitmapText" Font="_eurostile outline" Text="100" Var="pos_text_3" OnCommand="xy,sw*0.75,sh*0.55+80;diffuse,1,1,1,1;zoom,.6;" />
+	
+	<Aux OnCommand="queuecommand,Setup;queuecommand,Update"
+		SetupCommand="%function(self)
+		
+			local pos = {
+				{sw*0.25,sh*0.55},
+				{sw*0.50,sh*0.75},
+				{sw*0.50,sh*0.35},
+				{sw*0.75,sh*0.55}
+			}
+			
+			c_frame = 0;
+			
+			for pan = 0,3 do
+				--for led = 0,83 do
+					
+					local xp, yp = scx, scy
+					
+					if pan == 0 then
+						xp = sw*0.25
+					elseif pan == 1 then
+						yp = sh*0.75
+					elseif pan == 2 then
+						yp = sh*0.25
+					else
+						xp = sw*0.75
+					end
+					
+					local cur = 0 --start of each row
+					
+					local num = {1,2,3,4,5,6,6,5,4,3,2,1}
+					
+					for i=0,11 do
+						local t = {}
+						for j=0,11 do
+							table.insert(t,nil)
+						end
+						table.insert(reflex_block_spatial[pan+1],t)
+					end
+					
+					for i=1,12 do
+						for j=1,num[i]*2 do
+							xp = pos[pan+1][1] + (-num[i] + 0.5 + (j-1)) * 10
+							yp = pos[pan+1][2] + (i-6.4) * 10
+							
+							--Trace(pan*84 + cur)
+							
+							local ys = i
+							local xs = j + (6-num[i])
+							
+							reflex_block_spatial[pan+1][ys][xs] = reflex_blocks[pan*84 + cur]
+							
+							reflex_blocks[pan*84 + cur]:xy(xp,yp)
+							reflex_blocks[pan*84 + cur]:aux(cur)
+							
+							cur = cur+1
+						end
+					end
+					
+					--[[
+					if pan == 0 then
+						for y=1,12 do
+							str = ''
+							for x=1,12 do
+								str = str..(reflex_block_spatial[pan+1][y][x] and '1,' or '0,')
+							end
+							Trace(str)
+						end
+					end
+					]]
+					
+				--end
+			end
+			
+		end"
+		UpdateCommand="%function(self)
+		
+			if sensor_baseline ~= nil and sensor_baseline ~= {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0} then
+				
+				for i=0,15 do
+					sensor_value[i+1] = REFLEX:GetSensorValue(i) - sensor_baseline[i+1]
+					sensor_value_norm[i+1] = sensor_value[i+1] / sensor_max[i+1]
+				end
+				
+				--0 = DR
+				--1 = UR
+				--2 = DL
+				--3 = UL
+				
+				local npx = {0,0,0,0}
+				local npy = {0,0,0,0}
+				
+				for i=0,3 do
+					panel_value[i+1] = REFLEX:GetPanelValueAboveBaseline(i)/(panel_max[i+1])
+					
+					if panel_value[i+1] > 0.001 then
+						local l = (sensor_value_norm[i*4+2 + 1] + sensor_value_norm[i*4+3 + 1])/(panel_value[i+1])/1.3
+						local d = (sensor_value_norm[i*4+0 + 1] + sensor_value_norm[i*4+2 + 1])/(panel_value[i+1])/0.9
+						local u = (sensor_value_norm[i*4+1 + 1] + sensor_value_norm[i*4+3 + 1])/(panel_value[i+1])/0.9
+						local r = (sensor_value_norm[i*4+0 + 1] + sensor_value_norm[i*4+1 + 1])/(panel_value[i+1])/1.3
+					
+						xp = clamp(r - l,-1,1)
+						yp = clamp(d - u,-1,1)
+					else
+						xp = 0
+						yp = 0
+					end
+					
+					settextf(i,3,panel_value[i+1])
+					
+					_G['pos_text_'..i]:settext(' x:'..string.format('%.3f',xp)..' y:'..string.format('%.3f',yp))
+					
+					for s=0,3 do
+						settexti(i*4+s,2,sensor_value[i*4+s+1])
+						settextf(i*4+s,1,sensor_value_norm[i*4+s+1])
+					end
+					
+					npx[i+1] = (xp+1)*6
+					npy[i+1] = (yp+1)*6
+					
+				end
+				
+				for i=0,3 do
+					for y=1,12 do
+						for x=1,12 do
+							
+							xd = npx[i+1]-(x-1)
+							yd = npy[i+1]-(y-1)
+							dist = clamp((6-math.sqrt(xd*xd + yd*yd))/6,0,1)
+							
+							color_led(i+1,x,y,
+								clamp(math.sqrt(panel_value[i+1])*1.6*dist*.8,0,1),
+								clamp(math.sqrt(panel_value[i+1])*1.6*dist*1,0,1),
+								clamp(math.sqrt(panel_value[i+1])*1.6*dist*2,0,1)
+							)
+							
+						end
+					end
+				end
+				
+				--REFLEX:SetArrow(0,0,255,0,0)
+				--REFLEX:SetArrow(0,1,255,128,0)
+				--REFLEX:SetArrow(0,2,0,255,0)
+				--REFLEX:SetArrow(0,3,0,0,255)
+			
+			end
+			
+			uptime = uptime + 1/62.5
+	
+			self:sleep(1/62.5)
+			self:queuecommand('Update')
+		end"
+	/>
+
+</children> </ActorFrame>

@@ -1,3 +1,59 @@
 <ActorFrame> <children>
+	<ActorFrame Condition="FUCK_EXE"> <children>
+	
+	
+	<CODE Type="Quad"
+	InitCommand="%function(self)
+		out_currentsong = ''
+		out_lastsong = ''
+	end"
+	OnCommand="sleep,1;queuecommand,Update"
+	UpdateCommand="%function(self)
+		
+		--Trace(GAMESTATE:GetCurrentSong():GetDisplayMainTitle());
+		out_currentsong = GAMESTATE:GetCurrentSong():GetDisplayMainTitle();
+		out_currentartist = GAMESTATE:GetCurrentSong():GetDisplayArtist();
+		
+		if out_currentsong ~= out_lastsong then
+			--we changed song between the last update and this one
+			Trace( 'SONG CHANGE: '..out_currentsong );
+		end
+		
+		out_lastsong = out_currentsong
+		
+		ret = 'Current Song: '..out_currentartist..' - '..out_currentsong..'     \n'
+		
+		local cards = GAMESTATE:GetCurrentSong():GetSpellCards()
+		
+		local b = GAMESTATE:GetSongBeat()
+		
+		local activecards = 0
+		for i=1,table.getn(cards) do
+			if b >= cards[ i ].StartBeat and b < cards[ i ].EndBeat then
+				if activecards > 0 then
+					ret = ret..' | '
+				else
+					ret = ret..'Current Spellcard: '
+				end
+				ret = ret..cards[ i ].Name
+				activecards = activecards+1
+			end
+		end
+		
+		ret = ret..'     '
+		
+		io.output(io.open('output.txt','w'))
+		io.write(ret);
+		io.close();
+		
+		if not GAMESTATE:GetEnv('world') or GAMESTATE:GetEnv('world') and GAMESTATE:GetEnv('world') ~= 'MBC3' then
+			self:sleep(1)
+			self:queuecommand('Update');
+		end
+		
+	end"
+	/>
+	
+	
 </children> </ActorFrame>
-
+</children> </ActorFrame>

@@ -1,4 +1,13 @@
 <ActorFrame> <children>
 	<Layer Type="Quad" Command="diffuse,#000000;stretchto,SCREEN_LEFT,SCREEN_TOP,SCREEN_RIGHT,SCREEN_BOTTOM"/>	
-	<Layer Type="Quad" OnCommand="%function(self) modRate = 1 end" />	
+	<Layer Type="Quad" OnCommand="%function(self) modRate = 1; end" />
+	<Layer Type="Quad"
+		OnCommand="%function(self)
+			hardware_bullshit = false
+			for i=0,3 do
+				reflex_clearLights(0,i)
+			end
+		end"
+	/>
+	
 </children> </ActorFrame>

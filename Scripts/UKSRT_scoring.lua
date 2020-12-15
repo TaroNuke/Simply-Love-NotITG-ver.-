@@ -190,32 +190,33 @@ end
 
 function GetPlayerPercentage( pn )
 
+	if GAMESTATE:IsPlayerEnabled(pn) then
 
-if GAMESTATE:IsPlayerEnabled(pn) then
+		local NotesHitScore = 0;
+		local NotesPossibleScore = 0;
+		local PlayerPercentage = 0;
+		local Selection = GAMESTATE:GetCurrentSteps(pn);
+		local TotalSteps = tonumber( Radar( Selection:GetRadarValues(),6 ) );
+		local TotalHolds = tonumber( Radar( Selection:GetRadarValues(),2) );
+		local TotalRolls = tonumber( Radar( Selection:GetRadarValues(),5 ) );
+		
+		NotesPossibleScore = (TotalSteps * 5 ) + ((TotalHolds + TotalRolls) * 5 );
+		NotesHitScore = 	(GetTapScore(pn, TNS_MARVELOUS) * 5 ) + 
+					(GetTapScore(pn, TNS_PERFECT) * 4 ) +
+					(GetTapScore(pn, TNS_GREAT) * 2 ) +
+					(GetTapScore(pn, TNS_BOO) * -6 ) +
+					(GetTapScore(pn, TNS_MISS) * -12 ) +
+					(GetHoldScore(pn, HNS_OK) * 5 ) +
+					(GetTapScore(pn, TNS_HITMINE) * -6 )
+					
 
-	local NotesHitScore = 0;
-	local NotesPossibleScore = 0;
-	local PlayerPercentage = 0;
-	local Selection = GAMESTATE:GetCurrentSteps(pn);
-	local TotalSteps = tonumber( Radar( Selection:GetRadarValues(),6 ) );
-	local TotalHolds = tonumber( Radar( Selection:GetRadarValues(),2) );
-	local TotalRolls = tonumber( Radar( Selection:GetRadarValues(),5 ) );
+					
+		PlayerPercentage = NotesHitScore/NotesPossibleScore *100
+
+		--return "Song Completion Percentage: " .. string.sub(string.format("%.5f", PlayerPercentage),1,5) .. "%"
+		return PlayerPercentage
 	
-	NotesPossibleScore = (TotalSteps * 5 ) + ((TotalHolds + TotalRolls) * 5 );
-	NotesHitScore = 	(GetTapScore(pn, TNS_MARVELOUS) * 5 ) + 
-				(GetTapScore(pn, TNS_PERFECT) * 4 ) +
-				(GetTapScore(pn, TNS_GREAT) * 2 ) +
-				(GetTapScore(pn, TNS_BOO) * -6 ) +
-				(GetTapScore(pn, TNS_MISS) * -12 ) +
-				(GetHoldScore(pn, HNS_OK) * 5 ) +
-				(GetTapScore(pn, TNS_HITMINE) * -6 )
-				
-
-				
-	PlayerPercentage = NotesHitScore/NotesPossibleScore *100
-
-	--return "Song Completion Percentage: " .. string.sub(string.format("%.5f", PlayerPercentage),1,5) .. "%"
-	return PlayerPercentage end	
+	end	
 end
 
 function CompareScoresRange( difference, range )

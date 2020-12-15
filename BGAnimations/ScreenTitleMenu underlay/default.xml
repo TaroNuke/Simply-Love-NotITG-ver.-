@@ -1,4 +1,18 @@
 <ActorFrame><children>
+	
+	<ActorFrame StepP1Action1PressMessageCommand="%function(self) SCREENMAN:SetNewScreen('ScreenTestReflex') end" />
+	<ActorFrame StepP1Action2PressMessageCommand="%function(self) SCREENMAN:SetNewScreen('ScreenTestReflex2') end" />
+	<ActorFrame StepP1Action3PressMessageCommand="%function(self) SCREENMAN:SetNewScreen('ScreenTestReflex3') end" />
+	
+	<Layer Type="Quad"
+		OnCommand="%function(self)
+			hardware_bullshit = false
+			for i=0,3 do
+				reflex_clearLights(0,i)
+			end
+		end"
+	/>
+	
 	<ActorFrame InitCommand="%function() Profile(0).Love.Dir = ThemeName() end" />
 	<Layer File="@VocalizePath()..'Vocalize.xml'" />
 	<ActorFrame InitCommand="%function() if file then file() end end" />

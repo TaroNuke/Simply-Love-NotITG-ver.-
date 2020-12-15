@@ -1,4 +1,29 @@
-<ActorFrame> <children>
+<ActorFrame InitCommand="%function(self)
+	
+	function GetTapScore(pn, category)
+		local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+		return pss:GetTapNoteScores(category)
+	end
+
+	function GetHoldScore(pn, category)
+		local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+		return pss:GetHoldNoteScores(category)
+	end
+	
+end"> <children>
+	
+	<ActorFrame StepP1Action1PressMessageCommand="%function(self) SCREENMAN:SetNewScreen('ScreenTestReflex') end" />
+	<ActorFrame StepP1Action2PressMessageCommand="%function(self) SCREENMAN:SetNewScreen('ScreenTestReflex2') end" />
+	<ActorFrame StepP1Action3PressMessageCommand="%function(self) SCREENMAN:SetNewScreen('ScreenTestReflex3') end" />
+	
+	<Layer Type="Quad"
+		OnCommand="%function(self)
+			for i=0,3 do
+				reflex_clearLights(0,i)
+			end
+		end"
+	/>
+	
 	<Layer
 		Type="ActorFrame"
 		Condition="GAMESTATE:IsPlayerEnabled(PLAYER_1)"
@@ -11,7 +36,7 @@
 		Condition="GAMESTATE:IsPlayerEnabled(PLAYER_2)"
 		InitCommand="x,276;y,366"
 	><children>
-
+	
 
 	</children></Layer>
 	<Layer 
@@ -81,7 +106,56 @@
 			Text="???" 
 			OnCommand="x,25;y,-12;zoom,0.4;shadowlength,0;horizalign,left;maxwidth,240;queuecommand,Set" 
 			SetCommand="%function(self) self:settext(GetStepsDescriptionText(PLAYER_1)) end" 
-		/>		
+		/>
+		
+		<Layer
+			Condition="hardware_bullshit"
+			Type="Quad"
+			OnCommand="x,-40+125;y,92;zoomto,90,24;diffuse,#1E282F"
+		/>
+		
+		<Layer 
+			Condition="hardware_bullshit"
+			Font="_wendy small"
+			Text="" 
+			OnCommand="x,-75+125;y,92;zoom,0.35;shadowlength,0;horizalign,left;maxwidth,240;queuecommand,Set" 
+			SetCommand="%function(self) self:settext((hbtengine_holds[1][1])..'/'..(hbtengine_holds[1][1]+hbtengine_holds[1][2]+hbtengine_holds[1][3])) end" 
+		/>
+	
+		<Layer 
+			Font="_misobold small"
+			Text="100.00%" 
+			OnCommand="x,55;y,-30;zoom,0.6;shadowlength,0;horizalign,right;maxwidth,240;queuecommand,Set" 
+			SetCommand="%function(self)
+				
+				local pn = 0
+
+				if GAMESTATE:IsPlayerEnabled(pn) then
+
+					local NotesHitScore = 0;
+					local NotesPossibleScore = 0;
+					local PlayerPercentageUKSRT = 0;
+					local Selection = GAMESTATE:GetCurrentSteps(pn);
+					
+					NotesPossibleScore = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetPossibleDancePoints()
+					NotesHitScore = 	(GetTapScore(pn, TNS_MARVELOUS) * 5 ) + 
+								(GetTapScore(pn, TNS_PERFECT) * 4 ) +
+								(GetTapScore(pn, TNS_GREAT) * 2 ) +
+								(GetTapScore(pn, TNS_BOO) * -2 ) +
+								(GetTapScore(pn, TNS_MISS) * -4 ) +
+								(GetHoldScore(pn, HNS_OK) * 5 ) +
+								(GetTapScore(pn, TNS_HITMINE) * -8 )
+								
+
+								
+					PlayerPercentageUKSRT = NotesHitScore/NotesPossibleScore *100
+
+					self:settext( string.format('%.2f',PlayerPercentageUKSRT)..'%' )
+				
+				end
+				
+			end" 
+		/>
 	</children> </Layer>
 
 	<Layer Type="ActorFrame"
@@ -119,6 +193,53 @@
 			Text="???" 
 			OnCommand="x,-25;y,-12;zoom,0.4;shadowlength,0;horizalign,right;maxwidth,240;queuecommand,Set" 
 			SetCommand="%function(self) self:settext(GetStepsDescriptionText(PLAYER_2)) end" 
+		/>
+		
+		<Layer
+			Condition="hardware_bullshit"
+			Type="Quad"
+			OnCommand="x,-40;y,92;zoomto,90,24;diffuse,#1E282F"
+		/>
+		
+		<Layer 
+			Condition="hardware_bullshit"
+			Font="_wendy small"
+			Text="" 
+			OnCommand="x,-75;y,92;zoom,0.35;shadowlength,0;horizalign,left;maxwidth,240;queuecommand,Set" 
+			SetCommand="%function(self) self:settext((hbtengine_holds[2][1])..'/'..(hbtengine_holds[2][1]+hbtengine_holds[2][2]+hbtengine_holds[2][3])) end" 
+		/>
+	
+		<Layer 
+			Font="_misobold small"
+			Text="100.00%" 
+			OnCommand="x,-55;y,-30;zoom,0.6;shadowlength,0;horizalign,left;maxwidth,240;queuecommand,Set" 
+			SetCommand="%function(self)
+				
+				local pn = 1
+
+				if GAMESTATE:IsPlayerEnabled(pn) then
+
+					local NotesHitScore = 0;
+					local NotesPossibleScore = 0;
+					local PlayerPercentageUKSRT = 0;
+					local Selection = GAMESTATE:GetCurrentSteps(pn);
+					
+					NotesPossibleScore = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetPossibleDancePoints()
+					NotesHitScore = 	(GetTapScore(pn, TNS_MARVELOUS) * 5 ) + 
+								(GetTapScore(pn, TNS_PERFECT) * 4 ) +
+								(GetTapScore(pn, TNS_GREAT) * 2 ) +
+								(GetTapScore(pn, TNS_BOO) * -2 ) +
+								(GetTapScore(pn, TNS_MISS) * -4 ) +
+								(GetHoldScore(pn, HNS_OK) * 5 ) +
+								(GetTapScore(pn, TNS_HITMINE) * -8 )
+								
+					PlayerPercentageUKSRT = NotesHitScore/NotesPossibleScore *100
+
+					self:settext( string.format('%.2f',PlayerPercentageUKSRT)..'%' )
+				
+				end
+				
+			end" 
 		/>
 	</children> </Layer>
 	

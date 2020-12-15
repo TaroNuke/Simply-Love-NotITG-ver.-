@@ -833,7 +833,7 @@ modRate = 1
 ModsPlayer = {}
 ModsMaster = {}
 ModsMaster.Perspective =	{ modlist = {'Overhead','Hallway','Distant','Incoming','Space'}, Select = 1 }
-ModsMaster.NoteSkin =		{ modlist = {'Scalable','Metal','Cel','Flat','Vivid','Cyber','DivinEntity','couples'}, Select = 1 }
+ModsMaster.NoteSkin =		{ modlist = {'Scalable','Metal','Cel','supernova_note+','Vivid','Cyber','DivinEntity','couples'}, Select = 1 }
 ModsMaster.Turn =			{ modlist = {'Mirror','SoftShuffle','SmartBlender','Blender',}, default = 'no mirror,no left,no right,no shuffle,no supershuffle,no softshuffle, no spookyshuffle, no smartblender', mods = {'mirror','softshuffle','smartblender','supershuffle'} }
 ModsMaster.Hide = 			{ modlist = {'Hide Targets','Hide Judgments','Hide Background'}, default ='no dark,no blind,no cover', mods = {'dark','blind','cover'} }
 ModsMaster.Accel =			{ modlist = {'Accel','Decel','Wave','Boomerang','Expand','Bump'}, default = 'no boost,no brake,no wave,no boomerang,no expand,no bumpy', mods = {'Boost','Brake','Wave','Boomerang','Expand','Bumpy'} }
