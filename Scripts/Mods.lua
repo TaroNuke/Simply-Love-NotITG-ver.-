@@ -114,7 +114,7 @@
 -- These will be the option rows available on the [nth] option screen. The 'NextScreen' row will be automatically added as long as there is more than 1 option screen.
 	playerOptions = {}
 	playerOptions[1] = { 'SpeedType','SpeedNumber','Mini','Perspective','NoteSkin','Turn','LifeBar','Compare','Rate' }
-	playerOptions[2] = { 'Turn','Accel','Scroll','Effect','Appearance','Handicap','InsertTaps','InsertOther','Hide','Ghost' }
+	playerOptions[2] = { 'MetaMods1','MetaMods2','MetaMods3','Turn','Accel','Scroll','Effect','Appearance','Handicap','InsertTaps','InsertOther','Hide','Ghost' }
 	playerOptions.Edit = { 'SpeedType','SpeedNumber','Mini','Perspective','NoteSkin','Turn' }
 	ShowAllInRow = false
 
@@ -729,9 +729,50 @@ end
 -- BPM format and display functions
 -------------------------------------
 
+-- Intended to be used from ScreenEvaluation.
+-- It will return a human-readable string consists of metamods and rate mods currently being used.
+-- If BitmapText is given, this function will set the string to the BitmapText.
+function SongOptionsLabel(self)
+	local t = {}
+
+	local bpm = RateBPMlabel()
+	if bpm ~= '' then table.insert(t, bpm) end
+
+	local meta = MetaModsText()
+	if meta ~= '' then table.insert(t, meta) end
+
+	s = table.concat(t, ', ')
+
+	if self then
+		self:settext(s)
+	else
+		return s
+	end
+end
+
 function BPMlabelRate(self)	s = AdjustedBPM() .. ' BPM ' .. RateModAppend() if self then self:settext(s) else return s end end
 function BPMandRate(self) s = AdjustedBPM() .. ' ' .. RateModAppend() if self then self:settext(s) else return s end end
 function RateBPMlabel(self) s = RateModText() if s ~= '' then s = s .. ' (' .. AdjustedBPM() .. ' BPM)' end	if self then self:settext(s) else return s end end 
+
+function MetaModsText(self)
+	mods = {}
+
+	for _, metaModsRow in ipairs(metaModsRows) do
+		for i, v in ipairs(metaModsRow.mods) do
+			if CheckMod(0, v) then
+				table.insert(mods, metaModsRow.modlist[i])
+			end
+		end
+	end
+
+	s = table.concat(mods, ', ')
+
+	if self then
+		self:settext(s)
+	else
+		return s
+	end
+end
 
 function RateModText(self) s = '' if modRate ~= 1 then s = string.format('%01.1f',modRate) .. 'x Music Rate' end if self then self:settext(s) else return s end end
 function RateModAppend(self) s = RateModText() if s ~= '' then s = '(' .. s .. ')' end if self then self:settext(s) else return s end end
@@ -773,6 +814,24 @@ end
 
 baseSpeed = { "C700", "C800", "C900", "C1000", "C1100", "C1200", "C1300", "C1400", "1x", "2x", "3x", "4x", "5x", "6x", "7x", "C400", "C500", "C600" }
 extraSpeed = { "0", "+C10", "+C20", "+C30", "+C40", "+C50", "+C60", "+C70", "+C80", "+C90", "+.75x", "+.50x", "+.25x" }
+
+metaModsRows = {
+	{
+		modlist = {'MetaFlip', 'MetaInvert', 'MetaVideogames', 'MetaMonocolumn'},
+		default = 'no metaflip, no metainvert, no metavideogames, no metamonocolumn',
+		mods = {'metaflip', 'metainvert', 'metavideogames', 'metamonocolumn'}
+	},
+	{
+		modlist = {'MetaReverse', 'MetaDizzy', 'MetaOrient', 'MetaBrake'},
+		default = 'no metareverse, no metadizzy, no metaorient, no metabrake',
+		mods = {'metareverse', 'metadizzy', 'metaorient', 'metabrake'}
+	},
+	{
+		modlist = {'MetaHidden', '50% MetaStealth'},
+		default = 'no metahidden, no metastealth',
+		mods = {'metahidden', '50% metastealth'}
+	}
+}
 
 rateMods = { "1.0x", "1.1x", "1.2x", "1.3x", "1.4x", "1.5x", "1.6x", "1.7x", "1.8x", "1.9x", "2.0x" }
 rateModsEdit = { "1.0x", "1.1x", "1.2x", "1.3x", "1.4x", "1.5x", "1.6x", "1.7x", "1.8x", "1.9x", "2.0x", "0.3x", "0.4x", "0.5x", "0.6x", "0.7x", "0.8x", "0.9x" }
@@ -816,6 +875,9 @@ ModsMaster.Tipsy =			{ float = true }
 ModsMaster.Beat =			{ float = true }
 ModsMaster.Mini =			{ float = true }
 
+ModsMaster.MetaMods1 = 		{ fnctn = 'MetaMods1' }
+ModsMaster.MetaMods2 = 		{ fnctn = 'MetaMods2' }
+ModsMaster.MetaMods3 = 		{ fnctn = 'MetaMods3' }
 ModsMaster.SpeedType =		{ fnctn = 'SpeedType' }
 ModsMaster.SpeedNumber =	{ fnctn = 'SpeedNumber' }
 ModsMaster.Next =			{ fnctn = 'NextScreenOption' }
@@ -996,6 +1058,45 @@ do
 		end
 		return t
 	end
+end
+
+function MetaMods( s, iRow )
+	local metaModsRow = metaModsRows[ iRow ]
+	local t = OptionRowBase('MetaMods' .. iRow, metaModsRow.modlist)
+
+	t.SelectType = 'SelectMultiple'
+	t.OneChoiceForAllPlayers = true
+
+	t.LoadSelections = function(self, list, pn)
+		for i, v in ipairs(metaModsRow.mods) do
+			list[i] = CheckMod(pn, v)
+		end
+	end
+
+	t.SaveSelections = function(self, list, pn)
+		if pn ~= 0 then return end -- in OneChoiceForAllPlayers row, list in other players than player 1 is not valid
+
+		ApplyMod(metaModsRow.default, pn+1)
+		for i, v in ipairs(list) do
+			if v then
+				ApplyMod(metaModsRow.mods[i], pn+1)
+			end
+		end
+	end
+
+	return t
+end
+
+function MetaMods1( s )
+	return MetaMods( s, 1 )
+end
+
+function MetaMods2( s )
+	return MetaMods( s, 2 )
+end
+
+function MetaMods3( s )
+	return MetaMods( s, 3 )
 end
 
 function NextScreenOption()
