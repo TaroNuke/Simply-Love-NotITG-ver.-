@@ -114,7 +114,7 @@
 -- These will be the option rows available on the [nth] option screen. The 'NextScreen' row will be automatically added as long as there is more than 1 option screen.
 	playerOptions = {}
 	playerOptions[1] = { 'SpeedType','SpeedNumber','Mini','Perspective','NoteSkin','Turn','LifeBar','Compare','Rate' }
-	playerOptions[2] = { 'MetaMods1','MetaMods2','Turn','Accel','Scroll','Effect','Appearance','Handicap','InsertTaps','InsertOther','Hide','Ghost' }
+	playerOptions[2] = { 'MetaMods1','MetaMods2','MetaMods3','Turn','Accel','Scroll','Effect','Appearance','Handicap','InsertTaps','InsertOther','Hide','Ghost' }
 	playerOptions.Edit = { 'SpeedType','SpeedNumber','Mini','Perspective','NoteSkin','Turn' }
 	ShowAllInRow = false
 
@@ -817,14 +817,19 @@ extraSpeed = { "0", "+C10", "+C20", "+C30", "+C40", "+C50", "+C60", "+C70", "+C8
 
 metaModsRows = {
 	{
-		modlist = {'MetaFlip', 'MetaInvert', 'MetaVideogames', 'MetaMonocolumn', 'MetaReverse'},
-		default = 'no metaflip, no metainvert, no metavideogames, no metamonocolumn, no metareverse',
-		mods = {'metaflip', 'metainvert', 'metavideogames', 'metamonocolumn', 'metareverse'}
+		modlist = {'MetaFlip', 'MetaInvert', 'MetaVideogames', 'MetaMonocolumn'},
+		default = 'no metaflip, no metainvert, no metavideogames, no metamonocolumn',
+		mods = {'metaflip', 'metainvert', 'metavideogames', 'metamonocolumn'}
 	},
 	{
-		modlist = {'MetaDizzy', 'MetaOrient', 'MetaBrake', 'MetaHidden', '50% MetaStealth'},
-		default = 'no metadizzy, no metaorient, no metabrake, no metahidden, no metastealth',
-		mods = {'metadizzy', 'metaorient', 'metabrake', 'metahidden', '50% metastealth'}
+		modlist = {'MetaReverse', 'MetaDizzy', 'MetaOrient', 'MetaBrake'},
+		default = 'no metareverse, no metadizzy, no metaorient, no metabrake',
+		mods = {'metareverse', 'metadizzy', 'metaorient', 'metabrake'}
+	},
+	{
+		modlist = {'MetaHidden', '50% MetaStealth'},
+		default = 'no metahidden, no metastealth',
+		mods = {'metahidden', '50% metastealth'}
 	}
 }
 
@@ -872,6 +877,7 @@ ModsMaster.Mini =			{ float = true }
 
 ModsMaster.MetaMods1 = 		{ fnctn = 'MetaMods1' }
 ModsMaster.MetaMods2 = 		{ fnctn = 'MetaMods2' }
+ModsMaster.MetaMods3 = 		{ fnctn = 'MetaMods3' }
 ModsMaster.SpeedType =		{ fnctn = 'SpeedType' }
 ModsMaster.SpeedNumber =	{ fnctn = 'SpeedNumber' }
 ModsMaster.Next =			{ fnctn = 'NextScreenOption' }
@@ -1087,6 +1093,10 @@ end
 
 function MetaMods2( s )
 	return MetaMods( s, 2 )
+end
+
+function MetaMods3( s )
+	return MetaMods( s, 3 )
 end
 
 function NextScreenOption()
