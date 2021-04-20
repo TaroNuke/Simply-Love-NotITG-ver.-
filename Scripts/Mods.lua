@@ -729,6 +729,9 @@ end
 -- BPM format and display functions
 -------------------------------------
 
+-- Intended to be used from ScreenEvaluation.
+-- It will return a human-readable string consists of metamods and rate mods currently being used.
+-- If BitmapText is given, this function will set the string to the BitmapText.
 function SongOptionsLabel(self)
 	local t = {}
 
