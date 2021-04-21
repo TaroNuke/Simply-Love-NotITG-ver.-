@@ -15,7 +15,7 @@ screenList = { Gameplay = 'ScreenStage' , SelectMusic = 'ScreenSelectMusic' , Pl
 
 playerOptions[1] = { 'SpeedType','SpeedNumber','Mini','Perspective','NoteSkin','Turn','JudgmentFont','Voice','Rate' }
 
-if FUCK_EXE and GAMESTATE:GetVersionDate() >= 20210420 then -- v4.2.0
+if FUCK_EXE and tonumber(GAMESTATE:GetVersionDate()) >= 20210420 then -- v4.2.0
 	playerOptions[2] = { 'MetaMods1','MetaMods2','MetaMods3','Accel','Scroll','Effect','Appearance','Handicap','InsertTaps','InsertOther','Hide','Ghost','Compare','Measure','LifeBar' }
 else
 	playerOptions[2] = { 'Accel','Scroll','Effect','Appearance','Handicap','InsertTaps','InsertOther','Hide','Ghost','Compare','Measure','LifeBar' }
