@@ -94,6 +94,20 @@
 
 -- Judgment Font List
 	judgmentFontList = { 'Default' , 'Love' , 'Tactics', 'Chromatic', 'Deco', 'GrooveNights', 'ITG2' }
+	if FUCK_EXE then -- Auto load on NotITG
+		local list = { 'Default' }
+		
+		local _dir = string.sub(THEME:GetPath(2,'','_blank.png'),9)
+		dir = string.sub(_dir,1,string.find(_dir,'/')-1)
+		for _,v in pairs({ GAMESTATE:GetFileStructure('Themes/'.. dir ..'/Graphics/_Judgments/') }) do
+			local t, _, name = string.find(v, "(.+) %dx%d")
+			if t then table.insert( list, name )
+			else print('[Judgment] Error in loading ' .. v)
+			end
+		end
+
+		judgmentFontList = list
+	end
 
 -- Used with ThemeFiles function
 	themeDir = '_ThemeFiles'
@@ -845,7 +859,7 @@ modRate = 1
 ModsPlayer = {}
 ModsMaster = {}
 ModsMaster.Perspective =	{ modlist = {'Overhead','Hallway','Distant','Incoming','Space'}, Select = 1 }
-ModsMaster.NoteSkin =		{ modlist = {'Scalable','Metal','Cel','Flat','Vivid','Cyber','DivinEntity','couples'}, Select = 1 }
+ModsMaster.NoteSkin =		{ modlist = NOTESKIN:GetNoteSkinNames(), Select = 1 }
 ModsMaster.Turn =			{ modlist = {'Mirror','SoftShuffle','SmartBlender','Blender',}, default = 'no mirror,no left,no right,no shuffle,no supershuffle,no softshuffle, no spookyshuffle, no smartblender', mods = {'mirror','softshuffle','smartblender','supershuffle'} }
 ModsMaster.Hide = 			{ modlist = {'Hide Targets','Hide Judgments','Hide Background'}, default ='no dark,no blind,no cover', mods = {'dark','blind','cover'} }
 ModsMaster.Accel =			{ modlist = {'Accel','Decel','Wave','Boomerang','Expand','Bump'}, default = 'no boost,no brake,no wave,no boomerang,no expand,no bumpy', mods = {'Boost','Brake','Wave','Boomerang','Expand','Bumpy'} }
