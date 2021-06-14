@@ -97,8 +97,8 @@
 	if FUCK_EXE then -- Auto load on NotITG
 		local list = { 'Default' }
 		
-		local _dir = string.sub(THEME:GetPath(2,'','_blank.png'),9)
-		dir = string.sub(_dir,1,string.find(_dir,'/')-1)
+		local dir = string.sub(THEME:GetPath(2,'','_blank.png'),9)
+		dir = string.sub(dir,1,string.find(dir,'/')-1)
 		for _,v in pairs({ GAMESTATE:GetFileStructure('Themes/'.. dir ..'/Graphics/_Judgments/') }) do
 			local t, _, name = string.find(v, "(.+) %dx%d")
 			if t then table.insert( list, name )
