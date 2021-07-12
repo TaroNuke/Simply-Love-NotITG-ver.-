@@ -1,0 +1,12 @@
+<Layer Type="ActorFrame"
+    Condition="FUCK_EXE"
+    OverlayReadyMessageCommand="%function( self )
+        local sprite = self( 'Sprite' )
+        stitch( 'lua.colorsim' ).initSprite( sprite )
+    end"
+    OffCommand="%function( self )
+        stitch( 'lua.colorsim' ).uninitSprite()
+    end"
+><children>
+    <Layer Type="Sprite" Name="Sprite" Texture="white" Frag="shader.frag" />
+</children></Layer>
