@@ -41,15 +41,49 @@
 			return starttime + GAMESTATE:GetCurrentSong():GetElapsedTimeFromBeat(beat)
 		end
 	end
+	function oplot_cumulativeTimeTime(tim,song)
+		local starttime = 0
+		if GAMESTATE:IsCourseMode() then
+			if song > 0 then
+				for i=1,song do
+					starttime = starttime+oplot_songs[i]:StepsLengthSeconds()
+				end
+			end
+			return starttime + tim
+		else
+			return starttime + tim
+		end
+	end
 	
-	oplot_spellCards = nil
+	oplot_spellCards = {nil,nil}
 	
 	if not GAMESTATE:IsCourseMode() then
 		local s = GAMESTATE:GetCurrentSong()
-		oplot_spellCards = s:GetSpellCards()
+		oplot_spellCards = {s:GetSpellCards(),s:GetSpellCards()}
 		
-		if table.getn(oplot_spellCards) == 0 then
-			oplot_spellCards = nil
+		for pn=1,2 do
+			if table.getn(oplot_spellCards[pn]) == 0 then
+				oplot_spellCards[pn] = nil
+			end
+		end
+		
+	else
+		for pn=1,2 do
+			if GAMESTATE:IsPlayerEnabled(pn-1) then
+				local starttime = 0
+				local steps = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn-1):GetPossibleSteps()
+				oplot_spellCards[pn] = {}
+				for i=1,table.getn(oplot_songs) do
+					table.insert(oplot_spellCards[pn],{
+						StartBeat = starttime,
+						EndBeat = starttime+oplot_songs[i]:StepsLengthSeconds(),
+						Color = {1,1,1,1},
+						Name = oplot_songs[i]:GetDisplayMainTitle(),
+						Difficulty = steps[i]:GetMeter()
+					})
+					starttime = starttime+oplot_songs[i]:StepsLengthSeconds()
+				end
+			end
 		end
 	end
 	
@@ -71,7 +105,26 @@
 		if not e then e = oplot_finalSecond end
 		return math.clamp(perc,0,1)*w - w/2 + xo
 	end
-	function oplot_fitXTime(t)	-- Scale time values to fit within plot width.
+	
+	function oplot_fitXTime(beat,song,w,xo,s,e)	-- Scale time values to fit within plot width.
+		if not w then w = oplot_plotWidth end
+		if not xo then xo = 0 end
+		local perc = 0
+		if s and e then
+			local bt = oplot_cumulativeTime(beat,song)
+			local st = s
+			local et = e
+			perc = (bt-st)/(et-st)
+		else
+			perc = oplot_cumulativeTime(beat,song)/oplot_finalSecond
+		end
+		
+		if not s then s = 0 end
+		if not e then e = oplot_finalSecond end
+		return math.clamp(perc,0,1)*w - w/2 + xo
+	end
+	
+	function oplot_fitXTimeBar(t)	-- Scale time values to fit within plot width.
 		return t/oplot_finalSecond*oplot_plotWidth - oplot_plotWidth/2
 	end
 
@@ -176,7 +229,7 @@ end"><children>
 	end"
 	StepP1UpPressMessageCommand="%function(self)
 		local pn = 1
-		if oplot_spellCards then
+		if oplot_spellCards[pn] then
 			
 			curcard[pn] = curcard[pn]-1
 			
@@ -187,14 +240,14 @@ end"><children>
 			end
 			
 			if curcard[pn] < 0 then
-				curcard[pn] = table.getn(oplot_spellCards)
+				curcard[pn] = table.getn(oplot_spellCards[pn])
 			end
 			MESSAGEMAN:Broadcast( 'UpdateSpellDisplayP1' );
 		end
 	end"
 	StepP1DownPressMessageCommand="%function(self)
 		local pn = 1
-		if oplot_spellCards then
+		if oplot_spellCards[pn] then
 		
 			curcard[pn] = curcard[pn]+1
 			
@@ -203,7 +256,7 @@ end"><children>
 				curcard[pn] = 0
 				oplot_hidden[pn] = -1
 			end
-			if curcard[pn] > table.getn(oplot_spellCards) then
+			if curcard[pn] > table.getn(oplot_spellCards[pn]) then
 				curcard[pn] = 0
 			end
 			MESSAGEMAN:Broadcast( 'UpdateSpellDisplayP1' );
@@ -309,7 +362,7 @@ end"><children>
 				
 				for i=1, table.getn(lab) do 
 					
-					local x = oplot_fitXTime(oplot_cumulativeTime(0,i-1))
+					local x = oplot_fitXTimeBar(oplot_cumulativeTime(0,i-1))
 					local y1 = oplot_fitY(oplot_maxOffset+4)
 					local y2 = oplot_fitY(-oplot_maxOffset-4)
 					
@@ -376,7 +429,7 @@ end"><children>
 				self:x(-152+31)
 				self:y(0)
 				self:hidden(0)
-				local color = oplot_spellCards[ curcard[pn] ].Color;
+				local color = oplot_spellCards[pn][ curcard[pn] ].Color;
 				self:diffuse(color[1]*0.3,color[2]*0.3,color[3]*0.3,1)
 			end
 		end"
@@ -417,7 +470,7 @@ end"><children>
 				self:hidden(1)
 			else
 				self:x(-150)
-				self:y(-30 - 88 + 8 + 160*((curcard[pn]-1)/(table.getn(oplot_spellCards)-1)) )
+				self:y(-30 - 88 + 8 + 160*((curcard[pn]-1)/(table.getn(oplot_spellCards[pn])-1)) )
 				self:zoomto(6,16)
 				self:hidden(0)
 			end
@@ -457,17 +510,20 @@ end"><children>
 			
 			local w, xo, s, e = nil, nil, nil, nil
 				
-			if not GAMESTATE:IsCourseMode() and curcard[pn] > 0 then
+			if curcard[pn] > 0 then
 				w = oplot_plotWidth-80
 				xo = 30
-				s = oplot_spellCards[ curcard[pn] ].StartBeat
-				e = oplot_spellCards[ curcard[pn] ].EndBeat
+				s = oplot_spellCards[pn][ curcard[pn] ].StartBeat
+				e = oplot_spellCards[pn][ curcard[pn] ].EndBeat
 			end
 			
 			local vert = 0;
 			for i=1,table.getn(nrt) do
 			
-				if s and e and (nrt[i]/48 < s or nrt[i]/48 > e) then
+				--Trace('note '..i..' '..tostring(s)..' '..tostring(e))
+			
+				--if s and e and ((not GAMESTATE:IsCourseMode() nrt[i]/48 < s or nrt[i]/48 > e) or (not GAMESTATE:IsCourseMode() nrt[i]/48 < s or nrt[i]/48 > e)) then
+				if s and e and ((not GAMESTATE:IsCourseMode() and (nrt[i]/48 < s or nrt[i]/48 > e)) or (GAMESTATE:IsCourseMode() and nrs[i]+1 ~= curcard[pn])) then
 					--continue, but it's dealing with verts, so we can't...
 					
 					for j=0,3 do
@@ -477,15 +533,20 @@ end"><children>
 					
 					vert = vert+4
 					
+					--Trace('note '..i..' is in SONG '..nrs[i]..' beat '..(nrt[i]/48)..' (SKIPPED)')
+					
 				else
-			
-					local x = oplot_fitX(nrt[i]/48,nrs[i], w, xo, s, e)
+				
+					--TODO: FIX TIME????
+					local x = GAMESTATE:IsCourseMode() and oplot_fitXTime(nrt[i]/48,nrs[i], w, xo, s, e) or oplot_fitX(nrt[i]/48,nrs[i], w, xo, s, e)
 					local y = oplot_fitY(oplot_maxOffset+4)
 					if dvt[i] ~= 1000 then y = oplot_fitY(dvt[i]) end
 					
 					if math.abs(y) > oplot_plotHeight/2 then
 						y = oplot_fitY(oplot_maxOffset+4)
 					end
+					
+					--Trace('note '..i..' is in SONG '..nrs[i]..' beat '..nrt[i]/48)
 					
 					self:SetVertexPosition(vert+0,x-oplot_dotDims/2,y-oplot_dotDims/2,0)
 					self:SetVertexPosition(vert+1,x+oplot_dotDims/2,y-oplot_dotDims/2,0)
@@ -496,7 +557,7 @@ end"><children>
 						self:SetVertexColor(vert+j,offsetToJudgeColor(dvt[i]/1000))
 					end
 					
-					if not GAMESTATE:IsCourseMode() and curcard[pn] > 0 then
+					if curcard[pn] > 0 then
 						local jw = offsetToJudgeWindow(dvt[i]/1000)
 						tns[jw] = tns[jw]+1
 					end
@@ -507,42 +568,44 @@ end"><children>
 				
 			end
 			
-			for i=1,table.getn(mrt) do
-			
-				if s and e and (mrt[i]/48 < s or mrt[i]/48 > e) or GAMESTATE:IsCourseMode() then
-					--continue, but it's dealing with verts, so we can't...
-					
-					for j=0,3 do
-						self:SetVertexColor(vert+j,0,0,0,0)
-						self:SetVertexPosition(vert+j,-9999,0,0)
+			if not GAMESTATE:IsCourseMode() then
+				for i=1,table.getn(mrt) do
+				
+					if s and e and (mrt[i]/48 < s or mrt[i]/48 > e) then
+						--continue, but it's dealing with verts, so we can't...
+						
+						for j=0,3 do
+							self:SetVertexColor(vert+j,0,0,0,0)
+							self:SetVertexPosition(vert+j,-9999,0,0)
+						end
+						
+						vert = vert+4
+						
+					else
+						
+						local x = GAMESTATE:IsCourseMode() and oplot_fitXTime(mrt[i]/48,1, w, xo, s, e) or oplot_fitX(mrt[i]/48,1, w, xo, s, e)
+						local y = oplot_fitY(-oplot_maxOffset+4)
+						
+						self:SetVertexPosition(vert+0,x-oplot_dotDims/2,y-oplot_dotDims/2,0)
+						self:SetVertexPosition(vert+1,x+oplot_dotDims/2,y-oplot_dotDims/2,0)
+						self:SetVertexPosition(vert+2,x+oplot_dotDims/2,y+oplot_dotDims/2,0)
+						self:SetVertexPosition(vert+3,x-oplot_dotDims/2,y+oplot_dotDims/2,0)
+						
+						for j=0,3 do
+							self:SetVertexColor(vert+j,.6,.6,.6,1)
+						end
+						
+						vert = vert+4
+						
 					end
-					
-					vert = vert+4
-					
-				else
-			
-					local x = oplot_fitX(mrt[i]/48,1, w, xo, s, e)
-					local y = oplot_fitY(-oplot_maxOffset+4)
-					
-					self:SetVertexPosition(vert+0,x-oplot_dotDims/2,y-oplot_dotDims/2,0)
-					self:SetVertexPosition(vert+1,x+oplot_dotDims/2,y-oplot_dotDims/2,0)
-					self:SetVertexPosition(vert+2,x+oplot_dotDims/2,y+oplot_dotDims/2,0)
-					self:SetVertexPosition(vert+3,x-oplot_dotDims/2,y+oplot_dotDims/2,0)
-					
-					for j=0,3 do
-						self:SetVertexColor(vert+j,.6,.6,.6,1)
-					end
-					
-					vert = vert+4
 					
 				end
-				
 			end
 			
-			if not GAMESTATE:IsCourseMode() then
+			if true then
 				
 				if curcard[pn]>0 then
-					local color = oplot_spellCards[ curcard[pn] ].Color
+					local color = oplot_spellCards[pn][ curcard[pn] ].Color
 					if color[1] == 0 and color[2] == 0 and color[3] == 0 then color = {1,1,1,1} end
 				
 					_G['oplot_s'..pn..'_title']:horizalign('left')
@@ -552,7 +615,7 @@ end"><children>
 					_G['oplot_s'..pn..'_title']:diffuse( color[1], color[2], color[3], 1 )
 					_G['oplot_s'..pn..'_title']:zoom(.75)
 					_G['oplot_s'..pn..'_title']:maxwidth(294/.75)
-					_G['oplot_s'..pn..'_title']:settext( oplot_spellCards[ curcard[pn] ].Name )
+					_G['oplot_s'..pn..'_title']:settext( oplot_spellCards[pn][ curcard[pn] ].Name )
 					
 					if tonumber(GAMESTATE:GetVersionDate()) >= 20181211 then
 						_G['oplot_s'..pn..'_diff']:horizalign('left')
@@ -562,7 +625,7 @@ end"><children>
 						_G['oplot_s'..pn..'_diff']:diffuse( (color[1]+2)/3, (color[2]+2)/3, (color[3]+2)/3, 1 )
 						_G['oplot_s'..pn..'_diff']:zoom(.6)
 						_G['oplot_s'..pn..'_diff']:maxwidth(294/.6)
-						_G['oplot_s'..pn..'_diff']:settext( 'Difficulty: '..oplot_spellCards[ curcard[pn] ].Difficulty )
+						_G['oplot_s'..pn..'_diff']:settext( 'Difficulty: '..oplot_spellCards[pn][ curcard[pn] ].Difficulty )
 					end
 					
 					for i=1,6 do
@@ -658,19 +721,31 @@ end"><children>
 				else
 					self:hidden(0)
 					
-					local s = GAMESTATE:GetCurrentSong()
-					local sc = s:GetSpellCards()
-					local i = curcard[pn]
+					if not GAMESTATE:IsCourseMode() then
+						local sc = oplot_spellCards[pn]
+						local i = curcard[pn]
+						local x1 = oplot_fitX((sc[ i ].StartBeat))
+						--local x1 = oplot_fitX(0)
+						local x2 = oplot_fitX((sc[ i ].EndBeat))
 						
-					local x1 = oplot_fitX((sc[ i ].StartBeat))
-					--local x1 = oplot_fitX(0)
-					local x2 = oplot_fitX((sc[ i ].EndBeat))
-					
-					self:stretchto(x1,60,x2,92)
-					self:diffuseshift()
-					self:effectperiod(.5)
-					self:effectcolor1(sc[i].Color[1],sc[i].Color[2],sc[i].Color[3],sc[i].Color[4]*.4)
-					self:effectcolor2(sc[i].Color[1],sc[i].Color[2],sc[i].Color[3],sc[i].Color[4]*.1)
+						self:stretchto(x1,60,x2,92)
+						self:diffuseshift()
+						self:effectperiod(.5)
+						self:effectcolor1(sc[i].Color[1],sc[i].Color[2],sc[i].Color[3],sc[i].Color[4]*.4)
+						self:effectcolor2(sc[i].Color[1],sc[i].Color[2],sc[i].Color[3],sc[i].Color[4]*.1)
+					else
+						local sc = oplot_spellCards[pn]
+						local i = curcard[pn]
+						local x1 = oplot_fitXTimeBar(oplot_cumulativeTimeTime(0,i-1))
+						--local x1 = oplot_fitX(0)
+						local x2 = oplot_fitXTimeBar(oplot_cumulativeTimeTime(oplot_songs[i]:StepsLengthSeconds(),i-1))
+						
+						self:stretchto(x1,60,x2,92)
+						self:diffuseshift()
+						self:effectperiod(.5)
+						self:effectcolor1(sc[i].Color[1],sc[i].Color[2],sc[i].Color[3],sc[i].Color[4]*.4)
+						self:effectcolor2(sc[i].Color[1],sc[i].Color[2],sc[i].Color[3],sc[i].Color[4]*.1)
+					end
 					
 				end
 			end"
@@ -706,7 +781,7 @@ end"><children>
 	end"
 	StepP2UpPressMessageCommand="%function(self)
 		local pn = 2
-		if oplot_spellCards then
+		if oplot_spellCards[pn] then
 			
 			curcard[pn] = curcard[pn]-1
 			
@@ -717,14 +792,14 @@ end"><children>
 			end
 			
 			if curcard[pn] < 0 then
-				curcard[pn] = table.getn(oplot_spellCards)
+				curcard[pn] = table.getn(oplot_spellCards[pn])
 			end
 			MESSAGEMAN:Broadcast( 'UpdateSpellDisplayP2' );
 		end
 	end"
 	StepP2DownPressMessageCommand="%function(self)
 		local pn = 2
-		if oplot_spellCards then
+		if oplot_spellCards[pn] then
 		
 			curcard[pn] = curcard[pn]+1
 			
@@ -733,7 +808,7 @@ end"><children>
 				curcard[pn] = 0
 				oplot_hidden[pn] = -1
 			end
-			if curcard[pn] > table.getn(oplot_spellCards) then
+			if curcard[pn] > table.getn(oplot_spellCards[pn]) then
 				curcard[pn] = 0
 			end
 			MESSAGEMAN:Broadcast( 'UpdateSpellDisplayP2' );
@@ -839,7 +914,7 @@ end"><children>
 				
 				for i=1, table.getn(lab) do 
 					
-					local x = oplot_fitXTime(oplot_cumulativeTime(0,i-1))
+					local x = oplot_fitXTimeBar(oplot_cumulativeTime(0,i-1))
 					local y1 = oplot_fitY(oplot_maxOffset+4)
 					local y2 = oplot_fitY(-oplot_maxOffset-4)
 					
@@ -906,7 +981,7 @@ end"><children>
 				self:x(-152+31)
 				self:y(0)
 				self:hidden(0)
-				local color = oplot_spellCards[ curcard[pn] ].Color;
+				local color = oplot_spellCards[pn][ curcard[pn] ].Color;
 				self:diffuse(color[1]*0.3,color[2]*0.3,color[3]*0.3,1)
 			end
 		end"
@@ -947,7 +1022,7 @@ end"><children>
 				self:hidden(1)
 			else
 				self:x(-150)
-				self:y(-30 - 88 + 8 + 160*((curcard[pn]-1)/(table.getn(oplot_spellCards)-1)) )
+				self:y(-30 - 88 + 8 + 160*((curcard[pn]-1)/(table.getn(oplot_spellCards[pn])-1)) )
 				self:zoomto(6,16)
 				self:hidden(0)
 			end
@@ -990,14 +1065,14 @@ end"><children>
 			if not GAMESTATE:IsCourseMode() and curcard[pn] > 0 then
 				w = oplot_plotWidth-80
 				xo = 30
-				s = oplot_spellCards[ curcard[pn] ].StartBeat
-				e = oplot_spellCards[ curcard[pn] ].EndBeat
+				s = oplot_spellCards[pn][ curcard[pn] ].StartBeat
+				e = oplot_spellCards[pn][ curcard[pn] ].EndBeat
 			end
 			
 			local vert = 0;
 			for i=1,table.getn(nrt) do
 			
-				if s and e and (nrt[i]/48 < s or nrt[i]/48 > e) then
+				if s and e and ((not GAMESTATE:IsCourseMode() and nrt[i]/48 < s or nrt[i]/48 > e) or (GAMESTATE:IsCourseMode() and nrs[i] == curcard[pn] or curcard[pn] == 0)) then
 					--continue, but it's dealing with verts, so we can't...
 					
 					for j=0,3 do
@@ -1009,7 +1084,7 @@ end"><children>
 					
 				else
 			
-					local x = oplot_fitX(nrt[i]/48,nrs[i], w, xo, s, e)
+					local x = GAMESTATE:IsCourseMode() and oplot_fitXTime(nrt[i]/48,nrs[i], w, xo, s, e) or oplot_fitX(nrt[i]/48,nrs[i], w, xo, s, e)
 					local y = oplot_fitY(oplot_maxOffset+4)
 					if dvt[i] ~= 1000 then y = oplot_fitY(dvt[i]) end
 					
@@ -1037,42 +1112,44 @@ end"><children>
 				
 			end
 			
-			for i=1,table.getn(mrt) do
-			
-				if s and e and (mrt[i]/48 < s or mrt[i]/48 > e) or GAMESTATE:IsCourseMode() then
-					--continue, but it's dealing with verts, so we can't...
-					
-					for j=0,3 do
-						self:SetVertexColor(vert+j,0,0,0,0)
-						self:SetVertexPosition(vert+j,-9999,0,0)
+			if not GAMESTATE:IsCourseMode() then
+				for i=1,table.getn(mrt) do
+				
+					if s and e and (mrt[i]/48 < s or mrt[i]/48 > e) then
+						--continue, but it's dealing with verts, so we can't...
+						
+						for j=0,3 do
+							self:SetVertexColor(vert+j,0,0,0,0)
+							self:SetVertexPosition(vert+j,-9999,0,0)
+						end
+						
+						vert = vert+4
+						
+					else
+						
+						local x = GAMESTATE:IsCourseMode() and oplot_fitXTime(mrt[i]/48,1, w, xo, s, e) or oplot_fitX(mrt[i]/48,1, w, xo, s, e)
+						local y = oplot_fitY(-oplot_maxOffset+4)
+						
+						self:SetVertexPosition(vert+0,x-oplot_dotDims/2,y-oplot_dotDims/2,0)
+						self:SetVertexPosition(vert+1,x+oplot_dotDims/2,y-oplot_dotDims/2,0)
+						self:SetVertexPosition(vert+2,x+oplot_dotDims/2,y+oplot_dotDims/2,0)
+						self:SetVertexPosition(vert+3,x-oplot_dotDims/2,y+oplot_dotDims/2,0)
+						
+						for j=0,3 do
+							self:SetVertexColor(vert+j,.6,.6,.6,1)
+						end
+						
+						vert = vert+4
+						
 					end
-					
-					vert = vert+4
-					
-				else
-			
-					local x = oplot_fitX(mrt[i]/48,1, w, xo, s, e)
-					local y = oplot_fitY(-oplot_maxOffset+4)
-					
-					self:SetVertexPosition(vert+0,x-oplot_dotDims/2,y-oplot_dotDims/2,0)
-					self:SetVertexPosition(vert+1,x+oplot_dotDims/2,y-oplot_dotDims/2,0)
-					self:SetVertexPosition(vert+2,x+oplot_dotDims/2,y+oplot_dotDims/2,0)
-					self:SetVertexPosition(vert+3,x-oplot_dotDims/2,y+oplot_dotDims/2,0)
-					
-					for j=0,3 do
-						self:SetVertexColor(vert+j,.6,.6,.6,1)
-					end
-					
-					vert = vert+4
 					
 				end
-				
 			end
 			
-			if not GAMESTATE:IsCourseMode() then
+			if true then
 				
 				if curcard[pn]>0 then
-					local color = oplot_spellCards[ curcard[pn] ].Color
+					local color = oplot_spellCards[pn][ curcard[pn] ].Color
 					if color[1] == 0 and color[2] == 0 and color[3] == 0 then color = {1,1,1,1} end
 				
 					_G['oplot_s'..pn..'_title']:horizalign('left')
@@ -1082,7 +1159,7 @@ end"><children>
 					_G['oplot_s'..pn..'_title']:diffuse( color[1], color[2], color[3], 1 )
 					_G['oplot_s'..pn..'_title']:zoom(.75)
 					_G['oplot_s'..pn..'_title']:maxwidth(294/.75)
-					_G['oplot_s'..pn..'_title']:settext( oplot_spellCards[ curcard[pn] ].Name )
+					_G['oplot_s'..pn..'_title']:settext( oplot_spellCards[pn][ curcard[pn] ].Name )
 					
 					if tonumber(GAMESTATE:GetVersionDate()) >= 20181211 then
 						_G['oplot_s'..pn..'_diff']:horizalign('left')
@@ -1092,7 +1169,7 @@ end"><children>
 						_G['oplot_s'..pn..'_diff']:diffuse( (color[1]+2)/3, (color[2]+2)/3, (color[3]+2)/3, 1 )
 						_G['oplot_s'..pn..'_diff']:zoom(.6)
 						_G['oplot_s'..pn..'_diff']:maxwidth(294/.6)
-						_G['oplot_s'..pn..'_diff']:settext( 'Difficulty: '..oplot_spellCards[ curcard[pn] ].Difficulty )
+						_G['oplot_s'..pn..'_diff']:settext( 'Difficulty: '..oplot_spellCards[pn][ curcard[pn] ].Difficulty )
 					end
 					
 					for i=1,6 do
@@ -1188,19 +1265,31 @@ end"><children>
 				else
 					self:hidden(0)
 					
-					local s = GAMESTATE:GetCurrentSong()
-					local sc = s:GetSpellCards()
-					local i = curcard[pn]
+					if not GAMESTATE:IsCourseMode() then
+						local sc = oplot_spellCards[pn]
+						local i = curcard[pn]
+						local x1 = oplot_fitX((sc[ i ].StartBeat))
+						--local x1 = oplot_fitX(0)
+						local x2 = oplot_fitX((sc[ i ].EndBeat))
 						
-					local x1 = oplot_fitX((sc[ i ].StartBeat))
-					--local x1 = oplot_fitX(0)
-					local x2 = oplot_fitX((sc[ i ].EndBeat))
-					
-					self:stretchto(x1,60,x2,92)
-					self:diffuseshift()
-					self:effectperiod(.5)
-					self:effectcolor1(sc[i].Color[1],sc[i].Color[2],sc[i].Color[3],sc[i].Color[4]*.4)
-					self:effectcolor2(sc[i].Color[1],sc[i].Color[2],sc[i].Color[3],sc[i].Color[4]*.1)
+						self:stretchto(x1,60,x2,92)
+						self:diffuseshift()
+						self:effectperiod(.5)
+						self:effectcolor1(sc[i].Color[1],sc[i].Color[2],sc[i].Color[3],sc[i].Color[4]*.4)
+						self:effectcolor2(sc[i].Color[1],sc[i].Color[2],sc[i].Color[3],sc[i].Color[4]*.1)
+					else
+						local sc = oplot_spellCards[pn]
+						local i = curcard[pn]
+						local x1 = oplot_fitXTimeBar(oplot_cumulativeTimeTime(0,i-1))
+						--local x1 = oplot_fitX(0)
+						local x2 = oplot_fitXTimeBar(oplot_cumulativeTimeTime(oplot_songs[i]:StepsLengthSeconds(),i-1))
+						
+						self:stretchto(x1,60,x2,92)
+						self:diffuseshift()
+						self:effectperiod(.5)
+						self:effectcolor1(sc[i].Color[1],sc[i].Color[2],sc[i].Color[3],sc[i].Color[4]*.4)
+						self:effectcolor2(sc[i].Color[1],sc[i].Color[2],sc[i].Color[3],sc[i].Color[4]*.1)
+					end
 					
 				end
 			end"

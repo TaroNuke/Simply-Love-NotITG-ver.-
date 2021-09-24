@@ -1,0 +1,97 @@
+<ActorFrame InitCommand="%function(self)
+	
+	function GetTapScore(pn, category)
+		local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+		return pss:GetTapNoteScores(category)
+	end
+
+	function GetHoldScore(pn, category)
+		local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
+		return pss:GetHoldNoteScores(category)
+	end
+	
+end"> <children>
+	
+	<Layer Type="ActorFrame"
+		Condition="GAMESTATE:IsPlayerEnabled(PLAYER_1)"
+		OnCommand="x,SCREEN_CENTER_X-295;y,SCREEN_CENTER_Y-76"
+	> <children>
+		
+		<Layer 
+			Font="_misobold small"
+			Text="100.00%" 
+			OnCommand="x,55;y,-30;zoom,0.6;shadowlength,0;horizalign,right;maxwidth,240;queuecommand,Set" 
+			SetCommand="%function(self)
+				
+				local pn = 0
+
+				if GAMESTATE:IsPlayerEnabled(pn) then
+
+					local NotesHitScore = 0;
+					local NotesPossibleScore = 1;
+					local PlayerPercentageUKSRT = 0;
+					local Selection = GAMESTATE:GetCurrentSteps(pn);
+					
+					NotesPossibleScore = math.max(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetPossibleDancePoints(),NotesPossibleScore)
+					NotesHitScore = 	(GetTapScore(pn, TNS_MARVELOUS) * 5 ) + 
+								(GetTapScore(pn, TNS_PERFECT) * 4 ) +
+								(GetTapScore(pn, TNS_GREAT) * 2 ) +
+								(GetTapScore(pn, TNS_BOO) * -2 ) +
+								(GetTapScore(pn, TNS_MISS) * -4 ) +
+								(GetHoldScore(pn, HNS_OK) * 5 ) +
+								(GetTapScore(pn, TNS_HITMINE) * -8 )
+								
+
+								
+					PlayerPercentageUKSRT = math.floor(10000*(NotesHitScore/NotesPossibleScore))/100
+
+					self:settext( string.format('%.2f',PlayerPercentageUKSRT)..'%' )
+				
+				end
+				
+			end" 
+		/>
+		
+	</children> </Layer>
+
+	<Layer Type="ActorFrame"
+		Condition="GAMESTATE:IsPlayerEnabled(PLAYER_2)"
+		OnCommand="x,SCREEN_CENTER_X+295;y,SCREEN_CENTER_Y-76"
+	> <children>
+	
+		<Layer 
+			Font="_misobold small"
+			Text="100.00%" 
+			OnCommand="x,-55;y,-30;zoom,0.6;shadowlength,0;horizalign,left;maxwidth,240;queuecommand,Set" 
+			SetCommand="%function(self)
+				
+				local pn = 1
+
+				if GAMESTATE:IsPlayerEnabled(pn) then
+
+					local NotesHitScore = 0;
+					local NotesPossibleScore = 1;
+					local PlayerPercentageUKSRT = 0;
+					local Selection = GAMESTATE:GetCurrentSteps(pn);
+					
+					NotesPossibleScore = math.max(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetPossibleDancePoints(),NotesPossibleScore)
+					NotesHitScore = 	(GetTapScore(pn, TNS_MARVELOUS) * 5 ) + 
+								(GetTapScore(pn, TNS_PERFECT) * 4 ) +
+								(GetTapScore(pn, TNS_GREAT) * 2 ) +
+								(GetTapScore(pn, TNS_BOO) * -2 ) +
+								(GetTapScore(pn, TNS_MISS) * -4 ) +
+								(GetHoldScore(pn, HNS_OK) * 5 ) +
+								(GetTapScore(pn, TNS_HITMINE) * -8 )
+								
+					PlayerPercentageUKSRT = math.floor(10000*(NotesHitScore/NotesPossibleScore))/100
+
+					self:settext( string.format('%.2f',PlayerPercentageUKSRT)..'%' )
+				
+				end
+				
+			end" 
+		/>
+		
+	</children> </Layer>
+	
+</children> </ActorFrame>

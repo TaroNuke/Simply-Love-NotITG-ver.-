@@ -1,0 +1,25 @@
+<ActorFrame InitCommand="%function(self)
+	self:hidden(1)
+	reflexhelp_hidden = true
+	
+	for i=0,3 do
+		reflex_clearLights(0,i)
+	end
+	
+end"
+StepP1Action1PressMessageCommand="%function(self)
+	if reflexhelp_hidden then
+		reflexhelp_hidden = false
+		self:hidden(0)
+	else
+		reflexhelp_hidden = true
+		self:hidden(1)
+	end
+end"
+> <children>
+
+	<00Layer Type="Quad" OnCommand="stretchto,0,0,sw,sh;diffuse,0,0,0,.8" />
+	
+	<Layer File="ScreenTestReflex underlay"/>
+	
+</children> </ActorFrame>
