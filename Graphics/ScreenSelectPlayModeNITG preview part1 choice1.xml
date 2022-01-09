@@ -1,6 +1,6 @@
 <ActorFrame><children>
 	<BitampText
-		Text="Dive into gameplay with the most common settings::(2 player mode with duplicated input)"
+		Text="Dive into mods gameplay with the most common settings!"
 		File="_common normal"
 		InitCommand="maxwidth,640/.8;zoom,.8;addy,20;skewx,-0.21;shadowlength,0"
 		GainFocusCommand="hidden,0;finishtweening;cropright,1;linear,0.5;cropright,0"

@@ -1,6 +1,6 @@
 <ActorFrame><children>
 	<BitampText
-		Text="Classic ITG the way you're already used to::(the old menu from previous builds here)"
+		Text="Classic ITG, for non-mods play!"
 		File="_common normal"
 		InitCommand="maxwidth,640/.8;zoom,.8;addy,20;skewx,-0.21;shadowlength,0"
 		GainFocusCommand="hidden,0;finishtweening;cropright,1;linear,0.5;cropright,0"
