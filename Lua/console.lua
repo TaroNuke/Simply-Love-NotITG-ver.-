@@ -180,7 +180,7 @@ event.Persist("key char","dev console",function(char, special)
     DevConsole:y(0)
 
     if SCREENMAN.SetInputMode then
-        SCREENMAN:SetInputMode(2)
+        SCREENMAN:SetInputMode(1)
     end
 
     event.Timer(0.5, function()
