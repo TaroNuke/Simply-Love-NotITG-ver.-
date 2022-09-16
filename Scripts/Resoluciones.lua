@@ -139,8 +139,10 @@ function LuaSetResolution( ratio )
 				PREFSMAN:SetPreference( "DisplayHeight", height )
 				PREFSMAN:SetPreference( "DisplayAspectRatio", Resolutions[ratio].Ratio )
 				Debug( "New resolution: " .. width .. "x" .. height .. ", ratio " .. Resolutions[ratio].Ratio )
+				
+				DISPLAY:SetWindowPositionAndSize(0,0,width,height)
 
-				GAMESTATE:DelayedGameCommand( "reloadtheme" )
+				--GAMESTATE:DelayedGameCommand( "reloadtheme" )
 			end
 		end
 	end

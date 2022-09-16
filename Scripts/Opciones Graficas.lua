@@ -53,8 +53,8 @@ function LuaGraphicOptions()
 				for pref,tbl in pairs(GraphicsSettings) do
 					PREFSMAN:SetPreference( pref, tbl[i] )
 				end
-
-				GAMESTATE:DelayedGameCommand( "reloadtheme" )
+				
+				--GAMESTATE:DelayedGameCommand( "reloadtheme" )
 				return
 			end
 		end
