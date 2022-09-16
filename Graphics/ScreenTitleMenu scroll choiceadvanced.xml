@@ -1,8 +1,8 @@
 <ActorFrame><children>
 	<Layer
 		Font="_wendy small"
-		Text="Play"
-		InitCommand="horizalign,center;shadowlength,0;diffusealpha,0;sleep,0.2;accelerate,0.6;diffusealpha,1"
+		Text="Advanced"
+		InitCommand="zoom,0.8;horizalign,center;shadowlength,0;diffusealpha,0;sleep,0.4;accelerate,0.6;diffusealpha,1"
 		GainFocusCommand="@'diffuse,'..DifficultyColor(1)..';zoom,1'"
 		LoseFocusCommand="zoom,0.8;diffuse,#FFFFFF"
 		DisabledCommand="Diffuse,0.5,0.5,0.5,1"

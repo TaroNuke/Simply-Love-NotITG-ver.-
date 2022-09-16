@@ -3,7 +3,7 @@
 	<ActorFrame Command="%function() love = 1 end" />
 	<Layer
 		File="@FUCK_EXE and 'SimplyLove' or 'SimplyOpen'" 
-		OnCommand="draworder,301;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;zoom,.9/(FUCK_EXE and 1 or 2);diffusealpha,0;linear,0.4;diffusealpha,1" 
+		OnCommand="draworder,301;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-37.5;zoom,.9/(FUCK_EXE and 1 or 2);diffusealpha,0;linear,0.4;diffusealpha,1"
 	/>
 
 </children></ActorFrame>

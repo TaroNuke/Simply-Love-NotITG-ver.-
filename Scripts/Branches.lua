@@ -15,11 +15,6 @@ function ScreenTitleBranch()
 	return "ScreenTitleJoin"
 end
 
-function SelectColorNextScreen()
-	if GAMESTATE:GetCoinMode() == COIN_MODE_HOME then return "ScreenSelectPlayModeNITG" end
-	return "ScreenSelectPlayMode"
-end
-
 function EvaluationNextScreen()
 
 	if GetPref('EventMode') then return SongSelectionScreen() end
