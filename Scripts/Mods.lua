@@ -193,13 +193,89 @@ function ScreenEdit() EditMode = true; end
 function JudgmentInit()
 	
 	if FakeCombo == nil or not FakeCombo then
-		FakeCombo = {0,0};
+		FakeCombo = {0,0}
 	end
 	
-	judge = {}; ghost = {};
-	for pn = 1,2 do judge[pn] = {0,0,0,0,0,0,0,0,0, T = 0, MaxDP = 0, CurDP = 0, Data = {}, Score = 0, Steps = {}, Stream = {{{0,0}}} } GhostData(pn,'Decompress') for i,v in ipairs(trackedStreams) do judge[pn].Stream[i] = {} end end
-	for i,v in ipairs(holdJudgments) do if i <= table.getn(holdJudgments)/2 then if Player(1) then v:aux(1) else v:aux(2) end else if Player(2) then v:aux(2) else v:aux(1) end end end
-	for pn = 1,8 do local px = Screen():GetChild('PlayerP'..pn) local mpn = math.mod(pn - 1, 2) + 1 if px then px = px:GetChild('Judgment'):GetChild(''); px:aux(mpn); if ModCustom.JudgmentFont[mpn] ~= 1 then px:Load( THEME:GetPath( EC_GRAPHICS, '', '_Judgments/'..judgmentFontList[ModCustom.JudgmentFont[mpn]] )) end end end
+	judge = {}
+	ghost = {}
+	for pn = 1,2 do
+		judge[pn] = {
+			0,0,0,0,0,0,0,0,0,
+			T = 0,
+			MaxDP = 0,
+			CurDP = 0,
+			Data = {},
+			Score = 0,
+			Steps = {},
+			Stream = {{{0,0}}}
+		}
+		GhostData(pn,'Decompress')
+		for i,v in ipairs(trackedStreams) do
+			judge[pn].Stream[i] = {}
+		end
+	end
+	for i,v in ipairs(holdJudgments) do
+		if i <= table.getn(holdJudgments)/2 then
+			if Player(1) then
+				v:aux(1)
+			else
+				v:aux(2)
+			end
+		else
+			if Player(2) then
+				v:aux(2)
+			else
+				v:aux(1)
+			end
+		end
+	end
+	local invisibleSettings = {'hidden', 1, 'diffusealpha', 0, 'zoom', 0, 'zoom2', 0, 'x', 9e9, 'y', 9e9, 'x2', 9e9, 'y2', 9e9}
+	for pn = 1,8 do
+		local px = Screen():GetChild('PlayerP'..pn)
+		local mpn = math.mod(pn - 1, 2) + 1
+		local judgeIndex = ModCustom.JudgmentFont[mpn]
+		local judgeName = judgmentFontList[judgeIndex]
+		if px then
+			px = px:GetChild('Judgment')
+			local pxc = px:GetChild('')
+			px:aux(mpn)
+			if judgeIndex ~= 1 then
+				pxc:Load( THEME:GetPath( EC_GRAPHICS, '', '_Judgments/'.. judgeName ))
+				-- special case for invisible judgment font
+				if judgeName == 'Invisible' then
+					-- if selected, use every method possible to hide the judgment sprite in case a file loads an alternate judgment font
+					-- maybe a bit overkill 
+					for _, actor in ipairs{px, pxc} do
+						for i = 1, #invisibleSettings, 2 do
+							method = invisibleSettings[i]
+							value = invisibleSettings[i + 1]
+							if px[method] then
+								px[method](px, value)
+							end
+						end
+					end
+					if FUCK_EXE then
+						for _, actor in ipairs{px, pxc} do
+							if actor.SetDrawFunction then
+								actor:SetDrawFunction(function() end)
+							end
+							if actor.SetUpdateFunction then
+								actor:SetUpdateFunction(function()
+									for i = 1, #invisibleSettings, 2 do
+										method = invisibleSettings[i]
+										value = invisibleSettings[i + 1]
+										if px[method] then
+											px[method](px, value)
+										end
+									end
+								end)
+							end
+						end
+					end
+				end
+			end
+		end
+	end
 end
 
 function GameplayUpdate(self)
