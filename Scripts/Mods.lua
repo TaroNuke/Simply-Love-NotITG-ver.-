@@ -199,7 +199,7 @@ function JudgmentInit()
 	judge = {}; ghost = {};
 	for pn = 1,2 do judge[pn] = {0,0,0,0,0,0,0,0,0, T = 0, MaxDP = 0, CurDP = 0, Data = {}, Score = 0, Steps = {}, Stream = {{{0,0}}} } GhostData(pn,'Decompress') for i,v in ipairs(trackedStreams) do judge[pn].Stream[i] = {} end end
 	for i,v in ipairs(holdJudgments) do if i <= table.getn(holdJudgments)/2 then if Player(1) then v:aux(1) else v:aux(2) end else if Player(2) then v:aux(2) else v:aux(1) end end end
-	for pn = 1,2 do local px = Screen():GetChild('PlayerP'..pn) if px then px = px:GetChild('Judgment'):GetChild(''); px:aux(pn); if ModCustom.JudgmentFont[pn] ~= 1 then px:Load( THEME:GetPath( EC_GRAPHICS, '', '_Judgments/'..judgmentFontList[ModCustom.JudgmentFont[pn]] )) end end end
+	for pn = 1,8 do local px = Screen():GetChild('PlayerP'..pn) local mpn = math.mod(pn - 1, 2) + 1 if px then px = px:GetChild('Judgment'):GetChild(''); px:aux(mpn); if ModCustom.JudgmentFont[mpn] ~= 1 then px:Load( THEME:GetPath( EC_GRAPHICS, '', '_Judgments/'..judgmentFontList[ModCustom.JudgmentFont[mpn]] )) end end end
 end
 
 function GameplayUpdate(self)
