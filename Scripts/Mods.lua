@@ -161,7 +161,16 @@ function MaxLength(str,l) if string.len(str) > l then str = string.sub(str,0,l-3
 function RowMetric(b,a,r) if r then rowYNum = 0 rowYAdd = a rowYBase = b rowYOffTop = rowYBase + rowYAdd*0.5 return r elseif a then rowYNum = rowYNum + a end rowYNum = rowYNum + 1 if b ~= 'Exit' then rowYOffCenter = rowYBase + rowYAdd*(rowYNum+1+math.mod(rowYNum,2))/2 rowYOffBottom = rowYBase + rowYAdd*(rowYNum+1/2) end return rowYBase+rowYAdd*rowYNum end
 function SecondsToMSS(n) local t = SecondsToMSSMsMs(math.abs(n)) t = string.sub(t,0,string.len(t)-3) if tonumber(n) < 0 then t = '-' .. t end return t end
 function MSSMsMsToSeconds(t) return string.sub(t,string.len(t)-4,string.len(t)) + string.sub(t,1,string.len(t)-6)*60 end
-function ForceSongAndSteps() if not GAMESTATE:GetCurrentSong() then local song = SONGMAN:GetRandomSong() GAMESTATE:SetCurrentSong(song) steps = song:GetAllSteps() GAMESTATE:SetCurrentSteps(0,steps[1]) GAMESTATE:SetCurrentSteps(1,steps[1]) end end
+function ForceSongAndSteps()
+	if not GAMESTATE:GetCurrentSong() then
+		local song = SONGMAN:GetRandomSong()
+		if not song then return end
+		GAMESTATE:SetCurrentSong(song)
+		steps = song:GetAllSteps()
+		GAMESTATE:SetCurrentSteps(0,steps[1])
+		GAMESTATE:SetCurrentSteps(1,steps[1])
+	end
+end
 function Diffuse(self,c,n) if not c[4] then c[4] = 1 end if n == 1 then self:diffuseupperleft(c[1],c[2],c[3],c[4]) elseif n == 2 then self:diffuseupperright(c[1],c[2],c[3],c[4]) elseif n == 3 then self:diffuselowerleft(c[1],c[2],c[3],c[4]) elseif n == 4 then self:diffuselowerright(c[1],c[2],c[3],c[4]) else self:diffuse(c[1],c[2],c[3],c[4]) end end
 function ApplyMod(mod,pn,f) local m = mod if m then if f then m = f .. '% ' .. m end GAMESTATE:ApplyGameCommand('mod,'..m,pn) end end
 function CheckMod(pn,mod) return mod and GAMESTATE:PlayerIsUsingModifier(pn,mod) end
@@ -1367,16 +1376,38 @@ function DifficultyList()
 	end
 --  q is the index of the last entry of difficultyList. We need to save this instead of using table.getn because when you have "FixedDifficultyRow" you often have nil values in the middle of the table.
 	for n=1,2 do if Player(n) then
-		for i=1,q do if difficultyList[i] == GAMESTATE:GetCurrentSteps(n-1) then listPointer[n] = i end end
-		if listPointer[n] <= c then listPointerY[n] = listPointer[n] elseif listPointer[n] >= (q+1)-(r-c) then listPointerY[n] = listPointer[n]-q+r else listPointerY[n] = c end
+		for i=1,q do
+			if difficultyList[i] == GAMESTATE:GetCurrentSteps(n-1) then
+				listPointer[n] = i
+			end
+		end
+		if listPointer[n] <= c then
+			listPointerY[n] = listPointer[n]
+		elseif listPointer[n] >= (q+1)-(r-c) then
+			listPointerY[n] = listPointer[n]-q+r
+		else
+			listPointerY[n] = c
+		end
 		if FixedDifficultyRows() then listPointerY[n] = listPointer[n] end
 	end end
 	if not twoDifficultyListRows and GAMESTATE:GetNumPlayersEnabled() == 2 and q > r then
 		listPointerY[1] = math.max(math.min(math.ceil((r+listPointer[1]-listPointer[2])/2),b),a)
 		listPointerY[2] = math.max(math.min(math.ceil((r+listPointer[2]-listPointer[1])/2),b),a)
-		if listPointer[1] + listPointer[2] < r+2 and listPointer[1] <= b and listPointer[2] <= b then listPointerY[1] = listPointer[1]; listPointerY[2] = listPointer[2] end
-		if listPointer[1] + listPointer[2] > 2*(q+1)-(r+2) and listPointer[1] >= (q+1)-b and listPointer[2] >= (q+1)-b then listPointerY[1] = listPointer[1]-q+r; listPointerY[2] = listPointer[2]-q+r end
-		for i=1,2 do if listPointer[i] <= a then listPointerY[i] = listPointer[i] elseif listPointer[i] >= (q+1)-a then listPointerY[i] = listPointer[i]-q+r end end
+		if listPointer[1] + listPointer[2] < r+2 and listPointer[1] <= b and listPointer[2] <= b then
+			listPointerY[1] = listPointer[1]
+			listPointerY[2] = listPointer[2]
+		end
+		if listPointer[1] + listPointer[2] > 2*(q+1)-(r+2) and listPointer[1] >= (q+1)-b and listPointer[2] >= (q+1)-b then
+			listPointerY[1] = listPointer[1]-q+r
+			listPointerY[2] = listPointer[2]-q+r
+		end
+		for i=1,2 do
+			if listPointer[i] <= a then
+				listPointerY[i] = listPointer[i]
+			elseif listPointer[i] >= (q+1)-a then
+				listPointerY[i] = listPointer[i]-q+r
+			end
+		end
 	end
 end
 
@@ -1390,8 +1421,16 @@ function DifficultyListRow(self,k,t,pn)
 	
 	self:stopeffect()
 	
-	if Player(1) then d[1] = k+listPointer[1]-listPointerY[1] else d[1] = 0 end
-	if Player(2) then d[2] = k+listPointer[2]-listPointerY[2] else d[2] = 0 end
+	if Player(1) and listPointer[1] then
+		d[1] = k+listPointer[1]-listPointerY[1]
+	else
+		d[1] = 0
+	end
+	if Player(2) and listPointer[2] then
+		d[2] = k+listPointer[2]-listPointerY[2]
+	else
+		d[2] = 0
+	end
 	if not GAMESTATE:GetCurrentSong() then
 		if t == 'difficulty' then if k - 1 < 5 then self:settext(string.upper(DifficultyToThemedString( k - 1 ))) self:diffuse(DifficultyColorRGB( k - 1 )) else self:settext('') end end
 		if t == 'meter' then if k - 1 < 5 then self:settext(b) self:diffuse(DifficultyColorRGB( k - 1 )) else self:settext('') end end
