@@ -1,6 +1,5 @@
 <ActorFrame><children>
 	<ActorFrame InitCommand="%function() Profile(0).Love.Dir = ThemeName() end" />
-	<Layer File="@VocalizePath()..'Vocalize.xml'" />
 	<ActorFrame InitCommand="%function() if file then file() end end" />
 	<ActorFrame OffCommand="queuecommand,Out" OutCommand="%function() local s = SCREENMAN:GetTopScreen():GetChild('Logo') TitleMenuOut(s) end" />
 		<ActorFrame Command="queuecommand,Game" GameCommand="%DetectGame" />

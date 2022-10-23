@@ -318,6 +318,7 @@ function HoldCommand(self,n) TrackJudgment(self,n) HoldTween(self) end
 
 function TrackJudgment(self,j,p)
 	local pn = p or math.max(self:getaux(),1)
+	if pn > 2 then return end
 	
 	judge[pn].Score = GetScore(pn)
 	judge[pn][j] = judge[pn][j] + 1
@@ -1372,14 +1373,18 @@ function DifficultyList()
 		end
 	else
 		difficultyList = steps
-		q = table.getn(steps)
+		q = table.getn(steps or {})
 	end
 --  q is the index of the last entry of difficultyList. We need to save this instead of using table.getn because when you have "FixedDifficultyRow" you often have nil values in the middle of the table.
 	for n=1,2 do if Player(n) then
-		for i=1,q do
-			if difficultyList[i] == GAMESTATE:GetCurrentSteps(n-1) then
-				listPointer[n] = i
+		if q > 0 then
+			for i=1,q do
+				if difficultyList[i] == GAMESTATE:GetCurrentSteps(n-1) then
+					listPointer[n] = i
+				end
 			end
+		else
+			listPointer[n] = 5
 		end
 		if listPointer[n] <= c then
 			listPointerY[n] = listPointer[n]
@@ -1487,6 +1492,7 @@ function DifficultyListRow(self,k,t,pn)
 end
 
 function FixedDifficultyRows()
+	if not steps then return false end
 	l = table.getn(steps)
 	if l > 5 then return false end
 	for i,v in ipairs(steps) do
