@@ -56,5 +56,4 @@
 		InitCommand="x,SCREEN_CENTER_X;y,SCREEN_TOP+115;;ZoomToWidth,278;ZoomToHeight,109"
 		OnCommand="ztest,1;diffusealpha,0;linear,0.6;diffusealpha,1"
 	/>
-	<Layer File="@VocalizePath()..'read.xml'" Command="sleep,3;queuecommand,Voice" />
 </children></ActorFrame>

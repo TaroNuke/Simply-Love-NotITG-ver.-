@@ -152,7 +152,6 @@ function GetPref(str) return PREFSMAN:GetPreference(str) end
 function SetPref(str,val) return PREFSMAN:SetPreference(str,val) end
 function ThemeFile( file ) return THEME:GetPath( EC_GRAPHICS, '' , themeDir..'/'..file ) end
 function ThemeName() local str = string.sub(THEME:GetPath(2,'','_blank.png'),9) return string.sub(str,1,string.find(str,'/')-1) end   
-function VocalizePath() return '/Themes/' .. tostring(Profile(0).Love and Profile(0).Love.Dir or 'Simply Love') .. '/Vocalize/' end
 function IsType(a,t) return string.find(tostring(a),t) end
 function TableToString(t) local s = '' for i,v in ipairs(t) do s = s .. tostring(v) end return s end
 function GetStartScreen() SetPref("DelayedScreenLoad",false) if GetPref('BreakComboToGetItem') and GetInputType and GetInputType() == "" then return "ScreenArcadeStart" end return THEME:GetMetric('Common','FirstAttractScreen') end
@@ -686,7 +685,6 @@ function LoadFromProfile()
 	for pn = 1,2 do if Player(pn) then local t = Profile(pn) if not t.Mods then t.Mods = {} end
 		for s,v in pairs(ModCustom) do v[pn] = tonumber(t.Mods[s]) or 1 end
 		for i,v in ipairs(judgmentFontList) do if t.Mods.JudgmentFont == v then ModCustom.JudgmentFont[pn] = i end end
-		if vocalize and Profile(pn).Voice then vocalize[pn] = Profile(pn).Voice end
 		LoadFloatFromProfile(pn,'Mini',t)
 		if t.Mods.Cover then ApplyMod('cover',pn) end
 	end end
@@ -704,7 +702,6 @@ function SaveToProfile()
 	for pn = 1,2 do if Player(pn) then local t = Profile(pn)
 		if not t.Mods then t.Mods = {} end
 		for s,v in pairs(ModCustom) do t.Mods[s] = v[pn] end
-		if vocalize then Profile(pn).Voice = vocalize[pn] end
 		t.Mods.JudgmentFont = judgmentFontList[ModCustom.JudgmentFont[pn]]
 		t.Mods.Mini = OptionFromEvalPlayerOptions(pn,'mini')
 		GhostData(pn,'Compress')
@@ -990,7 +987,6 @@ ModsMaster.Measure =		{ fnctn = 'MeasureOption', modlist = {-1,0,8,12,16,24,32} 
 ModsMaster.Compare =		{ fnctn = 'CompareOption' }
 ModsMaster.LifeBar =		{ fnctn = 'LifeBarOption' }
 ModsMaster.JudgmentFont =	{ fnctn = 'JudgmentOption' }
---ModsMaster.Voice =			{ fnctn = 'VocalizeOption' }
 ModsMaster.Rate =			{ fnctn = 'RateMods' }
 ModsMaster.RateEdit =		{ fnctn = 'RateMods', arg = 'Edit' }
 ModsMaster.SpeedBase =		{ fnctn = 'SpeedMods' }
