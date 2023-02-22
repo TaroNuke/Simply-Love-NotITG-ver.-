@@ -453,7 +453,9 @@ function UpdateMeasureText(pn)
 				str = str .. '/' .. math.max(math.floor((k[k[0]][2] - z[table.getn(z)][1])/4),str) -- If current stream is longer than recorded, use current length.
 			end
 		end end
-		measureText[pn]:settext(str)
+		if measureText[pn] then
+			measureText[pn]:settext(str)
+		end
 	end
 end
 
