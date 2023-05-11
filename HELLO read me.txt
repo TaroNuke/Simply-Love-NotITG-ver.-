@@ -100,42 +100,6 @@ PLAYER OPTIONS:
 - Scroll speeds are automatically adjusted to counteract rate mods. (If a player uses c600 and plays a song on 2x rate, the scroll speed will be 600 not 1200).
 
 
-- Vocalize Score - by default, a random voice will read each score on the evaluation screen aloud. A player can choose different voices, blender (each digit is a random voice), or turn the vocalization off. A few of these voices have a few explicit sound files, so they may need to be removed for public machines. Use your own discretion!
-
-**TO REMOVE VOICES: In Scripts/Vocalize.lua, remove the name from the top list of voice options. The voice will no longer show up in the mod menu.
-
-**TO ADD VOICES: Look in other voice folders in the Vocalize folder for a list of necessary sounds. Sounds must be .ogg format, and each recording should be around the same length, or the timing will be messed up. The new voice must be added to Vocalize/Vocalize.xml. Add the new voice name (in alphabetical order) to the list at the top of the file. DONE! Additional voice packs may be released in the future that can be added on.
-
-CLEAN, UNOFFENSIVE VOICES:
-Alan
-Brandon
-Jayce
-Joy
-Marissa
-Mark
-Nick
-Phil
-Shizuka
-Tyler
-Alessandro_italian
-Joy_swedish
-Panzer
-Shizuka_japanese
-Sirin_turkish
-
-VOICES WITH QUESTIONABLE CONTENT:
-Charles - "ass" "whore" "bitch" 
-David - "pussy"
-Garrett - "fucK" "niggaz" "bitch"
-Jim - "nigger" "shit" "tits" "fuck"
-Matt - "fucking"
-Madame_Moisture - "bitches"
-Ryan - "retards"
-Sara - "mothafuckaa"
-Steven - "dick"
-Vospi - "fuckin"
-
-
 - Judgment Font - Each player can choose the judgment used during gameplay. Only the graphics are changed; zoom and animation are still controlled in the metrics and will be the same for every judgment graphic. Hold judgments are not changed, and neither are beginner judgments.
 
 **TO ADD JUDGMENTS: Put the judgment image in the folder Grahpics/_Judgments, with a file name "(your judgment's name) 2x6.png". Then open Scripts/Other.lua and add (your judgment's name) to the list of Judgment fonts. The graphic should be about the same size as the ones included or there will be sizing issues (again, because the zoom is controlled in the metrics and will apply to all).
